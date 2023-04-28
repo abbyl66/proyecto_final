@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">epubook</string>
+
+    <string name="slider1">Primera pantalla</string>
+    <string name="slider2">Segunda pantalla</string>
+    <string name="slider3">Tercera pantalla</string>
+
+    <string name="desc1">Primera descripcion</string>
+    <string name="desc2">Segunda descripcion</string>
+    <string name="desc3">Tercera descripcion</string>
+
+    <string name="descStart">Empezar</string>
+</resources>

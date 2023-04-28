@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "324171716074",
+    "project_id": "epubookinicio",
+    "storage_bucket": "epubookinicio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:324171716074:android:94a038e773da54c90e8e93",
+        "android_client_info": {
+          "package_name": "com.example.epubook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "324171716074-6jgviatom0strptlvc3m57fsspu0qoj4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNQEG_LlzIIsGSGNMuVWgosaH28_Rx9yI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324171716074-6jgviatom0strptlvc3m57fsspu0qoj4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

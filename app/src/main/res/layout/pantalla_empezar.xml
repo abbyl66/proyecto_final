@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".vista.PantallaEmpezar"
+    android:orientation="vertical"
+    app:flow_horizontalAlign="center">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/img_intro"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/savebooks"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titulo_intro"
+        android:layout_marginTop="50dp"
+        android:text="Empieza"
+        android:textSize="30sp"
+        android:textAlignment="center"
+        android:textColor="@color/pink"
+        android:textStyle="bold"
+        android:fontFamily="serif"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/desc_intro"
+        android:layout_marginTop="20dp"
+        android:text="@string/descStart"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="30dp"
+        android:textAlignment="center"
+        android:textColor="@color/pink"
+        android:fontFamily="serif"/>
+
+    <Button
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:text="Inicia sesión"
+        android:id="@+id/bt_iniciar"
+        android:padding="8dp"
+        android:fontFamily="serif"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        app:cornerRadius="12dp"/>
+
+    <TextView
+        android:id="@+id/bt_registrate"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/alata"
+        android:padding="15dp"
+        android:text="Regístrate"
+        android:textSize="16sp" />
+
+</LinearLayout>
