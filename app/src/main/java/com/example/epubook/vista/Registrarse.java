@@ -1,5 +1,6 @@
 package com.example.epubook.vista;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,22 +13,34 @@ import android.widget.Toast;
 
 import com.example.epubook.R;
 import com.example.epubook.modelo.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Registrarse extends AppCompatActivity {
 
-    EditText regNombre, regEmail, regUser, regContr;
-    TextView regIniciar;
-    Button botonReg;
-    FirebaseDatabase database;
-    DatabaseReference reference;
+    private EditText regNombre, regEmail, regUser, regContr;
+    private TextView regIniciar;
+    private Button botonReg;
+
+    //Variables para Firebase Realtime Database.
+    private FirebaseDatabase database;
+    private DatabaseReference reference;
+
+    //Variables para Firebase Auth.
+    private FirebaseAuth auth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrarse);
 
+        //Asigno y relaciono cada variable con su campo del layout.
+        auth = FirebaseAuth.getInstance();
         regNombre = findViewById(R.id.reg_nombre);
         regEmail = findViewById(R.id.reg_email);
         regUser = findViewById(R.id.reg_user);
@@ -47,18 +60,33 @@ public class Registrarse extends AppCompatActivity {
                 String usuario = regUser.getText().toString();
                 String contrasenia = regContr.getText().toString();
 
-
+                //Controlo que los campos no estén vacíos.
                 if(nombre.isEmpty() || email.isEmpty() || usuario.isEmpty() || contrasenia.isEmpty() ){
                     Toast.makeText(Registrarse.this, "Debe rellenar todos los campos.", Toast.LENGTH_SHORT).show();
                 }else{
 
-                    Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia);
-                    reference.child(nombre).setValue(nuevoUsuario);
+                    //Firebase auth: guardo el usuario con su email y contrasenia.
+                    auth.createUserWithEmailAndPassword(email, contrasenia).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
 
-                    Toast.makeText(Registrarse.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Registrarse.this, InicioSesion.class);
-                    startActivity(intent);
-                    finish();
+                                //Realtime Database: guardo el usuario con sus datos en la bd realtime.
+                                Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia);
+                                reference.child(nombre).setValue(nuevoUsuario);
+
+                                //Mando mensaje de que se ha registrado y redirecciono al inicio de sesión.
+                                Toast.makeText(Registrarse.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Registrarse.this, InicioSesion.class);
+                                startActivity(intent);
+                                finish();
+
+                            }else{
+                                //En caso de que el registro falle.
+                                Toast.makeText(Registrarse.this, "El registro ha fallado." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
                 }
             }

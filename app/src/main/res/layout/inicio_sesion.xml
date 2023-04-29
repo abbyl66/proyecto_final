@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Iniciar sesión"
+                android:text="Inicia sesión"
                 android:textAlignment="center"
                 android:textColor="@color/pink"
                 android:textSize="36dp"
@@ -67,10 +67,22 @@
                 app:cornerRadius="20dp"></Button>
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ini_olvCtr"
+                android:text="¿Olvidaste la contraseña?"
+                android:textColor="@color/pink"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:textSize="15sp"
+                android:layout_marginTop="5dp"></TextView>
+
+            <TextView
                 android:id="@+id/btini_reg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textAlignment="center"
                 android:layout_marginTop="10dp"
                 android:padding="8dp"
                 android:text="¿No tienes una cuenta? Regístrate"

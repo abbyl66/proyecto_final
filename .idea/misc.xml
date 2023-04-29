@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/contenedor_blanco.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/contenedor_rosa.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_lock_reset_24.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_skip_next.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/marco_rosa.xml" value="0.2215" />
@@ -13,6 +16,7 @@
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_pantalla_inicio.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_registrarse.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_screens_intro.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/dialogo_contrasenia.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/inicio_sesion.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/pantalla_empezar.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/plantilla_info.xml" value="0.25" />
