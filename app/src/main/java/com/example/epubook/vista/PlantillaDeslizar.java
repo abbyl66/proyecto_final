@@ -114,7 +114,7 @@ public class PlantillaDeslizar extends AppCompatActivity {
             indPuntos.addView(puntos[i]);
         }
 
-        puntos[position].setTextColor(getResources().getColor(R.color.pink, getApplicationContext().getTheme()));
+        puntos[position].setTextColor(getResources().getColor(R.color.celeste, getApplicationContext().getTheme()));
     }
 
     private int getItem(int i){

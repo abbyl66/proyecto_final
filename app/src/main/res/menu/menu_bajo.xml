@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/mab_libros"
+        android:title="Libros"
+        android:icon="@drawable/ic_baseline_book_24"></item>
+
+    <item
+        android:title=""></item>
+
+    <item
+        android:id="@+id/mab_coleccion"
+        android:title="Colecciones"
+        android:icon="@drawable/ic_baseline_library_books_24"></item>
+
+</menu>

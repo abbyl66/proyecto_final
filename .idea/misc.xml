@@ -6,24 +6,52 @@
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/contenedor_blanco.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/contenedor_rosa.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/estilo_boton.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/fondo_dialogapp.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_cast_connected_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_email_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_library_add_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_library_books_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_lock_reset_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_person_pin_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_post_add_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_remove_24.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_skip_next.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/marco_rosa.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_intro_sliders.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_pantalla_inicio.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_pantalla_inicio.xml" value="0.2" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_registrarse.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_screens_intro.xml" value="0.25" />
-        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/dialogo_contrasenia.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/cabecera_izq.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/dialogo_aniadir.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/dialogo_contrasenia.xml" value="0.4" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/fondotop_menu.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/fragment_colecciones.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/fragment_libros.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/inicio_sesion.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/pantalla_empezar.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/plantilla_deslizar.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/plantilla_info.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/screen_slider.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/slider_screen.xml" value="0.264" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/menu/menu_bajo.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/menu/menu_despizq.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/menu/menu_estilo.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/menu/menu_inferior.xml" value="0.25" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_baseline_email_24.xml" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

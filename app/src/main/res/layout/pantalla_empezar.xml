@@ -25,7 +25,7 @@
         android:text="Empieza"
         android:textSize="30sp"
         android:textAlignment="center"
-        android:textColor="@color/pink"
+        android:textColor="@color/celeste"
         android:textStyle="bold"
         android:fontFamily="serif"/>
 
@@ -38,7 +38,7 @@
         android:textSize="20sp"
         android:layout_marginHorizontal="30dp"
         android:textAlignment="center"
-        android:textColor="@color/pink"
+        android:textColor="@color/celeste"
         android:fontFamily="serif"/>
 
     <Button

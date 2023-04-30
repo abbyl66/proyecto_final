@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Epubook" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/pink</item>
-        <item name="colorPrimaryVariant">@color/pink</item>
+        <item name="colorPrimary">@color/celeste</item>
+        <item name="colorPrimaryVariant">@color/celeste</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,5 +12,16 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="animacionDialogo">
+        <item name="android:windowEnterAnimation">@animator/slide_in</item>
+        <item name="android:windowExitAnimation">@animator/slide_out</item>
+    </style>
+
+    <style name="contrVisible" parent="@android:style/Widget.EditText">
+        <item name="android:inputType">textPassword</item>
+        <item name="passwordToggleEnabled">true</item>
+        <item name="passwordToggleDrawable">@drawable/ic_baseline_visible_contr</item>
     </style>
 </resources>

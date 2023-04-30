@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
-        android:elevation="20dp"
+        android:elevation="30dp"
         app:cardCornerRadius="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/marco_rosa"
+            android:background="@drawable/marco_celes"
             android:orientation="vertical"
             android:padding="24dp">
 
@@ -29,7 +29,8 @@
                 android:layout_height="wrap_content"
                 android:text="Registrarse"
                 android:textAlignment="center"
-                android:textColor="@color/pink"
+                android:textColor="@color/celeste"
+                android:fontFamily="@font/alata"
                 android:textSize="36dp"
                 android:textStyle="bold"></TextView>
 
@@ -37,49 +38,62 @@
                 android:id="@+id/reg_nombre"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:fontFamily="@font/alata"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/marco_rosa"
+                android:singleLine="true"
+                android:background="@drawable/marco_celes"
                 android:drawableLeft="@drawable/ic_baseline_person_24"
                 android:drawablePadding="8dp"
                 android:hint="Nombre"
+                android:textColorHint="@color/grey"
                 android:padding="8dp"
-                android:textColor="@color/black"></EditText>
+                android:textColor="#FF4D4D4D"></EditText>
 
             <EditText
                 android:id="@+id/reg_email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/marco_rosa"
+                android:singleLine="true"
+                android:fontFamily="@font/alata"
+                android:background="@drawable/marco_celes"
                 android:drawableLeft="@drawable/ic_baseline_email_24"
                 android:drawablePadding="8dp"
+                android:textColorHint="@color/grey"
                 android:hint="ejemplo@gmail.com"
                 android:padding="8dp"
-                android:textColor="@color/black"></EditText>
+                android:textColor="#FF4D4D4D"></EditText>
 
             <EditText
                 android:id="@+id/reg_user"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/marco_rosa"
+                android:singleLine="true"
+                android:background="@drawable/marco_celes"
+                android:fontFamily="@font/alata"
                 android:drawableLeft="@drawable/ic_baseline_person_pin_24"
                 android:drawablePadding="8dp"
+                android:textColorHint="@color/grey"
                 android:hint="Nombre de usuario"
                 android:padding="8dp"
-                android:textColor="@color/black"></EditText>
+                android:textColor="#FF4D4D4D"></EditText>
 
             <EditText
                 android:id="@+id/reg_ctrsenia"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/marco_rosa"
+                android:background="@drawable/marco_celes"
                 android:drawableLeft="@drawable/ic_baseline_lock_24"
                 android:drawablePadding="8dp"
+                android:inputType="textPassword"
+                android:textColorHint="@color/grey"
+                android:fontFamily="@font/alata"
+                android:singleLine="true"
                 android:hint="Contraseña"
                 android:padding="8dp"
-                android:textColor="@color/black"></EditText>
+                android:textColor="#FF4D4D4D"></EditText>
 
             <Button
                 android:id="@+id/btreg_regist"
@@ -87,6 +101,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
                 android:text="Registrarse"
+                android:fontFamily="@font/alata"
                 android:textSize="18sp"
                 app:cornerRadius="20dp"></Button>
 
@@ -96,9 +111,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/alata"
                 android:padding="8dp"
                 android:text="¿Ya tienes una cuenta? Inicia sesión"
-                android:textColor="@color/pink"
+                android:textColor="@color/celeste"
                 android:textSize="16sp"></TextView>
 
         </LinearLayout>
