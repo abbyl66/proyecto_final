@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.epubook.R;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class PantallaAjustes extends AppCompatActivity {
 
@@ -75,7 +76,12 @@ public class PantallaAjustes extends AppCompatActivity {
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PantallaAjustes.this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PantallaAjustes.this, "Has cerrarado sesión", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+
+                Intent intent = new Intent(PantallaAjustes.this, InicioSesion.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -91,9 +97,23 @@ public class PantallaAjustes extends AppCompatActivity {
         }
     }
 
-    public static void abrirActivity (Activity activity, Class activity2){
+    public void abrirActivity(Activity activity, Class activity2){
         Intent intent = new Intent(activity, activity2);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Intent intentP = getIntent();
+
+        String nombreUser = intentP.getStringExtra("nombre");
+        String emailUser = intentP.getStringExtra("email");
+        String userUser = intentP.getStringExtra("user");
+        String contrUser = intentP.getStringExtra("ctrsenia");
+
+        intent.putExtra("nombre", nombreUser);
+        intent.putExtra("email", emailUser);
+        intent.putExtra("user", userUser);
+        intent.putExtra("ctrsenia", contrUser);
+
+
         activity.startActivity(intent);
         activity.finish();
     }

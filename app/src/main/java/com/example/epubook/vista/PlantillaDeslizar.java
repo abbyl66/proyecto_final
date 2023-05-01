@@ -13,6 +13,10 @@ import android.widget.TextView;
 
 import com.example.epubook.R;
 import com.example.epubook.controlador.ControlDeslizar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class PlantillaDeslizar extends AppCompatActivity {
 
@@ -20,6 +24,7 @@ public class PlantillaDeslizar extends AppCompatActivity {
     LinearLayout indPuntos;
     ControlDeslizar ctrlDeslizar;
     Button botonAtras, botonOmitir, botonSiguiente;
+    InicioSesion inicioSesion = new InicioSesion();
     TextView[] puntos;
 
     ViewPager.OnPageChangeListener viewPagerList = new ViewPager.OnPageChangeListener() {
@@ -58,6 +63,16 @@ public class PlantillaDeslizar extends AppCompatActivity {
         botonAtras = findViewById(R.id.bt_atras);
         botonSiguiente = findViewById(R.id.bt_siguiente);
         botonOmitir = findViewById(R.id.bt_omitir);
+
+        //Mantengo la sesión iniciada.
+        FirebaseAuth usuario = FirebaseAuth.getInstance();
+        if(usuario.getCurrentUser()!=null){
+
+            Intent intent = new Intent(PlantillaDeslizar.this, PantallaInicio.class);
+            startActivity(intent);
+            finish();
+
+        }
 
         botonAtras.setOnClickListener(new View.OnClickListener() {
             @Override

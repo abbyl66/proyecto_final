@@ -32,6 +32,14 @@ import com.example.epubook.fragments.LibrosFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class PantallaInicio extends AppCompatActivity{
 
@@ -57,6 +65,7 @@ public class PantallaInicio extends AppCompatActivity{
         perfil = findViewById(R.id.perfil);
         ajustes = findViewById(R.id.ajustes);
         cerrarSesion = findViewById(R.id.cerrarSesion);
+
 
         //Al pulsar en menú, inicio, perfil, ajustes o cerrar sesión, se muestran sus pantallas o funciones.
         menu.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +99,12 @@ public class PantallaInicio extends AppCompatActivity{
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PantallaInicio.this, "Cerrar sesión", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PantallaInicio.this, "Has cerrarado sesión", Toast.LENGTH_SHORT).show();
+                FirebaseAuth.getInstance().signOut();
+
+                Intent intent = new Intent(PantallaInicio.this, InicioSesion.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -134,9 +148,24 @@ public class PantallaInicio extends AppCompatActivity{
     }
 
     //Método para abrir y mostrar un activity, pantalla.
-    public static void abrirActivity (Activity activity, Class activity2){
+    public void abrirActivity(Activity activity, Class activity2){
         Intent intent = new Intent(activity, activity2);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        //Obtengo la inforación del usuario pasado por el intent anterior (Pantalla de inicio de sesión)
+        //Para después pasarlo a la pantalla de perfil.
+        Intent intentP = getIntent();
+
+        String nombreUser = intentP.getStringExtra("nombre");
+        String emailUser = intentP.getStringExtra("email");
+        String userUser = intentP.getStringExtra("user");
+        String contrUser = intentP.getStringExtra("ctrsenia");
+
+        intent.putExtra("nombre", nombreUser);
+        intent.putExtra("email", emailUser);
+        intent.putExtra("user", userUser);
+        intent.putExtra("ctrsenia", contrUser);
+
         activity.startActivity(intent);
         activity.finish();
     }

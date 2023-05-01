@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,6 @@ import java.util.Objects;
 public class InicioSesion extends AppCompatActivity {
 
     private FirebaseAuth auth;
-
     private EditText iniUsuario, iniContr;
     private Button botonIni;
     private TextView iniRegistro;
@@ -50,6 +50,7 @@ public class InicioSesion extends AppCompatActivity {
         setContentView(R.layout.inicio_sesion);
 
         auth = FirebaseAuth.getInstance();
+
         iniUsuario = findViewById(R.id.ini_user);
         iniContr = findViewById(R.id.ini_ctrsenia);
         botonIni = findViewById(R.id.btini_iniciar);
@@ -190,11 +191,27 @@ public class InicioSesion extends AppCompatActivity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
 
+                                String nombreUsuario = userSnapshot.child("nombre").getValue(String.class);
+                                String userUsuario = userSnapshot.child("user").getValue(String.class);
+
+                                //Guardo los datos en la bd.
+                                reference.child(vUsuario).child("nombre").setValue(nombreUsuario);
+                                reference.child(vUsuario).child("email").setValue(emailUsuario);
+                                reference.child(vUsuario).child("user").setValue(userUsuario);
+                                reference.child(vUsuario).child("ctrsenia").setValue(vContrasenia);
+
                                 iniUsuario.setError(null);
                                 iniContr.setError(null);
 
                                 Toast.makeText(InicioSesion.this, "Has iniciado sesión", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(InicioSesion.this, PantallaInicio.class);
+
+                                //Se lo pasaré a la pantalla de inicio para la información de perfil.
+                                intent.putExtra("nombre", nombreUsuario);
+                                intent.putExtra("email", emailUsuario);
+                                intent.putExtra("user", userUsuario);
+                                intent.putExtra("ctrsenia", vContrasenia);
+
                                 startActivity(intent);
                                 finish();
                             }
