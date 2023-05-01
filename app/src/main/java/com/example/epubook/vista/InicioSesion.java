@@ -42,7 +42,7 @@ public class InicioSesion extends AppCompatActivity {
     private TextView iniRegistro;
     private TextView olv_Contrasenia;
 
-    private ControlUsuario controlUsuario = new ControlUsuario();
+    private ControlUsuario controlUsuario = new ControlUsuario(InicioSesion.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +63,11 @@ public class InicioSesion extends AppCompatActivity {
                 if(!comprobarUsuario() | !comprobarContr()){
 
                 }else{
+                    String usuario = iniUsuario.getText().toString().trim();
+                    String contrasenia = iniContr.getText().toString().trim();
 
                     validarUsuario();
+
                 }
             }
         });
@@ -196,7 +199,7 @@ public class InicioSesion extends AppCompatActivity {
                                 finish();
                             }
 
-                        //En caso de fallo.
+                            //En caso de fallo.
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
@@ -205,7 +208,7 @@ public class InicioSesion extends AppCompatActivity {
                             }
                         });
                     }
-                //Si el usuario no existe, mando mensaje de error.
+                    //Si el usuario no existe, mando mensaje de error.
                 }else{
                     iniUsuario.setError("Usuario no existe.");
                     iniUsuario.requestFocus();
@@ -220,4 +223,5 @@ public class InicioSesion extends AppCompatActivity {
             }
         });
     }
+
 }

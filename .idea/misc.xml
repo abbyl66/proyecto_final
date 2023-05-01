@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/borde_celes.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/contenedor_blanco.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/contenedor_rosa.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/estilo_boton.xml" value="0.2215" />
@@ -26,9 +27,12 @@
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_baseline_skip_next.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/marco_rosa.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/pulsar_textview.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_intro_sliders.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_pantalla_ajustes.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_pantalla_inicio.xml" value="0.2" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_pantalla_perfil.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_registrarse.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_screens_intro.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/cabecera_izq.xml" value="0.25" />
@@ -38,11 +42,13 @@
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/fragment_colecciones.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/fragment_libros.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/inicio_sesion.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/nav_drawer.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/pantalla_empezar.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/plantilla_deslizar.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/plantilla_info.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/screen_slider.xml" value="0.1" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/slider_screen.xml" value="0.264" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/toolbar.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/menu/menu_bajo.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/menu/menu_despizq.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/menu/menu_estilo.xml" value="0.25" />

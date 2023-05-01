@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Epubook">
         <activity
+            android:name=".vista.PantallaAjustes"
+            android:exported="false" />
+        <activity
+            android:name=".vista.PantallaPerfil"
+            android:exported="false" />
+        <activity
             android:name=".vista.PantallaInicio"
             android:exported="false" />
         <activity
@@ -29,7 +35,7 @@
         </activity>
         <activity
             android:name=".vista.InicioSesion"
-            android:exported="false"></activity>
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"
