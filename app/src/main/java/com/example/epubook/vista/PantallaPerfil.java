@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,8 +37,10 @@ public class PantallaPerfil extends AppCompatActivity {
     private LinearLayout inicio, perfil, ajustes, cerrarSesion;
 
     //Variables que usaré para mostrar la información del usuario.
-    TextView nombrePerfil, emailPerfil, userPerfil, contrPerfil;
-    TextView nombreTitulo;
+    private TextView nombrePerfil, emailPerfil, userPerfil, contrPerfil;
+    private TextView nombreTitulo;
+
+    private Button editarPerfil;
 
     ControlUsuario controlUsuario = new ControlUsuario(PantallaPerfil.this);
 
@@ -58,6 +61,8 @@ public class PantallaPerfil extends AppCompatActivity {
         userPerfil = findViewById(R.id.userPerfil);
         contrPerfil = findViewById(R.id.contrPerfil);
         nombreTitulo = findViewById(R.id.nombreTitP);
+
+        editarPerfil = findViewById(R.id.bt_editarPerfil);
 
         infoUsuario();
 
@@ -101,13 +106,24 @@ public class PantallaPerfil extends AppCompatActivity {
             }
         });
 
+        editarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaPerfil.this, EditarPerfil.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     //Método para obtener información del usuario que mostraré en la pantalla perfil.
     public void infoUsuario(){
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
+
         if(user != null){
+
             String uid = user.getUid();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("users");
@@ -121,13 +137,11 @@ public class PantallaPerfil extends AppCompatActivity {
                     String nombre = usuario.getNombre();
                     String user = usuario.getUser();
                     String email = usuario.getEmail();
-                    String ctrsenia = usuario.getCtrsenia();
 
                     nombreTitulo.setText("Información de " +nombre);
                     nombrePerfil.setText(nombre);
                     userPerfil.setText(user);
                     emailPerfil.setText(email);
-                    contrPerfil.setText(ctrsenia);
 
                 }
 
@@ -141,6 +155,7 @@ public class PantallaPerfil extends AppCompatActivity {
 
     }
 
+    //Métodos para abrir y cerrar fragment izquierdo.
     public static void openDrawer(DrawerLayout drawerLayout){
         drawerLayout.openDrawer(GravityCompat.START);
     }

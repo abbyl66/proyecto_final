@@ -7,7 +7,20 @@
     android:layout_gravity="center"
     android:orientation="vertical"
     android:background="@drawable/descarga"
-    tools:context=".vista.Registrarse">
+    tools:context=".vista.EditarPerfil">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btedit_cancelar"
+        android:layout_gravity="left"
+        android:text="Cancelar"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/alata"
+        android:textSize="15sp"
+        app:cornerRadius="20dp"
+        ></Button>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -27,7 +40,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Registrarse"
+                android:text="Editar Perfil"
                 android:textAlignment="center"
                 android:textColor="@color/celeste"
                 android:fontFamily="@font/alata"
@@ -35,53 +48,54 @@
                 android:textStyle="bold"></TextView>
 
             <EditText
-                android:id="@+id/reg_nombre"
+                android:id="@+id/editNombre"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:fontFamily="@font/alata"
+                android:inputType="textCapSentences"
+                android:hint="Nombre"
                 android:layout_marginTop="40dp"
                 android:singleLine="true"
-                android:inputType="textCapSentences"
                 android:background="@drawable/marco_celes"
                 android:drawableLeft="@drawable/ic_baseline_person_24"
                 android:drawablePadding="8dp"
-                android:hint="Nombre"
                 android:textColorHint="@color/grey"
                 android:padding="8dp"
                 android:textColor="#FF4D4D4D"></EditText>
 
             <EditText
-                android:id="@+id/reg_email"
+                android:id="@+id/editEmail"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:singleLine="true"
                 android:fontFamily="@font/alata"
+                android:inputType="textEmailAddress"
+                android:hint="Email"
                 android:background="@drawable/marco_celes"
                 android:drawableLeft="@drawable/ic_baseline_email_24"
                 android:drawablePadding="8dp"
                 android:textColorHint="@color/grey"
-                android:hint="ejemplo@gmail.com"
                 android:padding="8dp"
                 android:textColor="#FF4D4D4D"></EditText>
 
             <EditText
-                android:id="@+id/reg_user"
+                android:id="@+id/editUser"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
                 android:singleLine="true"
+                android:hint="Usuario"
                 android:background="@drawable/marco_celes"
                 android:fontFamily="@font/alata"
                 android:drawableLeft="@drawable/ic_baseline_person_pin_24"
                 android:drawablePadding="8dp"
                 android:textColorHint="@color/grey"
-                android:hint="Nombre de usuario"
                 android:padding="8dp"
                 android:textColor="#FF4D4D4D"></EditText>
 
             <EditText
-                android:id="@+id/reg_ctrsenia"
+                android:id="@+id/editCtrsenia"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
@@ -92,32 +106,20 @@
                 android:textColorHint="@color/grey"
                 android:fontFamily="@font/alata"
                 android:singleLine="true"
-                android:hint="Contraseña"
+                android:hint="Confirmar con contraseña"
                 android:padding="8dp"
                 android:textColor="#FF4D4D4D"></EditText>
 
             <Button
-                android:id="@+id/btreg_regist"
+                android:id="@+id/bteditConfirmar"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:text="Registrarse"
+                android:text="Guardar cambios"
                 android:fontFamily="@font/alata"
                 android:textSize="18sp"
                 app:cornerRadius="20dp"></Button>
 
-            <TextView
-                android:id="@+id/btreg_iniciar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:textAlignment="center"
-                android:fontFamily="@font/alata"
-                android:padding="8dp"
-                android:text="¿Ya tienes una cuenta? Inicia sesión"
-                android:textColor="@color/celeste"
-                android:textSize="16sp"></TextView>
 
         </LinearLayout>
 

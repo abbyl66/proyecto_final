@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -54,49 +57,13 @@ public class Registrarse extends AppCompatActivity {
         botonReg = findViewById(R.id.btreg_regist);
         regIniciar = findViewById(R.id.btreg_iniciar);
 
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("users");
 
         botonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                database = FirebaseDatabase.getInstance();
-                reference = database.getReference("users");
-
-                String nombre = regNombre.getText().toString();
-                String email = regEmail.getText().toString();
-                String usuario = regUser.getText().toString();
-                String contrasenia = regContr.getText().toString();
-
-                //Controlo que los campos no estén vacíos.
-                if(nombre.isEmpty() || email.isEmpty() || usuario.isEmpty() || contrasenia.isEmpty() ){
-                    Toast.makeText(Registrarse.this, "Debe rellenar todos los campos.", Toast.LENGTH_SHORT).show();
-                }else{
-                    //Firebase auth: guardo el usuario con su email y contrasenia.
-                    auth.createUserWithEmailAndPassword(email, contrasenia).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()){
-                                //Asigno a nuevo usuario un id: user.getUid().
-                                FirebaseUser user = auth.getCurrentUser();
-
-                                //Realtime Database: guardo el usuario con sus datos en la bd realtime.
-                                Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia);
-                                reference.child(user.getUid()).setValue(nuevoUsuario);
-
-                                //Mando mensaje de que se ha registrado y redirecciono al inicio de sesión.
-                                Toast.makeText(Registrarse.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Registrarse.this, InicioSesion.class);
-                                startActivity(intent);
-                                finish();
-
-                            }else{
-                                //En caso de que el registro falle.
-                                Toast.makeText(Registrarse.this, "El registro ha fallado." + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                }
+                comprobarUsuario();
             }
         });
 
@@ -109,5 +76,75 @@ public class Registrarse extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void comprobarUsuario(){
+
+        reference.orderByChild("user").equalTo(regUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if(snapshot.exists()){
+                    Toast.makeText(Registrarse.this, "El usuario ya está registrado.", Toast.LENGTH_SHORT).show();
+                }else{
+                    registarUsuario();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    public void registarUsuario(){
+        String nombre = regNombre.getText().toString();
+        String email = regEmail.getText().toString();
+        String usuario = regUser.getText().toString();
+        String contrasenia = regContr.getText().toString();
+
+        //Controlo que los campos no estén vacíos.
+        if(nombre.isEmpty() || email.isEmpty() || usuario.isEmpty() || contrasenia.isEmpty() ){
+            Toast.makeText(Registrarse.this, "Debe rellenar todos los campos.", Toast.LENGTH_SHORT).show();
+        }else{
+            //Firebase auth: guardo el usuario con su email y contrasenia.
+            auth.createUserWithEmailAndPassword(email, contrasenia).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        //Asigno a nuevo usuario un id: user.getUid().
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        //Realtime Database: guardo el usuario con sus datos en la bd realtime.
+                        Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia);
+                        reference.child(user.getUid()).setValue(nuevoUsuario);
+
+                        //Mando mensaje de que se ha registrado y redirecciono al inicio de sesión.
+                        Toast.makeText(Registrarse.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Registrarse.this, PantallaInicio.class);
+                        startActivity(intent);
+                        finish();
+
+                    }else{
+                        //Control de errores. Editando mensajes.
+
+                        switch (task.getException().getMessage()){
+                            case "The email address is badly formatted.":
+                                Toast.makeText(Registrarse.this, "Formato de correo incorrecto.", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "The given password is invalid. [ Password should be at least 6 characters ]":
+                                Toast.makeText(Registrarse.this, "La contraseña debe tener al menos 6 caracteres.", Toast.LENGTH_SHORT).show();
+                                break;
+                            case "The email address is already in use by another account.":
+                                Toast.makeText(Registrarse.this, "El correo electrónico ya está en uso.", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+
+                    }
+                }
+            });
+
+        }
     }
 }

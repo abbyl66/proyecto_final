@@ -36,13 +36,18 @@ public class PlantillaDeslizar extends AppCompatActivity {
         public void onPageSelected(int position) {
             setDotIndicator(position);
 
+            //Control de pantalla deslizar.
+
+            //Si la posición es mayor a cero, será posible mostrar el botón atrás.
             if (position > 0){
                 botonAtras.setVisibility(View.VISIBLE);
             }else{
                 botonAtras.setVisibility(View.INVISIBLE);
             }
+            //Si la posición concluye en 2, termina el contenido y se muestra el boton fin.
             if (position == 2){
                 botonSiguiente.setText("Fin");
+            //De lo contrario, si no ha llegado al 2 puede seguir dando a siguiente.
             }else{
                 botonSiguiente.setText("Siguiente");
             }
@@ -73,9 +78,11 @@ public class PlantillaDeslizar extends AppCompatActivity {
 
         }
 
+
         botonAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Al contenido obtenido se pide el anterior -1.
                 if(getItem(0)>0){
                     deszContenido.setCurrentItem(getItem(-1), true);
                 }
@@ -85,8 +92,11 @@ public class PlantillaDeslizar extends AppCompatActivity {
         botonSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Si aún queda contenido que mostrar.
                 if(getItem(0)<2) {
                     deszContenido.setCurrentItem(getItem(1), true);
+
+                //Si termina el contenido de la intro, redigire a la pantalla de empezar.
                 }else{
                     Intent intent = new Intent(PlantillaDeslizar.this, PantallaEmpezar.class);
                     startActivity(intent);
@@ -95,6 +105,7 @@ public class PlantillaDeslizar extends AppCompatActivity {
             }
         });
 
+        //Redirige a la pantalla de inicio de sesión.
         botonOmitir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -17,6 +17,7 @@ public class ControlDeslizar extends PagerAdapter {
 
     Context context;
 
+    //Imágenes, títulos y descripciones que usaré para cada pantalla de intro.
     int imagenes[] = {R.drawable.booksintro, R.drawable.savebooks, R.drawable.booksintro};
     int titulos[] = {R.string.slider1, R.string.slider2, R.string.slider3};
     int descripciones[] = {R.string.desc1, R.string.desc2, R.string.desc3};
@@ -36,6 +37,7 @@ public class ControlDeslizar extends PagerAdapter {
         return view == (LinearLayout) object;
     }
 
+    //Método que da formato a las distintas pantallas que se generarán las variables antes recogidas.
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position){
