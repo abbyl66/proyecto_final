@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,8 @@ public class PantallaAjustes extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ImageView menu;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion;
+
+    ControlUsuario controlUsuario = new ControlUsuario(PantallaAjustes.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +58,14 @@ public class PantallaAjustes extends AppCompatActivity {
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirActivity(PantallaAjustes.this, PantallaInicio.class);
+                controlUsuario.abrirActivity(PantallaAjustes.this, PantallaInicio.class);
             }
         });
 
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirActivity(PantallaAjustes.this, PantallaPerfil.class);
+                controlUsuario.abrirActivity(PantallaAjustes.this, PantallaPerfil.class);
             }
         });
 
@@ -95,27 +98,6 @@ public class PantallaAjustes extends AppCompatActivity {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }
-    }
-
-    public void abrirActivity(Activity activity, Class activity2){
-        Intent intent = new Intent(activity, activity2);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        Intent intentP = getIntent();
-
-        String nombreUser = intentP.getStringExtra("nombre");
-        String emailUser = intentP.getStringExtra("email");
-        String userUser = intentP.getStringExtra("user");
-        String contrUser = intentP.getStringExtra("ctrsenia");
-
-        intent.putExtra("nombre", nombreUser);
-        intent.putExtra("email", emailUser);
-        intent.putExtra("user", userUser);
-        intent.putExtra("ctrsenia", contrUser);
-
-
-        activity.startActivity(intent);
-        activity.finish();
     }
 
     @Override

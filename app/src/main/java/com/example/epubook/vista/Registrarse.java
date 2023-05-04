@@ -14,11 +14,17 @@ import android.widget.Toast;
 import com.example.epubook.R;
 import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Registrarse extends AppCompatActivity {
 
@@ -48,6 +54,7 @@ public class Registrarse extends AppCompatActivity {
         botonReg = findViewById(R.id.btreg_regist);
         regIniciar = findViewById(R.id.btreg_iniciar);
 
+
         botonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,16 +71,17 @@ public class Registrarse extends AppCompatActivity {
                 if(nombre.isEmpty() || email.isEmpty() || usuario.isEmpty() || contrasenia.isEmpty() ){
                     Toast.makeText(Registrarse.this, "Debe rellenar todos los campos.", Toast.LENGTH_SHORT).show();
                 }else{
-
                     //Firebase auth: guardo el usuario con su email y contrasenia.
                     auth.createUserWithEmailAndPassword(email, contrasenia).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
+                                //Asigno a nuevo usuario un id: user.getUid().
+                                FirebaseUser user = auth.getCurrentUser();
 
                                 //Realtime Database: guardo el usuario con sus datos en la bd realtime.
                                 Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia);
-                                reference.child(nombre).setValue(nuevoUsuario);
+                                reference.child(user.getUid()).setValue(nuevoUsuario);
 
                                 //Mando mensaje de que se ha registrado y redirecciono al inicio de sesión.
                                 Toast.makeText(Registrarse.this, "Registro exitoso", Toast.LENGTH_SHORT).show();

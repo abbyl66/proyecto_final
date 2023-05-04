@@ -12,7 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
@@ -24,11 +26,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
+import com.example.epubook.modelo.Usuario;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -41,6 +46,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.SQLOutput;
+
 public class PantallaInicio extends AppCompatActivity{
 
     private FloatingActionButton botonAniadir;
@@ -48,6 +55,7 @@ public class PantallaInicio extends AppCompatActivity{
     private ImageView menu;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion;
     private BottomNavigationView bottomNavigationView;
+    ControlUsuario controlUsuario = new ControlUsuario(PantallaInicio.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +93,19 @@ public class PantallaInicio extends AppCompatActivity{
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirActivity(PantallaInicio.this, PantallaPerfil.class);
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseUser user = auth.getCurrentUser();
+                if(user != null){
+                    controlUsuario.abrirActivity(PantallaInicio.this, PantallaPerfil.class);
+                }
+
             }
         });
 
         ajustes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirActivity(PantallaInicio.this, PantallaAjustes.class);
+                controlUsuario.abrirActivity(PantallaInicio.this, PantallaAjustes.class);
             }
         });
 
@@ -145,29 +158,6 @@ public class PantallaInicio extends AppCompatActivity{
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }
-    }
-
-    //Método para abrir y mostrar un activity, pantalla.
-    public void abrirActivity(Activity activity, Class activity2){
-        Intent intent = new Intent(activity, activity2);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        //Obtengo la inforación del usuario pasado por el intent anterior (Pantalla de inicio de sesión)
-        //Para después pasarlo a la pantalla de perfil.
-        Intent intentP = getIntent();
-
-        String nombreUser = intentP.getStringExtra("nombre");
-        String emailUser = intentP.getStringExtra("email");
-        String userUser = intentP.getStringExtra("user");
-        String contrUser = intentP.getStringExtra("ctrsenia");
-
-        intent.putExtra("nombre", nombreUser);
-        intent.putExtra("email", emailUser);
-        intent.putExtra("user", userUser);
-        intent.putExtra("ctrsenia", contrUser);
-
-        activity.startActivity(intent);
-        activity.finish();
     }
 
     @Override

@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,8 +44,6 @@ public class InicioSesion extends AppCompatActivity {
     private TextView iniRegistro;
     private TextView olv_Contrasenia;
 
-    private ControlUsuario controlUsuario = new ControlUsuario(InicioSesion.this);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +57,7 @@ public class InicioSesion extends AppCompatActivity {
         iniRegistro = findViewById(R.id.btini_reg);
         olv_Contrasenia = findViewById(R.id.ini_olvCtr);
 
+
         //Al pulsar botón de iniciar sesión.
         botonIni.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,8 +65,6 @@ public class InicioSesion extends AppCompatActivity {
                 if(!comprobarUsuario() | !comprobarContr()){
 
                 }else{
-                    String usuario = iniUsuario.getText().toString().trim();
-                    String contrasenia = iniContr.getText().toString().trim();
 
                     validarUsuario();
 
@@ -193,12 +192,6 @@ public class InicioSesion extends AppCompatActivity {
 
                                 String nombreUsuario = userSnapshot.child("nombre").getValue(String.class);
                                 String userUsuario = userSnapshot.child("user").getValue(String.class);
-
-                                //Guardo los datos en la bd.
-                                reference.child(vUsuario).child("nombre").setValue(nombreUsuario);
-                                reference.child(vUsuario).child("email").setValue(emailUsuario);
-                                reference.child(vUsuario).child("user").setValue(userUsuario);
-                                reference.child(vUsuario).child("ctrsenia").setValue(vContrasenia);
 
                                 iniUsuario.setError(null);
                                 iniContr.setError(null);

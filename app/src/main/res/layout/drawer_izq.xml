@@ -60,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/celeste"
+            android:id="@+id/prueba"
             android:text="Perfil"
             android:textSize="20sp"
             android:drawableLeft="@drawable/ic_baseline_person_outline_24"

@@ -24,7 +24,6 @@ public class PlantillaDeslizar extends AppCompatActivity {
     LinearLayout indPuntos;
     ControlDeslizar ctrlDeslizar;
     Button botonAtras, botonOmitir, botonSiguiente;
-    InicioSesion inicioSesion = new InicioSesion();
     TextView[] puntos;
 
     ViewPager.OnPageChangeListener viewPagerList = new ViewPager.OnPageChangeListener() {
@@ -64,7 +63,7 @@ public class PlantillaDeslizar extends AppCompatActivity {
         botonSiguiente = findViewById(R.id.bt_siguiente);
         botonOmitir = findViewById(R.id.bt_omitir);
 
-        //Mantengo la sesión iniciada.
+        //Compruebo si la sesión está iniciada para redirigir a la pantalla inicio.
         FirebaseAuth usuario = FirebaseAuth.getInstance();
         if(usuario.getCurrentUser()!=null){
 

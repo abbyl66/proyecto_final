@@ -1,5 +1,6 @@
 package com.example.epubook.vista;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -17,7 +18,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlUsuario;
+import com.example.epubook.modelo.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class PantallaPerfil extends AppCompatActivity {
 
@@ -29,6 +38,8 @@ public class PantallaPerfil extends AppCompatActivity {
     //Variables que usaré para mostrar la información del usuario.
     TextView nombrePerfil, emailPerfil, userPerfil, contrPerfil;
     TextView nombreTitulo;
+
+    ControlUsuario controlUsuario = new ControlUsuario(PantallaPerfil.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +71,7 @@ public class PantallaPerfil extends AppCompatActivity {
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirActivity(PantallaPerfil.this, PantallaInicio.class);
+                controlUsuario.abrirActivity(PantallaPerfil.this, PantallaInicio.class);
             }
         });
 
@@ -74,7 +85,7 @@ public class PantallaPerfil extends AppCompatActivity {
         ajustes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                abrirActivity(PantallaPerfil.this, PantallaAjustes.class);
+                controlUsuario.abrirActivity(PantallaPerfil.this, PantallaAjustes.class);
             }
         });
 
@@ -92,20 +103,42 @@ public class PantallaPerfil extends AppCompatActivity {
 
     }
 
-    //Obtengo informacón pasada desde inicio de sesión.
+    //Método para obtener información del usuario que mostraré en la pantalla perfil.
     public void infoUsuario(){
-        Intent intent = getIntent();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        if(user != null){
+            String uid = user.getUid();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("users");
+            DatabaseReference databaseReference = reference.child(uid);
 
-        String nombreUser = intent.getStringExtra("nombre");
-        String emailUser = intent.getStringExtra("email");
-        String userUser = intent.getStringExtra("user");
-        String contrUser = intent.getStringExtra("ctrsenia");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Usuario usuario = snapshot.getValue(Usuario.class);
 
-        nombreTitulo.setText(nombreUser);
-        nombrePerfil.setText(nombreUser);
-        emailPerfil.setText(emailUser);
-        userPerfil.setText(userUser);
-        contrPerfil.setText(contrUser);
+                    String nombre = usuario.getNombre();
+                    String user = usuario.getUser();
+                    String email = usuario.getEmail();
+                    String ctrsenia = usuario.getCtrsenia();
+
+                    nombreTitulo.setText("Información de " +nombre);
+                    nombrePerfil.setText(nombre);
+                    userPerfil.setText(user);
+                    emailPerfil.setText(email);
+                    contrPerfil.setText(ctrsenia);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+
     }
 
     public static void openDrawer(DrawerLayout drawerLayout){
@@ -118,26 +151,6 @@ public class PantallaPerfil extends AppCompatActivity {
         }
     }
 
-    public void abrirActivity(Activity activity, Class activity2){
-        Intent intent = new Intent(activity, activity2);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        Intent intentP = getIntent();
-
-        String nombreUser = intentP.getStringExtra("nombre");
-        String emailUser = intentP.getStringExtra("email");
-        String userUser = intentP.getStringExtra("user");
-        String contrUser = intentP.getStringExtra("ctrsenia");
-
-        intent.putExtra("nombre", nombreUser);
-        intent.putExtra("email", emailUser);
-        intent.putExtra("user", userUser);
-        intent.putExtra("ctrsenia", contrUser);
-
-
-        activity.startActivity(intent);
-        activity.finish();
-    }
 
     @Override
     protected void onPause() {
