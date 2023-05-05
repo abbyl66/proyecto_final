@@ -2,7 +2,7 @@ package com.example.epubook.modelo;
 
 public class Usuario {
 
-    String nombre, email, user, ctrsenia;
+    private String nombre, email, user, ctrsenia;
 
     public Usuario() {
     }

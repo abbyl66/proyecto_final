@@ -1,6 +1,7 @@
 package com.example.epubook.vista;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -18,7 +19,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +36,7 @@ import com.example.epubook.R;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
+import com.example.epubook.modelo.ArchivoEpub;
 import com.example.epubook.modelo.Usuario;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -46,6 +50,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.sql.SQLOutput;
 
 public class PantallaInicio extends AppCompatActivity{
@@ -55,6 +60,7 @@ public class PantallaInicio extends AppCompatActivity{
     private ImageView menu;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion;
     private BottomNavigationView bottomNavigationView;
+
     ControlUsuario controlUsuario = new ControlUsuario(PantallaInicio.this);
 
     @Override
@@ -190,7 +196,8 @@ public class PantallaInicio extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                Toast.makeText(PantallaInicio.this, "Añadir libro", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PantallaInicio.this, ArchivosEpub.class);
+                startActivity(intent);
 
             }
         });
@@ -216,5 +223,6 @@ public class PantallaInicio extends AppCompatActivity{
         dialog.getWindow().getAttributes().windowAnimations = R.style.animacionDialogo;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
+
 
 }
