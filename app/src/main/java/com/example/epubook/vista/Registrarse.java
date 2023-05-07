@@ -1,6 +1,5 @@
 package com.example.epubook.vista;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -24,10 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class Registrarse extends AppCompatActivity {
 
@@ -82,16 +78,16 @@ public class Registrarse extends AppCompatActivity {
 
         reference.orderByChild("user").equalTo(regUser.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+            public void onDataChange(DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     Toast.makeText(Registrarse.this, "El usuario ya está registrado.", Toast.LENGTH_SHORT).show();
                 }else{
                     registarUsuario();
                 }
             }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError error) {
 
             }
         });
@@ -111,7 +107,7 @@ public class Registrarse extends AppCompatActivity {
             //Firebase auth: guardo el usuario con su email y contrasenia.
             auth.createUserWithEmailAndPassword(email, contrasenia).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+                public void onComplete(Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         //Asigno a nuevo usuario un id: user.getUid().
                         FirebaseUser user = auth.getCurrentUser();
@@ -120,11 +116,16 @@ public class Registrarse extends AppCompatActivity {
                         Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia);
                         reference.child(user.getUid()).setValue(nuevoUsuario);
 
-                        //Mando mensaje de que se ha registrado y redirecciono al inicio de sesión.
-                        Toast.makeText(Registrarse.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Registrarse.this, PantallaInicio.class);
-                        startActivity(intent);
-                        finish();
+                        //Mando mensaje de que se ha registrado y enviado correo de verificación de email.
+                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(Task<Void> task) {
+                                Toast.makeText(Registrarse.this, "Registro exitoso. Verifica tu email.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Registrarse.this, PantallaInicio.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
 
                     }else{
                         //Control de errores. Editando mensajes.

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/descarga"
+    tools:context=".vista.CambiarEmail">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btedit_cancelar"
+        android:layout_gravity="left"
+        android:text="Cancelar"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/alata"
+        android:textSize="15sp"
+        app:cornerRadius="20dp"
+        ></Button>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:elevation="30dp"
+        app:cardCornerRadius="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/marco_celes"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Editar Email"
+                android:textAlignment="center"
+                android:textColor="@color/celeste"
+                android:fontFamily="@font/alata"
+                android:textSize="36dp"
+                android:textStyle="bold"></TextView>
+
+            <EditText
+                android:id="@+id/editEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:singleLine="true"
+                android:fontFamily="@font/alata"
+                android:inputType="textEmailAddress"
+                android:hint="Email"
+                android:background="@drawable/marco_celes"
+                android:drawableLeft="@drawable/ic_baseline_email_24"
+                android:drawablePadding="8dp"
+                android:textColorHint="@color/grey"
+                android:padding="8dp"
+                android:textColor="#FF4D4D4D"></EditText>
+            <EditText
+                android:id="@+id/confirEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:singleLine="true"
+                android:fontFamily="@font/alata"
+                android:inputType="textEmailAddress"
+                android:hint="Confirmar con contraseña"
+                android:background="@drawable/marco_celes"
+                android:drawableLeft="@drawable/ic_baseline_lock_24"
+                android:drawablePadding="8dp"
+                android:textColorHint="@color/grey"
+                android:padding="8dp"
+                android:textColor="#FF4D4D4D"></EditText>
+
+
+            <Button
+                android:id="@+id/bteditEmail"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="30dp"
+                android:text="Guardar cambios"
+                android:fontFamily="@font/alata"
+                android:textSize="18sp"
+                app:cornerRadius="20dp"></Button>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/labelVerificado"
+                android:text="Cuando verifiques tu correo, haz click en el siguiente botón:"
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:visibility="gone"
+                android:textColor="@color/celeste"
+                android:textAlignment="center"
+                android:fontFamily="@font/alata"
+                ></TextView>
+
+            <Button
+                android:id="@+id/btverificado"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="10dp"
+                android:text="Verificado"
+                android:visibility="gone"
+                android:fontFamily="@font/alata"
+                android:textSize="18sp"
+                app:cornerRadius="20dp"></Button>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

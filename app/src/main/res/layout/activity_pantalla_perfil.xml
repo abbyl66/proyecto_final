@@ -49,7 +49,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -63,7 +63,7 @@
 
                         <TextView
                             android:layout_width="120dp"
-                            android:layout_height="60dp"
+                            android:layout_height="30dp"
                             android:id="@+id/librosPerfil"
                             android:text="0"
                             android:gravity="center"
@@ -94,7 +94,7 @@
 
                         <TextView
                             android:layout_width="120dp"
-                            android:layout_height="60dp"
+                            android:layout_height="30dp"
                             android:id="@+id/coleccPerfil"
                             android:text="0"
                             android:gravity="center"
@@ -123,7 +123,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -146,6 +146,15 @@
                         android:textAlignment="viewEnd"
                         android:textColor="#FFD9D9D9"
                         android:textSize="18sp"></TextView>
+
+                    <Button
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:id="@+id/editarNombre"
+                        android:padding="6dp"
+                        android:layout_marginStart="10dp"
+                        android:drawableRight="@drawable/ic_baseline_refresh_24"
+                        app:cornerRadius= "10dp"></Button>
 
                 </LinearLayout>
 
@@ -183,6 +192,17 @@
                         android:textAlignment="viewEnd"
                         android:textColor="#FFD9D9D9"
                         android:textSize="18sp"></TextView>
+
+                    <Button
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:id="@+id/editarEmail"
+                        android:padding="6dp"
+                        android:layout_marginStart="10dp"
+                        android:drawableRight="@drawable/ic_baseline_refresh_24"
+                        app:cornerRadius= "10dp"></Button>
+
+
 
                 </LinearLayout>
 
@@ -222,6 +242,15 @@
                         android:textColor="#FFD9D9D9"
                         android:textSize="18sp"></TextView>
 
+                    <Button
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:id="@+id/editarUsuario"
+                        android:padding="6dp"
+                        android:layout_marginStart="10dp"
+                        android:drawableRight="@drawable/ic_baseline_refresh_24"
+                        app:cornerRadius= "10dp"></Button>
+
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -258,23 +287,18 @@
                         android:textAlignment="viewEnd"
                         android:textColor="#FFD9D9D9"
                         android:textSize="18sp"></TextView>
+                    <Button
+                        android:layout_width="35dp"
+                        android:layout_height="45dp"
+                        android:id="@+id/editarContr"
+                        android:padding="6dp"
+                        android:layout_marginStart="10dp"
+                        android:drawableRight="@drawable/ic_baseline_refresh_24"
+                        app:cornerRadius= "10dp"></Button>
 
                 </LinearLayout>
 
             </LinearLayout>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:id="@+id/bt_editarPerfil"
-                android:gravity="center"
-                android:text="Editar perfil"
-                android:textSize="18sp"
-                app:cornerRadius="20dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/layoutPerfil"
-                app:layout_constraintStart_toStartOf="@id/layoutPerfil"
-                app:layout_constraintTop_toBottomOf="@id/layoutPerfil"></Button>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

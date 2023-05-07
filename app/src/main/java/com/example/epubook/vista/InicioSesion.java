@@ -1,6 +1,5 @@
 package com.example.epubook.vista;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -65,7 +64,6 @@ public class InicioSesion extends AppCompatActivity {
                 if(!comprobarUsuario() | !comprobarContr()){
 
                 }else{
-
                     validarUsuario();
 
                 }
@@ -109,7 +107,7 @@ public class InicioSesion extends AppCompatActivity {
                         //Firebase auth: método para reestablecer contrasenia.
                         auth.sendPasswordResetEmail(usuarioEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onComplete(Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(InicioSesion.this, "Comprueba tu bandeja de correos.", Toast.LENGTH_SHORT).show();
                                     alertDialog.dismiss();
@@ -174,7 +172,7 @@ public class InicioSesion extends AppCompatActivity {
 
         comprobarUserBD.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(DataSnapshot snapshot) {
 
                 //Si el usuario existe, prosigue el inicio de sesión.
                 if(snapshot.exists()){
@@ -212,7 +210,7 @@ public class InicioSesion extends AppCompatActivity {
                             //En caso de fallo.
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
+                            public void onFailure(Exception e) {
                                 iniContr.setError("La contraseña es incorrecta.");
                                 iniContr.requestFocus();
                             }
@@ -228,7 +226,7 @@ public class InicioSesion extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError error) {
 
             }
         });

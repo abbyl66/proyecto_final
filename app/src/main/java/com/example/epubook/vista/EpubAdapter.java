@@ -1,13 +1,14 @@
 package com.example.epubook.vista;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.R;
@@ -24,22 +25,29 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
 
     private List<ArchivoEpub> listaarchivos;
     private List<ArchivoEpub> archivosFiltro;
+    private OnItemClickListener listenerClick;
 
     public EpubAdapter(List<ArchivoEpub> listaarchivos){
         this.listaarchivos = listaarchivos;
         this.archivosFiltro = listaarchivos;
     }
 
+    public interface OnItemClickListener{
+        void onItemClick(int pos);
+    }
 
-    @NonNull
+    public void setOnItemClickListener(OnItemClickListener listener){
+        listenerClick = listener;
+    }
+
     @Override
-    public EpubAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EpubAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_archivoepub, parent, false);
         return new EpubAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EpubAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(EpubAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         ArchivoEpub archivoEpub = archivosFiltro.get(position);
         holder.nombre.setText(archivoEpub.getNombre());
 
@@ -49,6 +57,16 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         String fecha = s.format(archivoEpub.getFecha());
         holder.fecha.setText(fecha);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listenerClick != null){
+                    listenerClick.onItemClick(position);
+                }
+            }
+        });
+
     }
 
     public String formatoTamanio(Double tamanio){
@@ -76,7 +94,7 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
     public int getItemCount() {
         return archivosFiltro.size();
     }
-    
+
 
     @Override
     public Filter getFilter() {
@@ -116,14 +134,20 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         };
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nombre, tamanio, fecha;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.nombreArch);
             tamanio = itemView.findViewById(R.id.tamanioArch);
             fecha = itemView.findViewById(R.id.fechaArch);
+
+            itemView.setOnClickListener(this);
+
+        }
+
+        public void onClick(View view){
 
         }
     }

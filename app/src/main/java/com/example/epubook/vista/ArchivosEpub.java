@@ -1,11 +1,12 @@
 package com.example.epubook.vista;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,9 +18,13 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.epubook.R;
 import com.example.epubook.modelo.ArchivoEpub;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -35,7 +40,6 @@ public class ArchivosEpub extends AppCompatActivity {
     EditText buscarArchivo;
     ImageView atras;
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +75,7 @@ public class ArchivosEpub extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.R)
+    @TargetApi(Build.VERSION_CODES.R)
     private void cargarEpub(){
 
         //Creo una lista de archivos donde se recogerán los archivos epub.
@@ -91,8 +95,37 @@ public class ArchivosEpub extends AppCompatActivity {
 
         //Paso los archivos recogidos al adapter para que se muestren en el recyclerview.
         epubAdapter = new EpubAdapter(archivosEpub);
+
+        epubAdapter.setOnItemClickListener(new EpubAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+
+                aniadirArchivoEpub(archivosEpub.get(pos).getUri());
+            }
+        });
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(epubAdapter);
+
+    }
+
+    public void aniadirArchivoEpub(String ruta){
+        File epub = new File(ruta);
+        Uri uri = Uri.fromFile(epub);
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference reference = firebaseStorage.getReference();
+
+        String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        StorageReference referenceUsuario = reference.child("epubs").child(uidUsuario).child(uidUsuario+"_archivosEpub");
+
+        if(epub.exists()){
+            referenceUsuario.putFile(uri).addOnSuccessListener(taskSnapshot -> {
+                Toast.makeText(this, "SI", Toast.LENGTH_SHORT).show();
+            });
+        }else{
+            Toast.makeText(this, "NO", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -113,13 +146,12 @@ public class ArchivosEpub extends AppCompatActivity {
                         String nombre = file.getName();
                         double tamanio = file.length();
                         long fechalong = file.lastModified();
+                        String uri = file.getAbsolutePath();
 
-                        //Formato fecha.
                         Date fecha = new Date(fechalong);
-                        SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
 
                         //Creo objeto y lo añado a mi lista de archivos.
-                        ArchivoEpub nuevoArchivo = new ArchivoEpub(nombre, tamanio, fecha);
+                        ArchivoEpub nuevoArchivo = new ArchivoEpub(nombre, uri, tamanio, fecha);
                         aEpub.add(nuevoArchivo);
                     }
                 }

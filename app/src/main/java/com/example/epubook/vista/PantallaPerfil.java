@@ -1,17 +1,12 @@
 package com.example.epubook.vista;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +16,8 @@ import android.widget.Toast;
 import com.example.epubook.R;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.modelo.Usuario;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -40,7 +37,9 @@ public class PantallaPerfil extends AppCompatActivity {
     private TextView nombrePerfil, emailPerfil, userPerfil, contrPerfil;
     private TextView nombreTitulo;
 
-    private Button editarPerfil;
+    private Button cambiarNombre, cambiarUsuario, cambiarEmail;
+
+    private FirebaseAuth auth;
 
     ControlUsuario controlUsuario = new ControlUsuario(PantallaPerfil.this);
 
@@ -62,9 +61,39 @@ public class PantallaPerfil extends AppCompatActivity {
         contrPerfil = findViewById(R.id.contrPerfil);
         nombreTitulo = findViewById(R.id.nombreTitP);
 
-        editarPerfil = findViewById(R.id.bt_editarPerfil);
+
+        cambiarNombre = findViewById(R.id.editarNombre);
+        cambiarUsuario = findViewById(R.id.editarUsuario);
+        cambiarEmail = findViewById(R.id.editarEmail);
+
+        auth = FirebaseAuth.getInstance();
 
         infoUsuario();
+
+
+        cambiarNombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaPerfil.this, CambiarNombre.class);
+                startActivity(intent);
+            }
+        });
+
+        cambiarUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaPerfil.this, CambiarUser.class);
+                startActivity(intent);
+            }
+        });
+
+        cambiarEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaPerfil.this, CambiarEmail.class);
+                startActivity(intent);
+            }
+        });
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,13 +135,6 @@ public class PantallaPerfil extends AppCompatActivity {
             }
         });
 
-        editarPerfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PantallaPerfil.this, EditarPerfil.class);
-                startActivity(intent);
-            }
-        });
 
     }
 
@@ -123,34 +145,40 @@ public class PantallaPerfil extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
 
         if(user != null){
-
-            String uid = user.getUid();
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("users");
-            DatabaseReference databaseReference = reference.child(uid);
-
-            databaseReference.addValueEventListener(new ValueEventListener() {
+            user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Usuario usuario = snapshot.getValue(Usuario.class);
+                public void onComplete(Task<Void> task) {
 
-                    String nombre = usuario.getNombre();
-                    String user = usuario.getUser();
-                    String email = usuario.getEmail();
+                    String uid = user.getUid();
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("users");
+                    DatabaseReference databaseReference = reference.child(uid);
 
-                    nombreTitulo.setText("Información de " +nombre);
-                    nombrePerfil.setText(nombre);
-                    userPerfil.setText(user);
-                    emailPerfil.setText(email);
+                    databaseReference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            Usuario usuario = snapshot.getValue(Usuario.class);
 
-                }
+                            String nombre = usuario.getNombre();
+                            String user = usuario.getUser();
+                            String email = usuario.getEmail();
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                            nombreTitulo.setText("Información de " +nombre);
+                            nombrePerfil.setText(nombre);
+                            userPerfil.setText(user);
+                            emailPerfil.setText(email);
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+
+                        }
+                    });
+
 
                 }
             });
-
         }
 
     }
