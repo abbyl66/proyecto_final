@@ -1,11 +1,14 @@
 package com.example.epubook.vista;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,9 +18,12 @@ import android.os.storage.StorageVolume;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
@@ -25,6 +31,8 @@ import com.example.epubook.modelo.ArchivoEpub;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -40,6 +48,9 @@ public class ArchivosEpub extends AppCompatActivity {
     EditText buscarArchivo;
     ImageView atras;
 
+    TextView noEpub;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +59,8 @@ public class ArchivosEpub extends AppCompatActivity {
 
         buscarArchivo = findViewById(R.id.buscarArchivo);
         atras = findViewById(R.id.atrasArch);
+
+        noEpub = findViewById(R.id.noEpub);
 
         burcarArch();
 
@@ -63,18 +76,66 @@ public class ArchivosEpub extends AppCompatActivity {
             cargarEpub();
         }else{
             //Dialogo diciendo que es necesario que dé acceso a ficheros. Si dice que si, manda intent, si dice que no, dialog diciendo que no se mostrarán los libros.
-            Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-            startActivity(intent);
+            dialogoConfirmacion();
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()){
+                onResume();
                 cargarEpub();
-            }else{
-                //Dialogo diciendo que no se mostrarán los libros.
             }
 
         }
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarEpub();
+    }
+
+    private void dialogoConfirmacion(){
+        ConstraintLayout confirmacion = findViewById(R.id.dialogoConfirm);
+        View view = LayoutInflater.from(ArchivosEpub.this).inflate(R.layout.dialogo_confirmacion, confirmacion);
+
+        TextView tituloDialog, infoDialog;
+        Button cancelarDialog, aceptarDialog;
+
+        tituloDialog = view.findViewById(R.id.confirmTitulo);
+        infoDialog = view.findViewById(R.id.infoConfirm);
+        cancelarDialog = view.findViewById(R.id.btcancelar);
+        aceptarDialog = view.findViewById(R.id.btaceptar);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ArchivosEpub.this);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        tituloDialog.setText("Permisos");
+        infoDialog.setText("Debe dar permisos de acceso para poder mostrar sus archivos.");
+        cancelarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+                Toast.makeText(ArchivosEpub.this, "No podemos mostrar sus archivos epub.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+
+        aceptarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+                alertDialog.dismiss();
+            }
+        });
+
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        alertDialog.show();
+    }
+
 
     @TargetApi(Build.VERSION_CODES.R)
     private void cargarEpub(){
@@ -143,6 +204,7 @@ public class ArchivosEpub extends AppCompatActivity {
                     //Especifico que sea de extensión .epub.
                     String nombreArch = file.getName().toLowerCase();
                     if(nombreArch.endsWith(".epub")){
+                        noEpub.setVisibility(View.GONE);
                         //Obtengo datos del fichero.
                         String nombre = file.getName();
                         double tamanio = file.length();
@@ -157,6 +219,8 @@ public class ArchivosEpub extends AppCompatActivity {
                     }
                 }
             }
+        }else{
+            noEpub.setVisibility(View.VISIBLE);
         }
 
     }
