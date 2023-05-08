@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:padding="10dp"
     android:id="@+id/toolbar"
-    android:background="@color/celeste"
+    android:background="@color/rosa"
     android:gravity="center_vertical">
 
     <ImageView

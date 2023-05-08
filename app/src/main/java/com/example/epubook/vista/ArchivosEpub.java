@@ -43,6 +43,7 @@ public class ArchivosEpub extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.activity_archivos_epub);
 
         buscarArchivo = findViewById(R.id.buscarArchivo);

@@ -6,26 +6,30 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/descarga"
+    android:background="@drawable/fondo_perfil"
     tools:context=".vista.CambiarNombre">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="55dp"
         android:layout_height="wrap_content"
-        android:id="@+id/btedit_cancelar"
+        android:id="@+id/btcancel_Nom"
         android:layout_gravity="left"
-        android:text="Cancelar"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_baseline_cancel_24"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="20dp"
+        android:backgroundTint="@color/white"
         android:fontFamily="@font/alata"
-        android:textSize="15sp"
         app:cornerRadius="20dp"
         ></Button>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="90dp"
         android:elevation="30dp"
         app:cardCornerRadius="30dp">
 
@@ -33,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/marco_celes"
+            android:background="@drawable/marco_rosa"
             android:orientation="vertical"
             android:padding="24dp">
 
@@ -42,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="Editar Nombre"
                 android:textAlignment="center"
-                android:textColor="@color/celeste"
+                android:textColor="@color/rosa"
                 android:fontFamily="@font/alata"
                 android:textSize="36dp"
                 android:textStyle="bold"></TextView>
@@ -56,9 +60,10 @@
                 android:hint="Nombre"
                 android:layout_marginTop="40dp"
                 android:singleLine="true"
-                android:background="@drawable/marco_celes"
+                android:background="@drawable/marco_rosa"
                 android:drawableLeft="@drawable/ic_baseline_person_24"
                 android:drawablePadding="8dp"
+                android:drawableTint="@color/rosa"
                 android:textColorHint="@color/grey"
                 android:padding="8dp"
                 android:textColor="#FF4D4D4D"></EditText>
@@ -72,6 +77,7 @@
                 android:text="Guardar cambios"
                 android:fontFamily="@font/alata"
                 android:textSize="18sp"
+                android:backgroundTint="@color/rosa"
                 app:cornerRadius="20dp"></Button>
 
 

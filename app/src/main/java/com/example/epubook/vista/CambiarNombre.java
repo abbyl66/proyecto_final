@@ -35,12 +35,13 @@ public class CambiarNombre extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editar_nombre);
+        setTheme(R.style.temaRosa);
 
         nombre = findViewById(R.id.editNombre);
 
         cambiarNombre = findViewById(R.id.bteditNombre);
 
-        cancelar = findViewById(R.id.btedit_cancelar);
+        cancelar = findViewById(R.id.btcancel_Nom);
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();

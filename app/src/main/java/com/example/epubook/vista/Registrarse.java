@@ -42,6 +42,7 @@ public class Registrarse extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.tema);
         setContentView(R.layout.activity_registrarse);
 
         //Asigno y relaciono cada variable con su campo del layout.

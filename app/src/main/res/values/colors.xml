@@ -10,5 +10,7 @@
 
     <!--Colores que usaré en mi app-->
     <color name="celeste">#FFC3DFE3</color>
+    <color name="purpura">#FFe1d5fb</color>
+    <color name="rosa">#FFf9d2d7</color>
     <color name="grey">#FFE6E6E6</color>
 </resources>

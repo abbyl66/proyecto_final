@@ -46,6 +46,7 @@ public class PantallaPerfil extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.activity_pantalla_perfil);
 
         drawerLayout = findViewById(R.id.dsp_contenido);
@@ -145,40 +146,34 @@ public class PantallaPerfil extends AppCompatActivity {
         FirebaseUser user = auth.getCurrentUser();
 
         if(user != null){
-            user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+
+            String uid = user.getUid();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("users");
+            DatabaseReference databaseReference = reference.child(uid);
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onComplete(Task<Void> task) {
+                public void onDataChange(DataSnapshot snapshot) {
+                    Usuario usuario = snapshot.getValue(Usuario.class);
 
-                    String uid = user.getUid();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference reference = database.getReference("users");
-                    DatabaseReference databaseReference = reference.child(uid);
+                    String nombre = usuario.getNombre();
+                    String user = usuario.getUser();
+                    String email = usuario.getEmail();
 
-                    databaseReference.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            Usuario usuario = snapshot.getValue(Usuario.class);
+                    nombreTitulo.setText("Información de " +nombre);
+                    nombrePerfil.setText(nombre);
+                    userPerfil.setText(user);
+                    emailPerfil.setText(email);
 
-                            String nombre = usuario.getNombre();
-                            String user = usuario.getUser();
-                            String email = usuario.getEmail();
+                }
 
-                            nombreTitulo.setText("Información de " +nombre);
-                            nombrePerfil.setText(nombre);
-                            userPerfil.setText(user);
-                            emailPerfil.setText(email);
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-
-                        }
-                    });
-
+                @Override
+                public void onCancelled(DatabaseError error) {
 
                 }
             });
+
         }
 
     }

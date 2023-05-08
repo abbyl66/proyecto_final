@@ -43,6 +43,7 @@ public class CambiarEmail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.editar_email);
 
         cambiarEmail = findViewById(R.id.bteditEmail);

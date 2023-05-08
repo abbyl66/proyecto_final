@@ -36,10 +36,11 @@ public class CambiarUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.editar_usuario);
 
         cambiarUsuario = findViewById(R.id.bteditUser);
-        cancelar = findViewById(R.id.btedit_cancelar);
+        cancelar = findViewById(R.id.btcancel_User);
 
         usuario = findViewById(R.id.editUser);
 
@@ -67,9 +68,7 @@ public class CambiarUser extends AppCompatActivity {
                     Toast.makeText(CambiarUser.this, "Debe especificar un usuario.", Toast.LENGTH_SHORT).show();
                 }else{
                     if(usuarioUser.equals(usuario.getText().toString())){
-                        reference.child("user").setValue(usuario.getText().toString());
-                        Toast.makeText(CambiarUser.this, "Usuario cambiado.", Toast.LENGTH_SHORT).show();//Cambiar por dialogs, seguro que quieres cambiar..?
-                        finish();
+                          finish();
                     }else{
                         databaseReference.orderByChild("user").equalTo(usuario.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override

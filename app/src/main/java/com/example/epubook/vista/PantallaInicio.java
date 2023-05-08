@@ -64,6 +64,7 @@ public class PantallaInicio extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.activity_pantalla_inicio);
 
         //Variables que usaré para el menú de abajo.
@@ -187,7 +188,6 @@ public class PantallaInicio extends AppCompatActivity{
 
         LinearLayout nuevoLibro = dialog.findViewById(R.id.an_libro);
         LinearLayout nuevaColecc = dialog.findViewById(R.id.an_coleccion);
-        ImageView botonCancelar = dialog.findViewById(R.id.an_cancelar);
 
         //Opciones que se pueden realizar desde el diálogo.
         nuevoLibro.setOnClickListener(new View.OnClickListener() {
@@ -208,12 +208,6 @@ public class PantallaInicio extends AppCompatActivity{
             }
         });
 
-        botonCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);

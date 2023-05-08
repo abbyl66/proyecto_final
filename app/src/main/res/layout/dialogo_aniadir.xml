@@ -25,17 +25,10 @@
             android:text="Añadir nuevo"
             android:padding="8dp"
             android:textSize="25dp"
+            android:fontFamily="@font/alata"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-            android:textColor="@color/celeste"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/an_cancelar"
-            android:src="@drawable/ic_baseline_clear_24"
-            android:layout_marginLeft="170dp"
-            android:layout_marginTop="8dp"></ImageView>
+            android:textColor="@color/rosa"/>
 
     </LinearLayout>
 
@@ -57,9 +50,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Añadir libro"
-            android:textColor="@color/celeste"
+            android:fontFamily="@font/alata"
+            android:textColor="@color/rosa"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 
@@ -80,9 +74,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Añadir colección"
-            android:textColor="@color/celeste"
+            android:fontFamily="@font/alata"
+            android:textColor="@color/rosa"
             android:layout_marginLeft="30dp"
-            android:textSize="16sp"/>
+            android:textSize="18sp"/>
 
     </LinearLayout>
 

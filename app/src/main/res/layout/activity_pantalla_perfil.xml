@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/fondo_perfil"
     tools:context=".vista.PantallaPerfil"
     android:id="@+id/dsp_contenido">
 
@@ -23,26 +24,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre"
-                android:textColor="@color/celeste"
-                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:textSize="25sp"
                 android:textStyle="bold"
                 android:inputType="textCapSentences"
                 android:textAlignment="center"
+                android:fontFamily="@font/alata"
                 android:layout_marginTop="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></TextView>
 
             <LinearLayout
+                android:id="@+id/layoutPerfil"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/layoutPerfil"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:elevation="30dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/contblanco_marrosa"
                 android:orientation="vertical"
                 android:padding="10dp"
-                android:background="@drawable/contenedor_blanco"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginTop="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nombreTitP">
@@ -58,27 +63,29 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:elevation="5dp"
-                        android:padding="8dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
                         <TextView
+                            android:id="@+id/librosPerfil"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
-                            android:id="@+id/librosPerfil"
-                            android:text="0"
+                            android:fontFamily="@font/alata"
                             android:gravity="center"
-                            android:textColor="@color/celeste"
+                            android:text="0"
+                            android:textColor="@color/rosa"
                             android:textSize="20sp"
                             android:textStyle="bold"></TextView>
 
                         <TextView
+                            android:id="@+id/txtlibrosP"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtlibrosP"
-                            android:text="Libros"
+                            android:fontFamily="@font/alata"
                             android:paddingLeft="40dp"
+                            android:text="Libros"
                             android:textAlignment="textStart"
-                            android:textColor="@color/celeste"
+                            android:textColor="@color/rosa"
                             android:textSize="16sp"></TextView>
 
                     </LinearLayout>
@@ -89,27 +96,30 @@
                         android:layout_margin="10dp"
                         android:layout_weight="1"
                         android:elevation="5dp"
-                        android:padding="8dp"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
                         <TextView
+                            android:id="@+id/coleccPerfil"
                             android:layout_width="120dp"
                             android:layout_height="30dp"
-                            android:id="@+id/coleccPerfil"
-                            android:text="0"
+                            android:fontFamily="@font/alata"
                             android:gravity="center"
-                            android:textColor="@color/celeste"
+                            android:text="0"
+                            android:textColor="@color/rosa"
+                            android:paddingRight="10dp"
                             android:textSize="20sp"
                             android:textStyle="bold"></TextView>
 
                         <TextView
+                            android:id="@+id/txtcoleccP"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/txtcoleccP"
+                            android:layout_marginEnd="11dp"
+                            android:fontFamily="@font/alata"
                             android:text="Colecciones"
                             android:textAlignment="center"
-                            android:layout_marginEnd="11dp"
-                            android:textColor="@color/celeste"
+                            android:textColor="@color/rosa"
                             android:textSize="16sp"></TextView>
 
                     </LinearLayout>
@@ -119,42 +129,43 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="8dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/nombretxt"
-                        android:layout_weight="1"
-                        android:text="Nombre"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/alata"
-                        android:textColor="@color/celeste"
-                        android:textSize="18sp"></TextView>
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/nombrePerfil"
-                        android:text="Nombre"
                         android:layout_weight="1"
+                        android:fontFamily="@font/alata"
+                        android:text="Nombre"
+                        android:textColor="@color/rosa"
+                        android:textSize="15sp"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:id="@+id/nombrePerfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/alata"
+                        android:text="Nombre"
                         android:textAlignment="viewEnd"
-                        android:textColor="#FFD9D9D9"
+                        android:textColor="#FFAAACB1"
                         android:textSize="18sp"></TextView>
 
                     <Button
+                        android:id="@+id/editarNombre"
                         android:layout_width="35dp"
                         android:layout_height="45dp"
-                        android:id="@+id/editarNombre"
-                        android:padding="6dp"
                         android:layout_marginStart="10dp"
                         android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        app:cornerRadius= "10dp"></Button>
+                        android:padding="6dp"
+                        app:cornerRadius="10dp"></Button>
 
                 </LinearLayout>
 
@@ -163,45 +174,47 @@
                     android:layout_height="1dp"
                     android:layout_margin="10dp"
                     android:alpha="0.5"
-                    android:background="@color/celeste">
-                </androidx.appcompat.widget.AppCompatImageView>
+                    android:background="@color/rosa"
+                    android:shadowColor="@color/rosa"
+                    android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:padding="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/emailtxt"
-                        android:layout_weight="1"
-                        android:text="Email"
-                        android:textStyle="bold"
-                        android:textColor="@color/celeste"
-                        android:textSize="18sp"></TextView>
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/emailPerfil"
-                        android:text="Email"
                         android:layout_weight="1"
+                        android:fontFamily="@font/alata"
+                        android:text="Email"
+                        android:textColor="@color/rosa"
+                        android:textSize="15sp"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:id="@+id/emailPerfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/alata"
+                        android:text="Email"
                         android:textAlignment="viewEnd"
-                        android:textColor="#FFD9D9D9"
-                        android:textSize="18sp"></TextView>
+                        android:textColor="#FFAAACB1"
+                        android:textSize="12sp"></TextView>
 
                     <Button
+                        android:id="@+id/editarEmail"
                         android:layout_width="35dp"
                         android:layout_height="45dp"
-                        android:id="@+id/editarEmail"
-                        android:padding="6dp"
                         android:layout_marginStart="10dp"
                         android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        app:cornerRadius= "10dp"></Button>
-
+                        android:padding="6dp"
+                        app:cornerRadius="10dp"></Button>
 
 
                 </LinearLayout>
@@ -211,45 +224,48 @@
                     android:layout_height="1.5dp"
                     android:layout_margin="10dp"
                     android:alpha="0.5"
-                    android:background="@color/celeste">
-                </androidx.appcompat.widget.AppCompatImageView>
+                    android:background="@color/rosa"
+                    android:shadowColor="@color/rosa"
+                    android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:padding="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/usertxt"
-                        android:layout_weight="1"
-                        android:text="Usuario"
-                        android:textStyle="bold"
-                        android:textColor="@color/celeste"
-                        android:textSize="18sp"></TextView>
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/userPerfil"
-                        android:text="Usuario"
                         android:layout_weight="1"
+                        android:fontFamily="@font/alata"
+                        android:text="Usuario"
+                        android:textColor="@color/rosa"
+                        android:textSize="15sp"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:id="@+id/userPerfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/alata"
+                        android:text="Usuario"
                         android:textAlignment="viewEnd"
-                        android:textColor="#FFD9D9D9"
+                        android:textColor="#FFAAACB1"
                         android:textSize="18sp"></TextView>
 
                     <Button
+                        android:id="@+id/editarUsuario"
                         android:layout_width="35dp"
                         android:layout_height="45dp"
-                        android:id="@+id/editarUsuario"
-                        android:padding="6dp"
                         android:layout_marginStart="10dp"
                         android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        app:cornerRadius= "10dp"></Button>
+                        android:padding="6dp"
+                        app:cornerRadius="10dp"></Button>
 
                 </LinearLayout>
 
@@ -258,43 +274,46 @@
                     android:layout_height="1dp"
                     android:layout_margin="10dp"
                     android:alpha="0.5"
-                    android:background="@color/celeste">
-                </androidx.appcompat.widget.AppCompatImageView>
+                    android:background="@color/rosa"
+                    android:shadowColor="@color/rosa"
+                    android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
-                    android:padding="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="8dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/contrtxt"
-                        android:layout_weight="1"
-                        android:text="Contraseña"
-                        android:textStyle="bold"
-                        android:textColor="@color/celeste"
-                        android:textSize="18sp"></TextView>
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/contrPerfil"
-                        android:text="**********"
                         android:layout_weight="1"
+                        android:fontFamily="@font/alata"
+                        android:text="Contraseña"
+                        android:textColor="@color/rosa"
+                        android:textSize="15sp"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:id="@+id/contrPerfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="**********"
                         android:textAlignment="viewEnd"
-                        android:textColor="#FFD9D9D9"
+                        android:textColor="#FFAAACB1"
                         android:textSize="18sp"></TextView>
+
                     <Button
+                        android:id="@+id/editarContr"
                         android:layout_width="35dp"
                         android:layout_height="45dp"
-                        android:id="@+id/editarContr"
-                        android:padding="6dp"
                         android:layout_marginStart="10dp"
                         android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        app:cornerRadius= "10dp"></Button>
+                        android:padding="6dp"
+                        app:cornerRadius="10dp"></Button>
 
                 </LinearLayout>
 

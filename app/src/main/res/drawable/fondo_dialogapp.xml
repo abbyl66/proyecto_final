@@ -15,6 +15,6 @@
 
     <stroke
         android:width="2dp"
-        android:color="@color/celeste"></stroke>
+        android:color="@color/rosa"></stroke>
 
 </shape>
