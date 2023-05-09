@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.modelo.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,11 +32,15 @@ public class CambiarNombre extends AppCompatActivity {
     private DatabaseReference reference;
     private DatabaseReference databaseReference;
 
+    private ControlDialogos controlDialogos = new ControlDialogos(CambiarNombre.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editar_nombre);
         setTheme(R.style.temaRosa);
+
+        View vista = findViewById(R.id.vistaCambioNombre);
 
         nombre = findViewById(R.id.editNombre);
 
@@ -54,20 +59,22 @@ public class CambiarNombre extends AppCompatActivity {
         mostrarNombre();
 
 
-        cancelar.setOnClickListener(new View.OnClickListener() { //Dialogo
+        cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                controlDialogos.dialogoNombre(vista, CambiarNombre.this, reference, user);
             }
         });
 
 
+        //Método para cambiar nombre.
         cambiarNombre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(nombre.getText().toString().isEmpty()){
                     Toast.makeText(CambiarNombre.this, "Debe especificar un nombre.", Toast.LENGTH_SHORT).show();
                 }else{
+                    //Obtengo al usuario desde una referencia, cambio el valor de su nodo "nombre" por el nuevo nombre introducido.
                     databaseReference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
@@ -88,6 +95,7 @@ public class CambiarNombre extends AppCompatActivity {
 
     }
 
+    //Muestro nombre en el edittext.
     public void mostrarNombre(){
 
         reference.addValueEventListener(new ValueEventListener() {

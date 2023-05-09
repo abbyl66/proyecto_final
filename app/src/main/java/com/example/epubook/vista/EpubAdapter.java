@@ -40,6 +40,7 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         listenerClick = listener;
     }
 
+    //Cada archivo epub tendrá el diseño de layout_archivoepub.
     @Override
     public EpubAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_archivoepub, parent, false);
@@ -48,16 +49,22 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(EpubAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        //Uso archivosFiltro porque este va a determinar los archivos que se mostrarán en mi recyclerview.
         ArchivoEpub archivoEpub = archivosFiltro.get(position);
+
+        //Obtengo los datos de los archivos.
         holder.nombre.setText(archivoEpub.getNombre());
 
+        //Cambio el formato del tamanio para que se vea mejor.
         String tamanio = formatoTamanio(archivoEpub.getTamanio());
         holder.tamanio.setText(tamanio);
 
+        //Doy formato a la fecha.
         SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
         String fecha = s.format(archivoEpub.getFecha());
         holder.fecha.setText(fecha);
 
+        //Esto lo usaré cuando el usuario seleccione un archivo. Que posteriormente, leeré.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +76,7 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
 
     }
 
+    //Método para dar formato al tamanio.
     public String formatoTamanio(Double tamanio){
         String tam = "";
 
@@ -95,7 +103,7 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         return archivosFiltro.size();
     }
 
-
+    //Filtro de archivos.
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -104,22 +112,29 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
                 FilterResults results = new FilterResults();
                 List<ArchivoEpub> archivosEpub = new ArrayList<>();
 
+                //En caso de que no se haya escrito nada, devuelve todos los archivos encontrados.
                 if(charSequence == null ||charSequence.length() == 0){
                     archivosEpub.addAll(listaarchivos);
 
                 }else{
+                    //Al haber algo escrito, ignoro los espacios.
                     String f = charSequence.toString().toLowerCase().trim();
                     String filtro = f.replaceAll(" ", "");
+                    //Recorro los archivos.
                     for(ArchivoEpub a : listaarchivos){
+                        //Ignoro guiones y espacios de los archivos encontrados.
                         String nombre = a.getNombre().toLowerCase().replaceAll("[\\s-]+", "");
+                        //Compruebo que nombre coincida con filtro, que es lo que se ha introducido por teclado.
                         if(nombre.contains(filtro)){
+                            //Añado el libro coincidente a la lista.
                             archivosEpub.add(a);
                         }
                     }
-
+                    //Guardo la lista.
                     archivosFiltro = archivosEpub;
                 }
 
+                //Muestro la lista. Envío los datos y el número de archivos encontrados.
                 results.values = archivosEpub;
                 results.count= archivosEpub.size();
                 return results;
@@ -134,6 +149,7 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         };
     }
 
+    //Establezco la relación entre variables.
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nombre, tamanio, fecha;
 

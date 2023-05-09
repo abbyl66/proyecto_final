@@ -81,7 +81,8 @@ public class Registrarse extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    Toast.makeText(Registrarse.this, "El usuario ya está registrado.", Toast.LENGTH_SHORT).show();
+                    regUser.setError("Usuario existente");
+                    regUser.requestFocus();
                 }else{
                     registarUsuario();
                 }
@@ -129,17 +130,21 @@ public class Registrarse extends AppCompatActivity {
                         });
 
                     }else{
-                        //Control de errores. Editando mensajes.
 
+                        //Control de errores. Editando mensajes.
                         switch (task.getException().getMessage()){
                             case "The email address is badly formatted.":
-                                Toast.makeText(Registrarse.this, "Formato de correo incorrecto.", Toast.LENGTH_SHORT).show();
+                                regEmail.setError("Formato incorrecto.");
+                                regEmail.requestFocus();
                                 break;
                             case "The given password is invalid. [ Password should be at least 6 characters ]":
-                                Toast.makeText(Registrarse.this, "La contraseña debe tener al menos 6 caracteres.", Toast.LENGTH_SHORT).show();
+                                regContr.setError("Debe tener al menos 6 caracteres.");
+                                regContr
+                                        .requestFocus();
                                 break;
                             case "The email address is already in use by another account.":
-                                Toast.makeText(Registrarse.this, "El correo electrónico ya está en uso.", Toast.LENGTH_SHORT).show();
+                                regEmail.setError("Email en uso.");
+                                regEmail.requestFocus();
                                 break;
                         }
 

@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
+import com.example.epubook.controlador.ControlEmail;
 import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,11 +42,16 @@ public class CambiarEmail extends AppCompatActivity {
     private DatabaseReference reference;
     private DatabaseReference databaseReference;
 
+    ControlEmail controlEmail = new ControlEmail(CambiarEmail.this);
+    ControlDialogos controlDialogos = new ControlDialogos(CambiarEmail.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.temaRosa);
         setContentView(R.layout.editar_email);
+
+        View vista = findViewById(R.id.vistaEditarEmail);
 
         cambiarEmail = findViewById(R.id.bteditEmail);
         cancelar = findViewById(R.id.btedit_cancelar);
@@ -72,10 +79,13 @@ public class CambiarEmail extends AppCompatActivity {
         verificado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Compriebo que el usuario haya accedido.
                 if(user != null){
+                    //Recargo los datos del usuario.
                     user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(Task<Void> task) {
+                            //Al pulsar al botón verificado, este comprueba si se verificó para terminar el proceso de cambio de email.
                             if(user.isEmailVerified()){
                                 reference.child("email").setValue(user.getEmail());
                                 Toast.makeText(CambiarEmail.this, "Tu email se ha cambiado.", Toast.LENGTH_SHORT).show();
@@ -89,31 +99,36 @@ public class CambiarEmail extends AppCompatActivity {
             }
         });
 
-        //Hacer dialogo para confirmar.
+        //Si le da a cancelar, se mostrará un diálogo para confirmar que se quiere cancelar el cambio de email.
         cancelar.setOnClickListener(new View.OnClickListener() { //Dialogo
             @Override
             public void onClick(View view) {
-                noCambios();
+                controlDialogos.dialogoCancelarEmail(vista, CambiarEmail.this, reference, user);
             }
         });
 
+        //Botón para cambiar de email.
         cambiarEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(email.getText().toString().isEmpty()){
                     Toast.makeText(CambiarEmail.this, "Debe especificar un email.", Toast.LENGTH_SHORT).show();
                 }else{
+                    //No ha hecho cambios.
                     if(emailUser.equals(email.getText().toString())){
                         finish();
                     }else{
+                        //Compruebo que el email introducido no lo tenga en uso otro usuario.
                         databaseReference.orderByChild("email").equalTo(email.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     email.setError("El email ya existe.");
                                     email.requestFocus();
+
+                                //De no ser así, procede al cambio de email.
                                 }else{
-                                    nuevoEmail();
+                                    controlEmail.nuevoEmail(user, email, contrasenia, emailUser, cambiarEmail, verificado, infoVerificado, reference);
                                 }
                             }
 
@@ -129,8 +144,9 @@ public class CambiarEmail extends AppCompatActivity {
 
     }
 
+    //Método que muestra el email del usuario en el Edittext.
     public void mostrarEmail(){
-
+        //A partir de la  referencia, obtengo el usuario con su método getEmail para obtener su email.
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -150,161 +166,11 @@ public class CambiarEmail extends AppCompatActivity {
 
     }
 
+    //Si el usuario le da al botón atrás de su dispositivo, los cambios no se guardarán.
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        noCambios();
+        controlEmail.noCambios(reference, user, CambiarEmail.this);
     }
 
-    public void noCambios(){
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Usuario usuario = snapshot.getValue(Usuario.class);
-
-                user.updateEmail(usuario.getEmail()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(Task<Void> task) {
-                        Toast.makeText(CambiarEmail.this, "No se han hecho cambios.", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    public void nuevoEmail(){
-        if (user != null){
-            user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(Task<Void> task) {
-                    if(user.isEmailVerified()){
-                        if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
-                            String nuevoEmail = email.getText().toString();
-
-                            //Es necesario que haga una autenticación del usuario para poder cambiar su email.
-                            AuthCredential credential = EmailAuthProvider.getCredential(emailUser, contrasenia.getText().toString());
-
-                            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        user.updateEmail(nuevoEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(Task<Void> task) {
-                                                if(task.isSuccessful()){
-                                                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(Task<Void> task) {
-                                                            if(task.isSuccessful()){
-                                                                Toast.makeText(CambiarEmail.this, "Verifica tu correo", Toast.LENGTH_SHORT).show();
-                                                                verificado.setVisibility(View.VISIBLE);
-                                                                infoVerificado.setVisibility(View.VISIBLE);
-                                                                email.setEnabled(false);
-                                                                contrasenia.setEnabled(false);
-                                                                cambiarEmail.setEnabled(false);
-
-
-                                                            }
-                                                        }
-                                                    });
-                                                }else{
-                                                    Toast.makeText(CambiarEmail.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
-                                    }else{
-                                        Toast.makeText(CambiarEmail.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-
-                        }else{
-                            email.setError("Formato incorrecto");
-                            email.requestFocus();
-                        }
-                    }else{
-                        reference.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                Usuario userEmail = snapshot.getValue(Usuario.class);
-                                if(emailUser.equals(userEmail)){
-                                    nuevoEmailVer();
-                                }else{
-                                    Toast.makeText(CambiarEmail.this, "Verifica tu email antes de cambiarlo.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError error) {
-
-                            }
-                        });
-                    }
-                }
-            });
-        }
-
-    }
-
-    public void nuevoEmailVer(){
-        if (user != null){
-            user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(Task<Void> task) {
-                    if(Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()){
-                        String nuevoEmail = email.getText().toString();
-
-                        //Es necesario que haga una autenticación del usuario para poder cambiar su email.
-                        AuthCredential credential = EmailAuthProvider.getCredential(emailUser, contrasenia.getText().toString());
-
-                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    user.updateEmail(nuevoEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(Task<Void> task) {
-                                                        if(task.isSuccessful()){
-                                                            Toast.makeText(CambiarEmail.this, "Verifica tu correo", Toast.LENGTH_SHORT).show();
-                                                            verificado.setVisibility(View.VISIBLE);
-                                                            infoVerificado.setVisibility(View.VISIBLE);
-                                                            email.setEnabled(false);
-                                                            contrasenia.setEnabled(false);
-                                                            cambiarEmail.setEnabled(false);
-
-
-                                                        }
-                                                    }
-                                                });
-                                            }else{
-                                                Toast.makeText(CambiarEmail.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                                }else{
-                                    Toast.makeText(CambiarEmail.this,task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-                    }else{
-                        email.setError("Formato incorrecto");
-                        email.requestFocus();
-                    }
-
-                }
-            });
-        }
-    }
 }

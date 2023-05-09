@@ -5,51 +5,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dialogoConfirm"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:id="@+id/dialogoConfirm"
         android:background="@drawable/contenedor"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/confirmTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/confirmTitulo"
             android:background="@drawable/contenedor_purpura"
-            android:text="Confirmación"
+            android:fontFamily="@font/alata"
             android:padding="12dp"
+            android:text="Confirmación"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:fontFamily="@font/alata"
             app:layout_constraintTop_toTopOf="parent"></TextView>
 
         <ImageView
+            android:id="@+id/img_confirm"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:id="@+id/img_confirm"
-            android:src="@drawable/ic_baseline_error_24"
             android:layout_marginEnd="10dp"
-            app:tint="@color/white"
+            android:src="@drawable/ic_baseline_error_24"
+            app:layout_constraintBottom_toBottomOf="@id/confirmTitulo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/confirmTitulo"
-            app:layout_constraintBottom_toBottomOf="@id/confirmTitulo"></ImageView>
+            app:tint="@color/white"></ImageView>
 
         <TextView
+            android:id="@+id/infoConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/infoConfirm"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="@font/alata"
+            android:gravity="center_horizontal"
             android:text="Información"
             android:textColor="@color/purpura"
             android:textSize="16sp"
-            android:fontFamily="@font/alata"
-            android:gravity="center_horizontal"
-            android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="18dp"
-            android:layout_marginBottom="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/confirmTitulo"></TextView>
 
@@ -61,21 +62,20 @@
         android:id="@+id/btcancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="60dp"
         android:backgroundTint="@color/purpura"
         android:text="Cancelar"
         android:textSize="14sp"
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="@id/dialogoConfirm"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dialogoConfirm"></Button>
+        app:layout_constraintTop_toBottomOf="@+id/dialogoConfirm"
+        app:layout_constraintVertical_bias="0.208"></Button>
 
     <Button
         android:id="@+id/btaceptar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginEnd="40dp"
         android:backgroundTint="@color/purpura"
         android:text="Aceptar"

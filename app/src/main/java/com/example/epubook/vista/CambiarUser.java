@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.modelo.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,12 +33,15 @@ public class CambiarUser extends AppCompatActivity {
     private DatabaseReference reference;
     private DatabaseReference databaseReference;
 
+    private ControlDialogos controlDialogos = new ControlDialogos(CambiarUser.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.temaRosa);
         setContentView(R.layout.editar_usuario);
+
+        View vista = findViewById(R.id.vistaCambioUser);
 
         cambiarUsuario = findViewById(R.id.bteditUser);
         cancelar = findViewById(R.id.btcancel_User);
@@ -54,22 +58,25 @@ public class CambiarUser extends AppCompatActivity {
 
         mostrarUsuario();
 
-        cancelar.setOnClickListener(new View.OnClickListener() { //Dialogo
+        cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                controlDialogos.dialogoUser(vista, CambiarUser.this, reference, user);
             }
         });
 
+        //Botón cambiar de usuario.
         cambiarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(usuario.getText().toString().isEmpty()){
                     Toast.makeText(CambiarUser.this, "Debe especificar un usuario.", Toast.LENGTH_SHORT).show();
                 }else{
+                    //No hay cambios.
                     if(usuarioUser.equals(usuario.getText().toString())){
                           finish();
                     }else{
+                        //Compruebo que no haya otro usuario con el mismo user introducido.
                         databaseReference.orderByChild("user").equalTo(usuario.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot snapshot) {
@@ -77,6 +84,7 @@ public class CambiarUser extends AppCompatActivity {
                                     usuario.setError("El usuario ya existe.");
                                     usuario.requestFocus();
                                 }else{
+                                    //Nodo user, cambio el valor por el nuevo user.
                                     reference.child("user").setValue(usuario.getText().toString());
                                     Toast.makeText(CambiarUser.this, "Usuario cambiado.", Toast.LENGTH_SHORT).show();
                                     finish();
@@ -95,6 +103,7 @@ public class CambiarUser extends AppCompatActivity {
 
     }
 
+    //Muestro nombre de usuario en edittext.
     public void mostrarUsuario(){
 
         reference.addValueEventListener(new ValueEventListener() {

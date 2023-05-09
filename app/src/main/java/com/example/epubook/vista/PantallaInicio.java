@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
@@ -59,7 +60,8 @@ public class PantallaInicio extends AppCompatActivity{
     private LinearLayout inicio, perfil, ajustes, cerrarSesion;
     private BottomNavigationView bottomNavigationView;
 
-    ControlUsuario controlUsuario = new ControlUsuario(PantallaInicio.this);
+    private ControlUsuario controlUsuario = new ControlUsuario(PantallaInicio.this);
+    private ControlDialogos controlDialogos = new ControlDialogos(PantallaInicio.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,7 @@ public class PantallaInicio extends AppCompatActivity{
             }
         });
 
+        //Abro perfil con la información del usuario que ha iniciado sesión.
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,7 +150,7 @@ public class PantallaInicio extends AppCompatActivity{
         botonAniadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mostrarDialogoAniadir();
+                controlDialogos.mostrarDialogoAniadir(PantallaInicio.this);
             }
         });
 
@@ -179,42 +182,5 @@ public class PantallaInicio extends AppCompatActivity{
         fragmentTransaction.commit();
 
     }
-
-    //Al pulsar sobre añadir nuevo en el menú inferior. Muestra su diálogo.
-    private void mostrarDialogoAniadir(){
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialogo_aniadir);
-
-        LinearLayout nuevoLibro = dialog.findViewById(R.id.an_libro);
-        LinearLayout nuevaColecc = dialog.findViewById(R.id.an_coleccion);
-
-        //Opciones que se pueden realizar desde el diálogo.
-        nuevoLibro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                Intent intent = new Intent(PantallaInicio.this, ArchivosEpub.class);
-                startActivity(intent);
-
-            }
-        });
-
-        nuevaColecc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                Toast.makeText(PantallaInicio.this, "Añadir colección", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.animacionDialogo;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
-    }
-
 
 }

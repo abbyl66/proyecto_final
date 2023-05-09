@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -42,6 +43,8 @@ public class InicioSesion extends AppCompatActivity {
     private Button botonIni;
     private TextView iniRegistro;
     private TextView olv_Contrasenia;
+
+    private ControlDialogos controlDialogos = new ControlDialogos(InicioSesion.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,55 +87,7 @@ public class InicioSesion extends AppCompatActivity {
         olv_Contrasenia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(InicioSesion.this);
-                View d_contrasenia = getLayoutInflater().inflate(R.layout.dialogo_contrasenia, null);
-                EditText email = d_contrasenia.findViewById(R.id.olv_email);
-
-                builder.setView(d_contrasenia);
-                AlertDialog alertDialog = builder.create();
-
-                //Al pulsar en el botón cambiar del dialog.
-                d_contrasenia.findViewById(R.id.btolv_cambiar).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String usuarioEmail = email.getText().toString();
-
-                        //Compruebo correo introducido.
-                        if(TextUtils.isEmpty(usuarioEmail) && !Patterns.EMAIL_ADDRESS.matcher(usuarioEmail).matches()){
-                            Toast.makeText(InicioSesion.this, "Ingresa tu email", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        //Firebase auth: método para reestablecer contrasenia.
-                        auth.sendPasswordResetEmail(usuarioEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(InicioSesion.this, "Comprueba tu bandeja de correos.", Toast.LENGTH_SHORT).show();
-                                    alertDialog.dismiss();
-                                }else {
-                                    Toast.makeText(InicioSesion.this, "Error, email incorrecto.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-                    }
-                });
-
-                //Al pulsar botón cancelar del dialog.
-                d_contrasenia.findViewById(R.id.btolv_cancelar).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        alertDialog.dismiss();
-                    }
-                });
-
-                if(alertDialog.getWindow() != null){
-                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-                }
-
-                alertDialog.show();
+               controlDialogos.contraseniaOlvidada(InicioSesion.this, auth);
             }
         });
 
@@ -162,6 +117,7 @@ public class InicioSesion extends AppCompatActivity {
         }
     }
 
+    //Método para validar el usuario al iniciar sesión.
     public void validarUsuario(){
         String vUsuario = iniUsuario.getText().toString().trim();
         String vContrasenia = iniContr.getText().toString().trim();
@@ -188,6 +144,7 @@ public class InicioSesion extends AppCompatActivity {
                             @Override
                             public void onSuccess(AuthResult authResult) {
 
+                                //Obtengo los datos del usuario.
                                 String nombreUsuario = userSnapshot.child("nombre").getValue(String.class);
                                 String userUsuario = userSnapshot.child("user").getValue(String.class);
 
@@ -207,7 +164,7 @@ public class InicioSesion extends AppCompatActivity {
                                 finish();
                             }
 
-                            //En caso de fallo.
+                        //En caso de fallo.
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(Exception e) {
@@ -216,7 +173,7 @@ public class InicioSesion extends AppCompatActivity {
                             }
                         });
                     }
-                    //Si el usuario no existe, mando mensaje de error.
+                //Si el usuario no existe, mando mensaje de error.
                 }else{
                     iniUsuario.setError("Usuario no existe.");
                     iniUsuario.requestFocus();
