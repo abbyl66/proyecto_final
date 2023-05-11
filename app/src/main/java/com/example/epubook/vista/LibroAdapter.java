@@ -1,5 +1,7 @@
 package com.example.epubook.vista;
 
+import android.annotation.SuppressLint;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.epubook.R;
 import com.example.epubook.modelo.Libro;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> {
@@ -33,6 +36,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
         Libro libro = listaLibros.get(position);
         holder.titulo.setText(libro.getTitulo());
         holder.autor.setText(libro.getAutor());
+        holder.portada.setImageBitmap(libro.getPortada());
     }
 
     @Override
@@ -43,11 +47,13 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView titulo, autor;
+        private ImageView portada;
 
         public ViewHolder(View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.libroTitulo);
             autor = itemView.findViewById(R.id.libroAutor);
+            portada = itemView.findViewById(R.id.libroPortada);
 
         }
     }

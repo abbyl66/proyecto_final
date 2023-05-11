@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
@@ -83,7 +84,7 @@ public class ArchivosEpub extends AppCompatActivity {
 
     }
 
-    //Método para cargar ficheros epub del almacenamiento del usuario.
+    //Método para obtener ficheros epub del almacenamiento del usuario.
     @TargetApi(Build.VERSION_CODES.R)
     public void cargarEpub(){
 
@@ -109,7 +110,7 @@ public class ArchivosEpub extends AppCompatActivity {
             @Override
             public void onItemClick(int pos) {
 
-                controlEpub.aniadirArchivoEpub(archivosEpub.get(pos).getUri());
+                controlEpub.aniadirArchivoEpub(archivosEpub.get(pos).getUri(), ArchivosEpub.this);
             }
         });
 
