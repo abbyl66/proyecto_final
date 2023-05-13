@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_dialogoColecc"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/contblanco_marrosa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/colecc_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/contenedor_rosa"
+            android:drawableLeft="@drawable/ic_baseline_library_add_24"
+            android:drawablePadding="8dp"
+            android:drawableTint="@color/white"
+            android:fontFamily="@font/alata"
+            android:padding="10dp"
+            android:text="Nueva colección"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        <TextView
+            android:id="@+id/labelColecc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/alata"
+            android:text="Nombre de colección:"
+            android:textColor="@color/rosa"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/txtColecc"
+            app:layout_constraintTop_toBottomOf="@+id/colecc_titulo"></TextView>
+
+
+        <EditText
+            android:id="@+id/txtColecc"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/rosa"
+            android:fontFamily="@font/alata"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:hint="Libros Favoritos"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="#FFAAACB1"
+            android:textColorHint="@color/grey"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/colecc_titulo"></EditText>
+
+        <Button
+            android:id="@+id/cancelarColecc"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/rosa"
+            android:fontFamily="@font/alata"
+            android:text="Cancelar"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:cornerRadius='20dp'
+            app:layout_constraintBottom_toBottomOf="@+id/layout_dialogoColecc"
+            app:layout_constraintStart_toEndOf="@+id/coleccCrear"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtColecc"></Button>
+
+        <Button
+            android:id="@+id/coleccCrear"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/rosa"
+            android:fontFamily="@font/alata"
+            android:text="Crear"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/layout_dialogoColecc"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cancelarColecc"
+            app:layout_goneMarginTop="10dp"></Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

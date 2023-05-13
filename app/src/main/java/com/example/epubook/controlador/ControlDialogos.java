@@ -24,11 +24,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.epubook.R;
+import com.example.epubook.fragments.ColeccionesFragment;
+import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.vista.ArchivosEpub;
-import com.example.epubook.vista.InicioSesion;
-import com.example.epubook.vista.PantallaInicio;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +42,8 @@ public class ControlDialogos {
         this.context = context;
     }
 
-
     ControlEmail controlEmail = new ControlEmail(context);
+    ControlColecciones controlColecciones = new ControlColecciones(context);
 
     //Métodos para mostrar dialogo de confirmación:
 
@@ -190,7 +191,7 @@ public class ControlDialogos {
         alertDialog.show();
     }
 
-    //Salis de cambio de user.
+    //Salir de cambio de user.
     public void dialogoUser(View vista, Activity activity, DatabaseReference reference, FirebaseUser user){
         //Variables del dialog personalizado.
         ConstraintLayout confirmacion = vista.findViewById(R.id.dialogoConfirm);
@@ -294,7 +295,7 @@ public class ControlDialogos {
     }
 
     //Al pulsar sobre añadir nuevo en el menú inferior. Muestra su diálogo.
-    public void mostrarDialogoAniadir(Activity activity){
+    public void mostrarDialogoAniadir(Activity activity, BottomNavigationView bottomNavigationView){
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialogo_aniadir);
@@ -316,8 +317,54 @@ public class ControlDialogos {
         nuevaColecc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
-                Toast.makeText(context, "Añadir colección", Toast.LENGTH_SHORT).show();
+
+                //Variables del dialog personalizado.
+                ConstraintLayout confirmacion = view.findViewById(R.id.layout_dialogoColecc);
+                View vista = LayoutInflater.from(context).inflate(R.layout.activity_add_colecciones, confirmacion);
+
+                EditText nombreColecc;
+                Button cancelarDialog, aceptarDialog;
+
+                nombreColecc = vista.findViewById(R.id.txtColecc);
+                cancelarDialog = vista.findViewById(R.id.cancelarColecc);
+                aceptarDialog = vista.findViewById(R.id.coleccCrear);
+
+                //Creo alertdialog y le doy el diseño con el layout.
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setView(vista);
+                final AlertDialog alertDialog = builder.create();
+
+                cancelarDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Si le da al botón cancelar.
+                        alertDialog.dismiss();
+                    }
+                });
+
+                aceptarDialog.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Si le da al botón aceptar.
+                        alertDialog.dismiss();
+                        String nombreColeccion = nombreColecc.getText().toString();
+                        if(nombreColeccion.isEmpty()){
+                            nombreColecc.setError("Debe introducir un nombre.");
+                            nombreColecc.setFocusable(true);
+                        }else{
+                            controlColecciones.nuevaColeccion(nombreColeccion, activity, dialog, bottomNavigationView);
+                        }
+
+                    }
+                });
+
+                //Muestra diálogo.
+                if(alertDialog.getWindow() != null){
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+
+                alertDialog.show();
+
             }
         });
 

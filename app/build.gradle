@@ -56,5 +56,6 @@ dependencies {
         exclude group: 'xmlpull'
     }
     implementation 'org.slf4j:slf4j-android:1.7.25'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
 
 }

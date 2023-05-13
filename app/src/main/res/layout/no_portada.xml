@@ -3,18 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/vistaNoportada"
-    android:background="@color/celeste">
+    android:background="@color/white">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txtNombrePortada"
-        android:textColor="@color/rosa"
-        android:textSize="40sp"
-        android:fontFamily="@font/alata"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:text="NO PORTADA"
-        android:layout_centerInParent="true"></TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/marco_rosa">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtNombrePortada"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            android:fontFamily="@font/alata"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="NO PORTADA"
+            android:layout_centerInParent="true"></TextView>
+
+    </LinearLayout>
 
 </RelativeLayout>

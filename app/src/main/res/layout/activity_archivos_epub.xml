@@ -31,7 +31,7 @@
             android:id="@+id/buscarArchivo"
             android:textSize="16sp"
             android:inputType="textCapSentences"
-            android:textColor="@color/celeste"
+            android:textColor="#FFAAACB1"
             android:layout_marginEnd="15dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"

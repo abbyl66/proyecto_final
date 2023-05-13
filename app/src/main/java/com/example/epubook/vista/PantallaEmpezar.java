@@ -26,7 +26,7 @@ public class PantallaEmpezar extends AppCompatActivity {
         botonIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PantallaEmpezar.this, PantallaInicio.class);
+                Intent intent = new Intent(PantallaEmpezar.this, InicioSesion.class);
                 startActivity(intent);
                 finish();
             }

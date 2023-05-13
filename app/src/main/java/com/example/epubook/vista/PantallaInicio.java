@@ -1,33 +1,17 @@
 package com.example.epubook.vista;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
@@ -35,22 +19,10 @@ import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
-import com.example.epubook.modelo.ArchivoEpub;
-import com.example.epubook.modelo.Usuario;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.io.File;
-import java.sql.SQLOutput;
 
 public class PantallaInicio extends AppCompatActivity{
 
@@ -150,7 +122,7 @@ public class PantallaInicio extends AppCompatActivity{
         botonAniadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controlDialogos.mostrarDialogoAniadir(PantallaInicio.this);
+                controlDialogos.mostrarDialogoAniadir(PantallaInicio.this, bottomNavigationView);
             }
         });
 
@@ -181,6 +153,10 @@ public class PantallaInicio extends AppCompatActivity{
         fragmentTransaction.replace(R.id.dsp_bajo, fragment);
         fragmentTransaction.commit();
 
+    }
+
+    public FragmentManager cambiarFragment(){
+        return getSupportFragmentManager();
     }
 
 }

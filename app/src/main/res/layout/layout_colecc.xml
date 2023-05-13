@@ -12,7 +12,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
@@ -21,47 +21,33 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="140dp"
-                android:id="@+id/libroPortada"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:layout_alignParentLeft= "true"></ImageView>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="4dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/libroPortada"
-                android:layout_toRightOf="@+id/libroPortada"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
 
                 <TextView
-                    android:id="@+id/libroTitulo"
+                    android:id="@+id/coleccNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
                     android:fontFamily="@font/alata"
+                    android:gravity="center"
+                    android:layout_gravity="center"
                     android:lines="2"
-                    android:text="Titulo de libro"
-                    android:textSize="15sp"
+                    android:text="Nombre coleccion"
+                    android:textSize="20sp"
                     android:textStyle="bold"></TextView>
 
-                <TextView
-                    android:id="@+id/libroAutor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:lines="1"
-                    android:text="Autor del libro"
-                    android:textSize="13sp"></TextView>
 
 
             </LinearLayout>

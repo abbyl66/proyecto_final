@@ -36,6 +36,7 @@
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/marco_rosa.xml" value="0.2215" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/no_portada.xml" value="0.18" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/drawable/pulsar_textview.xml" value="0.2215" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_add_colecciones.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_archivos_epub.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_editar_perfil.xml" value="0.2359375" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/activity_intro_sliders.xml" value="0.25" />
@@ -60,6 +61,7 @@
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/fragment_libros.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/inicio_sesion.xml" value="0.264" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/layout_archivoepub.xml" value="0.25" />
+        <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/layout_colecc.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/layout_libro.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/nav_drawer.xml" value="0.25" />
         <entry key="..\:/Users/Pio/AndroidStudioProjects/epubook/app/src/main/res/layout/no_portada.xml" value="0.25" />

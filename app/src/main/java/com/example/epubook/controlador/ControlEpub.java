@@ -11,6 +11,8 @@ import android.os.Build;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +40,12 @@ import com.google.firebase.storage.UploadTask;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -122,9 +126,6 @@ public class ControlEpub {
         //Nodo mis libros y epub.
         StorageReference referenceLibros = referenceUsuario.child("misLibros/");
         StorageReference referenceEpub = referenceLibros.child(epub.getName());
-        //Nodo mis colecciones.
-        StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
-
 
         //Control de fichero existente.
         if(epub.exists()){
@@ -145,7 +146,7 @@ public class ControlEpub {
 
     }
 
-    public void obtenerMisLibros(LibroAdapter libroAdapter, List<Libro> listaLibros){
+    public void obtenerMisLibros(LibroAdapter libroAdapter, List<Libro> listaLibros, ProgressBar progressBar, EditText buscar, TextView noLibros, LibrosFragment librosFragment){
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -161,33 +162,56 @@ public class ControlEpub {
             referenceMisLibros.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
                 @Override
                 public void onSuccess(ListResult listResult) {
+                    noLibros.setVisibility(View.VISIBLE);
                     listaLibros.clear();
                     for(StorageReference epub : listResult.getItems()){
                         try {
+                            noLibros.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.VISIBLE);
+
                             StorageReference referenceEpub = referenceMisLibros.child(epub.getName());
-                            File epubLocal = File.createTempFile(epub.getName(), "epub");
 
-                            referenceEpub.getFile(epubLocal).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    String ruta = epubLocal.getAbsolutePath();
-                                    List<Libro> libros = mostrarMisLibros(ruta);
-                                    listaLibros.addAll(libros);
-                                    libroAdapter.notifyDataSetChanged();
+                            File archivoCache = cargarCacheEpub(epub.getName(), librosFragment.getActivity());
+                            if(existeEpub(epub.getName(), librosFragment.getActivity())){
+                                String ruta = archivoCache.getAbsolutePath();
+                                List<Libro> libros = mostrarMisLibros(ruta);
 
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(Exception e) {
-                                    System.out.println("FALLO");
-                                }
-                            });
+                                listaLibros.addAll(libros);
+                                libroAdapter.notifyDataSetChanged();
+                                progressBar.setVisibility(View.GONE);
+                                buscar.setVisibility(View.VISIBLE);
+                            }else{
+                                File epubLocal = File.createTempFile(epub.getName(), "epub");
+
+                                referenceEpub.getFile(epubLocal).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                        String ruta = epubLocal.getAbsolutePath();
+                                        guardarEpubCache(epub.getName(), epubLocal, librosFragment.getActivity());
+                                        List<Libro> libros = mostrarMisLibros(ruta);
+
+                                        listaLibros.addAll(libros);
+                                        libroAdapter.notifyDataSetChanged();
+                                        progressBar.setVisibility(View.GONE);
+                                        buscar.setVisibility(View.VISIBLE);
+
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(Exception e) {
+                                        System.out.println("FALLO");
+                                    }
+                                });
+
+                            }
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
 
                     }
+
+
                 }
             });
 
@@ -257,6 +281,46 @@ public class ControlEpub {
         }
 
         return listaLibros;
+    }
+
+    //En caso de guardar un nuevo fichero epub, se guarda en el cache.
+    private void guardarEpubCache(String nombre, File archivo, Activity activity){
+
+        try {
+
+            File ruta = activity.getApplicationContext().getCacheDir();
+            File fichero = new File(ruta, nombre);
+
+            InputStream is = new FileInputStream(archivo);
+            OutputStream os = new FileOutputStream(fichero);
+            byte[] buf = new byte[1024];
+            int tam;
+            while((tam = is.read(buf))>0){
+                os.write(buf, 0, tam);
+            }
+
+            is.close();
+            os.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //Método para comprobar que mi fichero existe.
+    private boolean existeEpub(String nombre, Activity activity){
+        File ruta = activity.getApplicationContext().getCacheDir();
+        File fichero = new File(ruta, nombre);
+        return fichero.exists();
+    }
+
+    //Método para cargar ficheros existentes desde cache.
+    private File cargarCacheEpub(String nombre, Activity activity){
+        File ruta = activity.getApplicationContext().getCacheDir();
+        return new File(ruta, nombre);
     }
 
 }
