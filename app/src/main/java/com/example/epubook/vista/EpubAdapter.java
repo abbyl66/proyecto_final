@@ -7,12 +7,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.R;
 import com.example.epubook.modelo.ArchivoEpub;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.Collator;
 import java.text.SimpleDateFormat;
@@ -64,16 +71,49 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         String fecha = s.format(archivoEpub.getFecha());
         holder.fecha.setText(fecha);
 
+        comprobarGuardado(holder, archivoEpub);
+
+
         //Esto lo usaré cuando el usuario seleccione un archivo. Que posteriormente, leeré.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(listenerClick != null){
                     listenerClick.onItemClick(position);
+                    holder.guardandoEpub.setVisibility(View.VISIBLE);
                 }
             }
         });
 
+    }
+
+    //Compruebo qué libros están guardados en la biblioteca para mostralos con un icon check.
+    private void comprobarGuardado(ViewHolder holder, ArchivoEpub archivoEpub) {
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference reference = firebaseStorage.getReference();
+
+        String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //Nodo usuario, donde guardaré los ficheros epub de cada usuario.
+        StorageReference referenceUsuario = reference.child(uidUsuario);
+
+        //Nodo mis libros y epub.
+        StorageReference referenceLibros = referenceUsuario.child("misLibros");
+
+        referenceLibros.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                holder.guardandoEpub.setVisibility(View.INVISIBLE);
+                for(StorageReference epub : listResult.getItems()){
+                    if(archivoEpub.getNombre().equals(epub.getName())){
+                        holder.epubGuardado.setVisibility(View.VISIBLE);
+                        break;
+                    }else{
+                        holder.epubGuardado.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
     }
 
     //Método para dar formato al tamanio.
@@ -152,12 +192,16 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
     //Establezco la relación entre variables.
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView nombre, tamanio, fecha;
+        private ImageView epubGuardado;
+        private ProgressBar guardandoEpub;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.nombreArch);
             tamanio = itemView.findViewById(R.id.tamanioArch);
             fecha = itemView.findViewById(R.id.fechaArch);
+            epubGuardado = itemView.findViewById(R.id.libroGuardado);
+            guardandoEpub = itemView.findViewById(R.id.cargaArchivoEpub);
 
             itemView.setOnClickListener(this);
 

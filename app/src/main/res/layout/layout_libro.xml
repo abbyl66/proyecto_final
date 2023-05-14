@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginStart="1dp"
+    android:layout_marginTop="5dp"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,18 +21,28 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="160dp"
             android:orientation="horizontal">
 
-            <ImageView
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardImagen"
                 android:layout_width="100dp"
-                android:layout_height="140dp"
-                android:id="@+id/libroPortada"
+                android:layout_height="150dp"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
-                android:layout_alignParentLeft= "true"></ImageView>
+                android:elevation="6dp"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:id="@+id/libroPortada"
+                    android:layout_width="104dp"
+                    android:layout_height="150dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"></ImageView>
+
+            </androidx.cardview.widget.CardView>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -37,10 +50,9 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="10dp"
                 android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/libroPortada"
-                android:layout_toRightOf="@+id/libroPortada"
+                android:layout_toEndOf="@+id/cardImagen"
+                android:layout_toRightOf="@+id/cardImagen"
                 android:orientation="vertical">
 
 
@@ -63,6 +75,14 @@
                     android:text="Autor del libro"
                     android:textSize="13sp"></TextView>
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_bookmark_add_24"
+                    android:layout_marginStart="210dp"
+                    android:layout_marginTop="40dp"
+                    ></ImageView>
+
 
             </LinearLayout>
 
@@ -73,5 +93,5 @@
     </LinearLayout>
 
 
-
 </androidx.cardview.widget.CardView>
+

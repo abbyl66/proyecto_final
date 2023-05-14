@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,9 +15,11 @@ import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +55,9 @@ public class ArchivosEpub extends AppCompatActivity {
         setTheme(R.style.temaRosa);
         setContentView(R.layout.activity_archivos_epub);
 
+        LayoutInflater inflater = LayoutInflater.from(ArchivosEpub.this);
+        View layoutEpub = inflater.inflate(R.layout.layout_archivoepub, null);
+
         View miVista = findViewById(R.id.vistaArchivosEpub);
 
         buscarArchivo = findViewById(R.id.buscarArchivo);
@@ -64,6 +70,8 @@ public class ArchivosEpub extends AppCompatActivity {
         atras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(ArchivosEpub.this, PantallaInicio.class);
+                startActivity(intent);
                 finish();
             }
         });
@@ -82,6 +90,14 @@ public class ArchivosEpub extends AppCompatActivity {
 
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ArchivosEpub.this, PantallaInicio.class);
+        startActivity(intent);
+        finish();
     }
 
     //Método para obtener ficheros epub del almacenamiento del usuario.
@@ -106,11 +122,12 @@ public class ArchivosEpub extends AppCompatActivity {
         //Paso los archivos recogidos al adapter para que se muestren en el recyclerview.
         epubAdapter = new EpubAdapter(archivosEpub);
 
+        //Si se selecciona un fichero, se guarda en firebase storage.
         epubAdapter.setOnItemClickListener(new EpubAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos) {
-
-                controlEpub.aniadirArchivoEpub(archivosEpub.get(pos).getUri(), ArchivosEpub.this);
+                archivosEpub.get(pos).setDescargando(true);
+                controlEpub.aniadirArchivoEpub(archivosEpub.get(pos).getUri(), ArchivosEpub.this, archivosEpub.get(pos), epubAdapter);
             }
         });
 
@@ -123,7 +140,6 @@ public class ArchivosEpub extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         cargarEpub();
     }
 

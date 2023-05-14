@@ -5,6 +5,8 @@ import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
+import com.example.epubook.fragments.LibrosFragment;
 import com.example.epubook.modelo.Libro;
 
 import java.io.InputStream;
@@ -38,10 +42,15 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         Libro libro = librosFiltro.get(position);
         holder.titulo.setText(libro.getTitulo());
         holder.autor.setText(libro.getAutor());
         holder.portada.setImageBitmap(libro.getPortada());
+
+        Animation animItems = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_items);
+        holder.itemView.startAnimation(animItems);
+
     }
 
     @Override

@@ -1,35 +1,42 @@
 package com.example.epubook.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlEpub;
 import com.example.epubook.modelo.Libro;
+import com.example.epubook.vista.DeslizarCardView;
 import com.example.epubook.vista.LibroAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LibrosFragment extends Fragment {
+public class LibrosFragment extends Fragment{
 
     List<Libro> listalibros = new ArrayList<>();
+    private ControlDialogos controlDialogos;
 
     private RecyclerView recyclerView;
     private ControlEpub controlEpub;
@@ -38,11 +45,19 @@ public class LibrosFragment extends Fragment {
     private ProgressBar progressBar;
     private EditText buscar;
     private TextView noLibros;
+    private Button buscarBoton;
 
+    Animation animEditxtIzq, animEditxtDer;
+
+
+    @SuppressLint("ResourceType")
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         controlEpub = new ControlEpub(context);
+        controlDialogos = new ControlDialogos(context);
+        animEditxtIzq = AnimationUtils.loadAnimation(context, R.anim.anim_edittext_izq);
+        animEditxtDer = AnimationUtils.loadAnimation(context, R.anim.anim_edittext_der);
     }
 
     @Override
@@ -61,20 +76,58 @@ public class LibrosFragment extends Fragment {
         progressBar=view.findViewById(R.id.progressLibros);
         buscar = view.findViewById(R.id.buscarLibro);
         noLibros = view.findViewById(R.id.noLibros);
+        buscarBoton = view.findViewById(R.id.buscarBoton);
 
         libroAdapter = new LibroAdapter(listalibros);
         recyclerView.setAdapter(libroAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        controlEpub.obtenerMisLibros(libroAdapter, listalibros, progressBar, buscar, noLibros, LibrosFragment.this);
+        controlEpub.obtenerMisLibros(libroAdapter, listalibros, progressBar, noLibros, LibrosFragment.this);
 
         buscarLibros();
+
+        buscarBoton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(buscar.getVisibility() == View.VISIBLE){
+                    animEditxtDer.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            if(buscar.getText().toString().isEmpty()){
+                                buscar.setVisibility(View.INVISIBLE);
+                            }else{
+                                buscar.setText("");
+                                buscar.setVisibility(View.INVISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    buscar.startAnimation(animEditxtDer);
+                }else{
+                    buscar.startAnimation(animEditxtIzq);
+                    buscar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DeslizarCardView(LibrosFragment.this, libroAdapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         if(getActivity() != null){
             getActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
                     Toast.makeText(getActivity(), "Dialogo salir", Toast.LENGTH_SHORT).show();
+
                 }
             });
         }
@@ -101,4 +154,7 @@ public class LibrosFragment extends Fragment {
         });
     }
 
+    public void eliminarEpub(LibrosFragment librosFragment, int pos) {
+        controlDialogos.dialogoEliminarItem(librosFragment.getView(), pos, listalibros, libroAdapter);
+    }
 }

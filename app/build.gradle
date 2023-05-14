@@ -57,5 +57,7 @@ dependencies {
     }
     implementation 'org.slf4j:slf4j-android:1.7.25'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
+    implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
 
 }

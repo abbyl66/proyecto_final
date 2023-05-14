@@ -34,6 +34,7 @@
             android:exported="false" />
         <activity
             android:name=".vista.PantallaInicio"
+            android:windowSoftInputMode="stateVisible|adjustPan"
             android:exported="false" />
         <activity
             android:name=".vista.Registrarse"

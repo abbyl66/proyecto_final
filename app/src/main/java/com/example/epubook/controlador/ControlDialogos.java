@@ -3,6 +3,7 @@ package com.example.epubook.controlador;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,6 +11,7 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,14 +27,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.epubook.R;
 import com.example.epubook.fragments.ColeccionesFragment;
+import com.example.epubook.modelo.ArchivoEpub;
 import com.example.epubook.modelo.Coleccion;
+import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ArchivosEpub;
+import com.example.epubook.vista.EpubAdapter;
+import com.example.epubook.vista.LibroAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+
+import java.util.List;
 
 public class ControlDialogos {
 
@@ -44,6 +52,7 @@ public class ControlDialogos {
 
     ControlEmail controlEmail = new ControlEmail(context);
     ControlColecciones controlColecciones = new ControlColecciones(context);
+    ControlEpub controlEpub = new ControlEpub(context);
 
     //Métodos para mostrar dialogo de confirmación:
 
@@ -374,6 +383,68 @@ public class ControlDialogos {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.animacionDialogo;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    //Dialogo eliminar item
+    public void dialogoEliminarItem(View vista, int pos, List<Libro> listalibros, LibroAdapter libroAdapter){
+        //Variables del dialog personalizado.
+        ConstraintLayout confirmacion = vista.findViewById(R.id.dialogoConfirm);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialogo_confirmacion, confirmacion);
+
+        TextView tituloDialog, infoDialog;
+        Button cancelarDialog, aceptarDialog;
+
+        tituloDialog = view.findViewById(R.id.confirmTitulo);
+        infoDialog = view.findViewById(R.id.infoConfirm);
+        cancelarDialog = view.findViewById(R.id.btcancelar);
+        aceptarDialog = view.findViewById(R.id.btaceptar);
+
+        //Creo alertdialog y le doy el diseño con el layout.
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        Libro epub = listalibros.get(pos);
+
+        //Muestro información en el dialog.
+        tituloDialog.setText("¿Desea eliminarlo?");
+        infoDialog.setText("Se eliminará: '" +epub.getTitulo()+"'.");
+        cancelarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón cancelar.
+                libroAdapter.notifyItemChanged(pos);
+                alertDialog.dismiss();
+            }
+        });
+
+        aceptarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón aceptar.
+                alertDialog.dismiss();
+                controlEpub.eliminarEpub(pos, listalibros, libroAdapter);
+            }
+        });
+
+        //Muestra diálogo.
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        //En caso de darle al botón atrás desde el dispositvo, no lo permitirá.
+        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
     }
 
 }

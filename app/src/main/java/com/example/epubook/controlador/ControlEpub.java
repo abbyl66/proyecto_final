@@ -12,6 +12,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.example.epubook.R;
 import com.example.epubook.fragments.LibrosFragment;
 import com.example.epubook.modelo.ArchivoEpub;
 import com.example.epubook.modelo.Libro;
+import com.example.epubook.vista.ArchivosEpub;
 import com.example.epubook.vista.EpubAdapter;
 import com.example.epubook.vista.LibroAdapter;
 import com.example.epubook.vista.PantallaInicio;
@@ -34,6 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -95,9 +98,9 @@ public class ControlEpub {
 
                         Date fecha = new Date(fechalong);
 
-                        //Creo objeto y lo añado a mi lista de archivos.
-                        ArchivoEpub nuevoArchivo = new ArchivoEpub(nombre, uri, tamanio, fecha);
+                        ArchivoEpub nuevoArchivo = new ArchivoEpub(nombre, uri, tamanio, fecha, false, false);
                         aEpub.add(nuevoArchivo);
+
                     }
                 }
             }
@@ -109,44 +112,57 @@ public class ControlEpub {
 
     //Método para recibir el fichero que el usuario desea agregar a la app.
     @TargetApi(Build.VERSION_CODES.O)
-    public void aniadirArchivoEpub(String ruta, Activity activity){
+    public void aniadirArchivoEpub(String ruta, Activity activity, ArchivoEpub archivoEpub, EpubAdapter epubAdapter){
         //Creo fichero mediante la ruta pasada por parámetro
         File epub = new File(ruta);
         Uri uri = Uri.fromFile(epub);
 
-        //Creo nodo epubs donde guardaré los ficheros de cada ususario en firestorage.
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference reference = firebaseStorage.getReference();
 
         String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //Nodo usuario.
+        //Nodo usuario, donde guardaré los ficheros epub de cada usuario.
         StorageReference referenceUsuario = reference.child(uidUsuario);
 
         //Nodo mis libros y epub.
-        StorageReference referenceLibros = referenceUsuario.child("misLibros/");
+        StorageReference referenceLibros = referenceUsuario.child("misLibros");
         StorageReference referenceEpub = referenceLibros.child(epub.getName());
 
-        //Control de fichero existente.
-        if(epub.exists()){
-            //Primero, se obtendrá y guardará el fichero en el nodo mis libros.
-            referenceEpub.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(context, "Libro guardado", Toast.LENGTH_SHORT).show();//Cambiar por dialog.
-                    Intent intent = new Intent(context, PantallaInicio.class);
-                    context.startActivity(intent);
-                    activity.finish();
-
+        //Compruebo que no seleccionen el mismo fichero.
+        referenceLibros.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for(StorageReference libro : listResult.getItems()){
+                    if(libro.getName().equals(epub.getName())){
+                        Toast.makeText(activity, "El fichero ya existe en la biblioteca.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                 }
-            });
-        }else{
-            Toast.makeText(context, "NO", Toast.LENGTH_SHORT).show();
-        }
+                //Primero, se obtendrá y guardará el fichero en el nodo mis libros.
+                referenceEpub.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        archivoEpub.setDescargando(false);
+                        archivoEpub.setGuardado(true);
+                        epubAdapter.notifyDataSetChanged();
+                        Toast.makeText(context, "Libro guardado", Toast.LENGTH_SHORT).show();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(activity, "No se ha podido descargar el fichero.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+            }
+        });
 
     }
 
-    public void obtenerMisLibros(LibroAdapter libroAdapter, List<Libro> listaLibros, ProgressBar progressBar, EditText buscar, TextView noLibros, LibrosFragment librosFragment){
+    public void obtenerMisLibros(LibroAdapter libroAdapter, List<Libro> listaLibros, ProgressBar progressBar, TextView noLibros, LibrosFragment librosFragment){
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -179,7 +195,6 @@ public class ControlEpub {
                                 listaLibros.addAll(libros);
                                 libroAdapter.notifyDataSetChanged();
                                 progressBar.setVisibility(View.GONE);
-                                buscar.setVisibility(View.VISIBLE);
                             }else{
                                 File epubLocal = File.createTempFile(epub.getName(), "epub");
 
@@ -193,7 +208,6 @@ public class ControlEpub {
                                         listaLibros.addAll(libros);
                                         libroAdapter.notifyDataSetChanged();
                                         progressBar.setVisibility(View.GONE);
-                                        buscar.setVisibility(View.VISIBLE);
 
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
@@ -323,4 +337,22 @@ public class ControlEpub {
         return new File(ruta, nombre);
     }
 
+    public void eliminarEpub(int pos, List<Libro> listalibros, LibroAdapter libroAdapter) {
+        Libro libro = listalibros.get(pos);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        File epub = new File(libro.getRuta());
+        StorageReference referenceLibro = storage.getReference().child(uid).child("misLibros").child(epub.getName());
+
+        referenceLibro.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                listalibros.remove(pos);
+                libroAdapter.notifyItemRemoved(pos);
+            }
+        });
+    }
 }

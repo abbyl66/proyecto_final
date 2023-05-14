@@ -44,4 +44,30 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/cargaArchivoEpub"
+            android:layout_marginTop="15dp"
+            android:layout_width="20dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:visibility="invisible"
+            android:outlineSpotShadowColor="@color/rosa"
+            android:layout_height="20dp"></ProgressBar>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/libroGuardado"
+            android:src="@drawable/ic_baseline_check_circle_24"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:visibility="invisible"
+            android:layout_marginTop="15dp"></ImageView>
+
+    </RelativeLayout>
+
 </LinearLayout>
