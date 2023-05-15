@@ -2,6 +2,7 @@ package com.example.epubook.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -28,6 +29,7 @@ import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlEpub;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.DeslizarCardView;
+import com.example.epubook.vista.LectorEpub;
 import com.example.epubook.vista.LibroAdapter;
 
 import java.util.ArrayList;
@@ -81,6 +83,16 @@ public class LibrosFragment extends Fragment{
         libroAdapter = new LibroAdapter(listalibros);
         recyclerView.setAdapter(libroAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        libroAdapter.setOnItemClickListener(new LibroAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int pos) {
+                String ruta = listalibros.get(pos).getRuta();
+                Intent intent = new Intent(requireContext(), LectorEpub.class);
+                intent.putExtra("ruta", ruta);
+                requireContext().startActivity(intent);
+            }
+        });
 
         controlEpub.obtenerMisLibros(libroAdapter, listalibros, progressBar, noLibros, LibrosFragment.this);
 

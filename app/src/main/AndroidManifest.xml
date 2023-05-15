@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Epubook">
         <activity
+            android:name=".vista.LectorEpub"
+            android:exported="false" />
+        <activity
             android:name=".vista.ArchivosEpub"
             android:exported="false" />
         <activity
@@ -34,8 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".vista.PantallaInicio"
-            android:windowSoftInputMode="stateVisible|adjustPan"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".vista.Registrarse"
             android:exported="false" />

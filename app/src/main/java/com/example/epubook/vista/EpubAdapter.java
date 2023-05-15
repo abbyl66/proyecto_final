@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -73,6 +75,8 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
 
         comprobarGuardado(holder, archivoEpub);
 
+        Animation animacion = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_itemsepub);
+        holder.itemView.startAnimation(animacion);
 
         //Esto lo usaré cuando el usuario seleccione un archivo. Que posteriormente, leeré.
         holder.itemView.setOnClickListener(new View.OnClickListener() {

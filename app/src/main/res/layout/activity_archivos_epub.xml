@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:src="@drawable/ic_baseline_search_24"></ImageView>
 
         <EditText
@@ -32,7 +32,9 @@
             android:textSize="16sp"
             android:inputType="textCapSentences"
             android:textColor="#FFAAACB1"
+            android:background="@drawable/edittex_archivos"
             android:layout_marginEnd="15dp"
+            android:padding="5dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:hint="Buscar"></EditText>

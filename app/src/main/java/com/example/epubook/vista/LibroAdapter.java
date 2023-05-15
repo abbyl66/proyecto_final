@@ -27,10 +27,19 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
 
     private List<Libro> listaLibros;
     private List<Libro> librosFiltro;
+    private OnItemClickListener listenerClick;
 
     public LibroAdapter(List<Libro> listaLibros){
         this.listaLibros = listaLibros;
         this.librosFiltro = listaLibros;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(int pos);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        listenerClick = listener;
     }
 
 
@@ -41,7 +50,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         Libro libro = librosFiltro.get(position);
         holder.titulo.setText(libro.getTitulo());
@@ -50,6 +59,15 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
 
         Animation animItems = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_items);
         holder.itemView.startAnimation(animItems);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(listenerClick != null){
+                    listenerClick.onItemClick(position);
+                }
+            }
+        });
 
     }
 
@@ -97,7 +115,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
     }
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView titulo, autor;
         private ImageView portada;
@@ -107,6 +125,13 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
             titulo = itemView.findViewById(R.id.libroTitulo);
             autor = itemView.findViewById(R.id.libroAutor);
             portada = itemView.findViewById(R.id.libroPortada);
+
+            itemView.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
 
         }
     }
