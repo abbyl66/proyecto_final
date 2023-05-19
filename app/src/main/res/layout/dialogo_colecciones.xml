@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dialogoColecc"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:background="@drawable/contenedor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/confirmTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/contenedor_celes"
+            android:fontFamily="@font/alata"
+            android:padding="12dp"
+            android:text="Elige una colección:"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/noColecciones"
+            android:gravity="center"
+            android:text="No hay colecciones."
+            android:textColor="@color/celeste"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmTitulo"></TextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerColecc"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirmTitulo" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <Button
+        android:id="@+id/btCancelColecc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:backgroundTint="@color/celeste"
+        android:text="Cancelar"
+        android:textSize="14sp"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/dialogoColecc"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dialogoColecc"
+        app:layout_constraintVertical_bias="0.208"></Button>
+
+    <Button
+        android:id="@+id/btAceptColecc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="@color/celeste"
+        android:text="Aceptar"
+        android:textSize="14sp"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/dialogoColecc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btCancelColecc"
+        app:layout_constraintTop_toBottomOf="@+id/dialogoColecc"></Button>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,6 +52,47 @@
             android:drawablePadding="8dp"></TextView>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/celeste"
+            android:fontFamily="@font/alata"
+            android:id="@+id/explorar"
+            android:text="Explorar"
+            android:textSize="20sp"
+            android:drawableLeft="@drawable/baseline_travel_explore_24"
+            android:drawablePadding="8dp"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/escribir"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/celeste"
+            android:text="Escribir"
+            android:fontFamily="@font/alata"
+            android:textSize="20sp"
+            android:drawableLeft="@drawable/baseline_draw_24"
+            android:drawablePadding="8dp"></TextView>
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

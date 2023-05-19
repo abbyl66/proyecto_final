@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="110dp"
     android:layout_marginBottom="5dp"
     android:layout_marginStart="1dp"
+    android:layout_marginEnd="10dp"
     android:layout_marginTop="5dp"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
@@ -17,17 +17,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
+        android:gravity="center"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="110dp"
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardImagen"
-                android:layout_width="100dp"
-                android:layout_height="150dp"
+                android:id="@+id/card"
+                android:layout_width="84dp"
+                android:layout_height="110dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
@@ -35,9 +36,9 @@
                 app:cardCornerRadius="20dp">
 
                 <ImageView
-                    android:id="@+id/libroPortada"
-                    android:layout_width="104dp"
-                    android:layout_height="150dp"
+                    android:id="@+id/portadaLibroColecc"
+                    android:layout_width="84dp"
+                    android:layout_height="110dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"></ImageView>
@@ -51,13 +52,13 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/cardImagen"
-                android:layout_toRightOf="@+id/cardImagen"
+                android:layout_toEndOf="@+id/card"
+                android:layout_toRightOf="@+id/card"
                 android:orientation="vertical">
 
 
                 <TextView
-                    android:id="@+id/libroTitulo"
+                    android:id="@+id/tituloLibroColecc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
@@ -68,21 +69,12 @@
                     android:textStyle="bold"></TextView>
 
                 <TextView
-                    android:id="@+id/libroAutor"
+                    android:id="@+id/autorLibroColecc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:text="Autor del libro"
                     android:textSize="13sp"></TextView>
-
-                <ImageView
-                    android:id="@+id/botonGuardarColecc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_bookmark_add_24"
-                    android:layout_marginStart="210dp"
-                    android:layout_marginTop="40dp"
-                    ></ImageView>
 
 
             </LinearLayout>
@@ -95,4 +87,3 @@
 
 
 </androidx.cardview.widget.CardView>
-

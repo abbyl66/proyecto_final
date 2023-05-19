@@ -1,7 +1,6 @@
 package com.example.epubook.vista;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +11,20 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.epubook.R;
 import com.example.epubook.controlador.ControlDialogos;
-import com.example.epubook.fragments.LibrosFragment;
 import com.example.epubook.modelo.Libro;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 
-import java.io.InputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> implements Filterable {
 
@@ -65,6 +68,51 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
             public void onClick(View view) {
                 if(listenerClick != null){
                     listenerClick.onItemClick(position);
+                }
+            }
+        });
+
+        holder.guardarColecc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ControlDialogos controlDialogos = new ControlDialogos(view.getContext());
+                controlDialogos.dialogoColeccion(view, position, libro.getRuta());
+            }
+        });
+
+        comprobarLibrosGuardados(holder, libro);
+
+    }
+
+    private void comprobarLibrosGuardados(ViewHolder holder, Libro libro) {
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference reference = firebaseStorage.getReference();
+
+        String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        StorageReference referenceUsuario = reference.child(uidUsuario);
+
+        StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
+
+        referenceColecc.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for(StorageReference storageReference : listResult.getPrefixes()){
+                    storageReference.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                        @Override
+                        public void onSuccess(ListResult listResult) {
+                            for(StorageReference libros : listResult.getItems()){
+                                if(!libros.getName().equals("ficheroVacio")){
+                                    File libroEpub = new File(libro.getRuta());
+                                    if (libroEpub.getName().equals(libros.getName())){
+                                        holder.guardarColecc.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.celeste));
+                                        break;
+                                    }
+
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -118,13 +166,14 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView titulo, autor;
-        private ImageView portada;
+        private ImageView portada, guardarColecc;
 
         public ViewHolder(View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.libroTitulo);
             autor = itemView.findViewById(R.id.libroAutor);
             portada = itemView.findViewById(R.id.libroPortada);
+            guardarColecc = itemView.findViewById(R.id.botonGuardarColecc);
 
             itemView.setOnClickListener(this);
 

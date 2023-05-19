@@ -65,7 +65,8 @@ public class PantallaInicio extends AppCompatActivity{
         inicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recreate();
+                Intent intent = new Intent(PantallaInicio.this, PantallaInicio.class);
+                startActivity(intent);
             }
         });
 
@@ -153,10 +154,6 @@ public class PantallaInicio extends AppCompatActivity{
         fragmentTransaction.replace(R.id.dsp_bajo, fragment);
         fragmentTransaction.commit();
 
-    }
-
-    public FragmentManager cambiarFragment(){
-        return getSupportFragmentManager();
     }
 
 }

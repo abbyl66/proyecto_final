@@ -3,43 +3,41 @@ package com.example.epubook.controlador;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.R;
-import com.example.epubook.fragments.ColeccionesFragment;
-import com.example.epubook.fragments.LibrosFragment;
 import com.example.epubook.modelo.Coleccion;
+import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ColeccAdapter;
-import com.example.epubook.vista.PantallaInicio;
+import com.example.epubook.vista.ColeccDialogAdapter;
+import com.example.epubook.vista.LibroAdapter;
+import com.example.epubook.vista.LibroColeccAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ControlColecciones {
 
     Context context;
+    ControlEpub controlEpub;
 
     public ControlColecciones(Context context){
         this.context = context;
@@ -95,7 +93,7 @@ public class ControlColecciones {
                 listaColecciones.clear();
                 for(StorageReference coleccionNombre : listResult.getPrefixes()){
                     noColecc.setVisibility(View.GONE);
-                    Coleccion coleccion = new Coleccion(coleccionNombre.getName());
+                    Coleccion coleccion = new Coleccion(coleccionNombre.getName(), false);
                     listaColecciones.add(coleccion);
                     coleccAdapter.notifyDataSetChanged();
                 }
@@ -104,5 +102,124 @@ public class ControlColecciones {
 
     }
 
+    public void mostrarColeccionesRecycler(List<Coleccion> listaColecciones, ColeccDialogAdapter coleccAdapter, TextView noColecc){
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference reference = firebaseStorage.getReference();
+
+        String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //Nodo usuario.
+        StorageReference referenceUsuario = reference.child(uidUsuario);
+
+        //Nodo mis colecciones.
+        StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
+
+        referenceColecc.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                noColecc.setVisibility(View.VISIBLE);
+                listaColecciones.clear();
+                for(StorageReference coleccionNombre : listResult.getPrefixes()){
+                    noColecc.setVisibility(View.GONE);
+                    Coleccion coleccion = new Coleccion(coleccionNombre.getName(), false);
+                    listaColecciones.add(coleccion);
+                    coleccAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+    }
+
+    public void aniadirLibro(List<Coleccion> colecciones, String ruta) {
+        for(Coleccion coleccion : colecciones){
+            if(coleccion.isSeleccionado()){
+                File archivo = new File(ruta);
+
+                FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                StorageReference reference = firebaseStorage.getReference();
+
+                String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                //Nodo usuario.
+                StorageReference referenceUsuario = reference.child(uidUsuario);
+
+                //Nodo mis colecciones.
+                StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
+                StorageReference referenceColeccUser = referenceColecc.child(coleccion.getNombre());
+                StorageReference referenceRuta = referenceColeccUser.child(archivo.getName());
+                referenceRuta.putBytes(ruta.getBytes()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        System.out.println("Se ha guardado");
+                    }
+                });
+
+            }else{
+                System.out.println("No hay una coleccion seleccionada");
+            }
+        }
+    }
+
+    public void mostrarContenidoColecc(List<Libro> listaLibros, LibroColeccAdapter libroAdapter, Coleccion pos, FragmentActivity activity) {
+
+        controlEpub = new ControlEpub(activity);
+        listaLibros.clear();
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference reference = firebaseStorage.getReference();
+
+        String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //Nodo usuario.
+        StorageReference referenceUsuario = reference.child(uidUsuario);
+
+        //Nodo mis colecciones.
+        StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
+        StorageReference referenceLibro = referenceUsuario.child("misLibros/");
+        StorageReference referenceMiColecc = referenceColecc.child(pos.getNombre());
+
+        referenceMiColecc.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for(StorageReference storageReference : listResult.getItems()){
+                    referenceLibro.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                        @Override
+                        public void onSuccess(ListResult listResult) {
+                            for(StorageReference libro : listResult.getItems()){
+
+                                if(storageReference.getName().equals(libro.getName())){
+                                    StorageReference referenceArchivo = referenceLibro.child(libro.getName());
+                                    try {
+                                        File archivoTemp = File.createTempFile("archivo", "epub");
+                                        referenceArchivo.getFile(archivoTemp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                List<Libro> libros = controlEpub.mostrarMisLibros(archivoTemp.getPath());
+                                                listaLibros.addAll(libros);
+                                                libroAdapter.notifyDataSetChanged();
+
+
+                                            }
+                                        });
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
+
+                                }else{
+                                    listaLibros.clear();
+                                    libroAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+
+    }
 }
 

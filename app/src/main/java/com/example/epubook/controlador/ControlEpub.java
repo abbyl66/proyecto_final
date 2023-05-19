@@ -352,6 +352,7 @@ public class ControlEpub {
             public void onSuccess(Void unused) {
                 listalibros.remove(pos);
                 libroAdapter.notifyItemRemoved(pos);
+                libroAdapter.notifyDataSetChanged();
             }
         });
     }

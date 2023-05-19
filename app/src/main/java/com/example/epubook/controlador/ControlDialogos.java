@@ -24,14 +24,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.R;
-import com.example.epubook.fragments.ColeccionesFragment;
-import com.example.epubook.modelo.ArchivoEpub;
 import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ArchivosEpub;
-import com.example.epubook.vista.EpubAdapter;
+import com.example.epubook.vista.ColeccDialogAdapter;
 import com.example.epubook.vista.LibroAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +40,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ControlDialogos {
@@ -424,6 +425,70 @@ public class ControlDialogos {
                 //Si le da al botón aceptar.
                 alertDialog.dismiss();
                 controlEpub.eliminarEpub(pos, listalibros, libroAdapter);
+            }
+        });
+
+        //Muestra diálogo.
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        //En caso de darle al botón atrás desde el dispositvo, no lo permitirá.
+        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+    //Dialogo recycler elegir coleccion.
+    public void dialogoColeccion(View vista, int posicion, String rutaLibro){
+        //Variables del dialog personalizado.
+        ConstraintLayout elegirColeccion = vista.findViewById(R.id.dialogoColecc);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialogo_colecciones, elegirColeccion);
+
+        RecyclerView recyclerElegColecc;
+        ColeccDialogAdapter coleccAdapter;
+        List<Coleccion> colecciones = new ArrayList<>();
+        TextView noColecc;
+        Button cancelarDialog, aceptarDialog;
+
+        recyclerElegColecc = view.findViewById(R.id.recyclerColecc);
+        noColecc = view.findViewById(R.id.noColecciones);
+        cancelarDialog = view.findViewById(R.id.btCancelColecc);
+        aceptarDialog = view.findViewById(R.id.btAceptColecc);
+
+        coleccAdapter = new ColeccDialogAdapter(colecciones, rutaLibro);
+        recyclerElegColecc.setAdapter(coleccAdapter);
+        recyclerElegColecc.setLayoutManager(new LinearLayoutManager(vista.getContext()));
+        controlColecciones.mostrarColeccionesRecycler(colecciones, coleccAdapter,noColecc);
+
+        //Creo alertdialog y le doy el diseño con el layout.
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        cancelarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón cancelar.
+                alertDialog.dismiss();
+            }
+        });
+
+        aceptarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón aceptar.
+                alertDialog.dismiss();
+                controlColecciones.aniadirLibro(colecciones, rutaLibro);
             }
         });
 
