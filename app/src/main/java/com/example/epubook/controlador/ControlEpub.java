@@ -2,33 +2,26 @@ package com.example.epubook.controlador;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-
 import com.example.epubook.R;
+import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
 import com.example.epubook.modelo.ArchivoEpub;
+import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
-import com.example.epubook.vista.ArchivosEpub;
 import com.example.epubook.vista.EpubAdapter;
 import com.example.epubook.vista.LibroAdapter;
-import com.example.epubook.vista.PantallaInicio;
-import com.google.android.gms.common.util.IOUtils;
+import com.example.epubook.vista.LibroColeccAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,31 +29,19 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 import nl.siegmann.epublib.domain.Author;
 import nl.siegmann.epublib.domain.Book;
@@ -298,7 +279,7 @@ public class ControlEpub {
     }
 
     //En caso de guardar un nuevo fichero epub, se guarda en el cache.
-    private void guardarEpubCache(String nombre, File archivo, Activity activity){
+    public void guardarEpubCache(String nombre, File archivo, Activity activity){
 
         try {
 
@@ -325,14 +306,14 @@ public class ControlEpub {
     }
 
     //Método para comprobar que mi fichero existe.
-    private boolean existeEpub(String nombre, Activity activity){
+    public boolean existeEpub(String nombre, Activity activity){
         File ruta = activity.getApplicationContext().getCacheDir();
         File fichero = new File(ruta, nombre);
         return fichero.exists();
     }
 
     //Método para cargar ficheros existentes desde cache.
-    private File cargarCacheEpub(String nombre, Activity activity){
+    public File cargarCacheEpub(String nombre, Activity activity){
         File ruta = activity.getApplicationContext().getCacheDir();
         return new File(ruta, nombre);
     }
@@ -355,5 +336,31 @@ public class ControlEpub {
                 libroAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public void eliminarLibroC(int pos, List<Libro> listalibros, LibroColeccAdapter libroColeccAdapter, Coleccion coleccion, ColeccionesFragment coleccionesFragment) {
+        Libro libro = listalibros.get(pos);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        File epub = new File(libro.getRuta());
+
+        String archivo = epub.getName();
+        int index = archivo.lastIndexOf('.');
+        String nombreArch = archivo.substring(0, index);
+
+        StorageReference referenceLibro = storage.getReference().child(uid).child("misColecciones").child(coleccion.getNombre()).child(nombreArch+".epub");
+
+        referenceLibro.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                listalibros.remove(pos);
+                libroColeccAdapter.notifyItemRemoved(pos);
+                libroColeccAdapter.notifyDataSetChanged();
+            }
+        });
+
+
     }
 }

@@ -22,6 +22,8 @@ public class ColeccAdapter extends RecyclerView.Adapter<ColeccAdapter.ViewHolder
 
     private List<Coleccion> listaColecciones;
     private OnColeccClick coleccListener;
+    private int itemSelect = -1;
+    private boolean animacion = true;
 
     public ColeccAdapter(List<Coleccion> listaColecciones){
         this.listaColecciones = listaColecciones;
@@ -38,30 +40,29 @@ public class ColeccAdapter extends RecyclerView.Adapter<ColeccAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_colecc, parent, false);
-        return new ColeccAdapter.ViewHolder(view);
+        return new ColeccAdapter.ViewHolder(view, this);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Coleccion coleccion = listaColecciones.get(position);
-
         holder.nombreColecc.setText(coleccion.getNombre());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(coleccListener!=null){
-                    holder.relativeLayout.setBackgroundColor(Color.WHITE);
-                    holder.nombreColecc.setTextColor(Color.parseColor("#f9d2d7"));
-                    coleccListener.onColeccClick(position);
-                }
-            }
-        });
-        
+        if(position==itemSelect){
+            holder.relativeLayout.setBackgroundResource(R.drawable.itemcolecc_fondo);
+            holder.nombreColecc.setTextColor(Color.parseColor("#f9d2d7"));
+        }else{
+            holder.relativeLayout.setBackgroundResource(0);
+            holder.relativeLayout.setBackgroundColor(Color.parseColor("#f9d2d7"));
+            holder.nombreColecc.setTextColor(Color.WHITE);
+        }
 
-        Animation animacion = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_itemsepub);
-        holder.itemView.startAnimation(animacion);
+        //Animacion items coleccion. Solo lo inicializo una vez.
+        if(animacion){
+            Animation animacion = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_itemsepub);
+            holder.itemView.startAnimation(animacion);
 
+        }
     }
 
     @Override
@@ -72,10 +73,11 @@ public class ColeccAdapter extends RecyclerView.Adapter<ColeccAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nombreColecc;
         private RelativeLayout relativeLayout;
+        private ColeccAdapter adapter;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, ColeccAdapter adapter) {
             super(itemView);
-
+            this.adapter = adapter;
             nombreColecc = itemView.findViewById(R.id.coleccNombre);
             relativeLayout = itemView.findViewById(R.id.fondoColeccColor);
 
@@ -85,7 +87,14 @@ public class ColeccAdapter extends RecyclerView.Adapter<ColeccAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
+            int pos = getAdapterPosition();
+            adapter.itemSelect = pos;
+            adapter.animacion = false;
+            adapter.notifyDataSetChanged();
 
+            if(adapter.coleccListener != null){
+                adapter.coleccListener.onColeccClick(pos);
+            }
         }
     }
 

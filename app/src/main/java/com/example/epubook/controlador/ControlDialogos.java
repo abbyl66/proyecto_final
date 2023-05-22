@@ -28,11 +28,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.R;
+import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ArchivosEpub;
 import com.example.epubook.vista.ColeccDialogAdapter;
 import com.example.epubook.vista.LibroAdapter;
+import com.example.epubook.vista.LibroColeccAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -511,5 +513,67 @@ public class ControlDialogos {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
+
+    public void dialogoEliminarLibroColecc(View vista, int pos, List<Libro> listalibros, LibroColeccAdapter libroAdapter, Coleccion coleccion, ColeccionesFragment coleccionesFragment){
+        //Variables del dialog personalizado.
+        ConstraintLayout confirmacion = vista.findViewById(R.id.dialogoConfirm);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialogo_confirmacion, confirmacion);
+
+        TextView tituloDialog, infoDialog;
+        Button cancelarDialog, aceptarDialog;
+
+        tituloDialog = view.findViewById(R.id.confirmTitulo);
+        infoDialog = view.findViewById(R.id.infoConfirm);
+        cancelarDialog = view.findViewById(R.id.btcancelar);
+        aceptarDialog = view.findViewById(R.id.btaceptar);
+
+        //Creo alertdialog y le doy el diseño con el layout.
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        Libro epub = listalibros.get(pos);
+
+        //Muestro información en el dialog.
+        tituloDialog.setText("¿Desea eliminarlo?");
+        infoDialog.setText("Se eliminará: '" +epub.getTitulo()+"' de tu coleccion "+coleccion.getNombre()+".");
+        cancelarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón cancelar.
+                libroAdapter.notifyItemChanged(pos);
+                alertDialog.dismiss();
+            }
+        });
+
+        aceptarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón aceptar.
+                alertDialog.dismiss();
+                controlEpub.eliminarLibroC(pos, listalibros, libroAdapter, coleccion, coleccionesFragment);
+            }
+        });
+
+        //Muestra diálogo.
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        //En caso de darle al botón atrás desde el dispositvo, no lo permitirá.
+        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
 
 }

@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,9 +15,7 @@ import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ColeccAdapter;
 import com.example.epubook.vista.ColeccDialogAdapter;
-import com.example.epubook.vista.LibroAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,7 +70,8 @@ public class ControlColecciones {
 
     }
 
-    public void mostrarColecciones(List<Coleccion> listaColecciones, ColeccAdapter coleccAdapter, TextView noColecc){
+    //Colecciones del fragment colecciones.
+    public void mostrarColecciones(List<Coleccion> listaColecciones, ColeccAdapter coleccAdapter){
 
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference reference = firebaseStorage.getReference();
@@ -89,10 +87,8 @@ public class ControlColecciones {
         referenceColecc.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
-                noColecc.setVisibility(View.VISIBLE);
                 listaColecciones.clear();
                 for(StorageReference coleccionNombre : listResult.getPrefixes()){
-                    noColecc.setVisibility(View.GONE);
                     Coleccion coleccion = new Coleccion(coleccionNombre.getName(), false);
                     listaColecciones.add(coleccion);
                     coleccAdapter.notifyDataSetChanged();
@@ -102,6 +98,7 @@ public class ControlColecciones {
 
     }
 
+    //Colecciones que se muestran al momento de guardar un libro.
     public void mostrarColeccionesRecycler(List<Coleccion> listaColecciones, ColeccDialogAdapter coleccAdapter, TextView noColecc){
 
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
@@ -151,7 +148,7 @@ public class ControlColecciones {
                 referenceRuta.putBytes(ruta.getBytes()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        System.out.println("Se ha guardado");
+                        System.out.println("Libro guardado");
                     }
                 });
 
@@ -187,16 +184,16 @@ public class ControlColecciones {
                     referenceLibro.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
                         @Override
                         public void onSuccess(ListResult listResult) {
-                            for(StorageReference libro : listResult.getItems()){
+                            for(StorageReference epub : listResult.getItems()){
 
-                                if(storageReference.getName().equals(libro.getName())){
-                                    StorageReference referenceArchivo = referenceLibro.child(libro.getName());
+                                if(storageReference.getName().equals(epub.getName())){
+                                    StorageReference referenceArchivo = referenceLibro.child(epub.getName());
                                     try {
-                                        File archivoTemp = File.createTempFile("archivo", "epub");
+                                        File archivoTemp = File.createTempFile(epub.getName(), "epub");
                                         referenceArchivo.getFile(archivoTemp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                                List<Libro> libros = controlEpub.mostrarMisLibros(archivoTemp.getPath());
+                                                List<Libro> libros = controlEpub.mostrarMisLibros(archivoTemp.getAbsolutePath());
                                                 listaLibros.addAll(libros);
                                                 libroAdapter.notifyDataSetChanged();
 

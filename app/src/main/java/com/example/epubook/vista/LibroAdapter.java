@@ -84,6 +84,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
 
     }
 
+    //Pinta imageview de guardado en celeste si el libro ya ha sido guardado en alguna coleccion.
     private void comprobarLibrosGuardados(ViewHolder holder, Libro libro) {
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference reference = firebaseStorage.getReference();

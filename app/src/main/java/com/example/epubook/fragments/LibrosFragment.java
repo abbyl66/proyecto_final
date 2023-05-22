@@ -20,6 +20,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +50,8 @@ public class LibrosFragment extends Fragment{
     private TextView noLibros;
     private Button buscarBoton;
 
+    private LinearLayout toolbar, toolbarInicio;
+
     Animation animEditxtIzq, animEditxtDer;
 
 
@@ -73,6 +76,12 @@ public class LibrosFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_libros, container, false);
+
+        toolbar  = requireActivity().findViewById(R.id.toolbarEliminar);
+        toolbarInicio  = requireActivity().findViewById(R.id.toolbarInicio);
+
+        toolbar.setVisibility(View.GONE);
+        toolbarInicio.setVisibility(View.VISIBLE);
 
         recyclerView = view.findViewById(R.id.libroRecyclerView);
         progressBar=view.findViewById(R.id.progressLibros);

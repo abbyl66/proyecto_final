@@ -16,6 +16,10 @@
         <include
             layout="@layout/toolbar"></include>
 
+        <include
+            layout="@layout/toolbar_eliminar"
+            android:visibility="gone"></include>
+
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
