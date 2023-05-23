@@ -25,7 +25,6 @@ public class ColeccDialogAdapter extends RecyclerView.Adapter<ColeccDialogAdapte
 
 private List<Coleccion> listaColecciones;
 private String ruta;
-private ControlColecciones controlColecciones;
 
 public ColeccDialogAdapter(List<Coleccion> listaColecciones, String ruta){
         this.listaColecciones = listaColecciones;
@@ -35,7 +34,6 @@ public ColeccDialogAdapter(List<Coleccion> listaColecciones, String ruta){
 @Override
 public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_colecc_recycler, parent, false);
-        controlColecciones = new ControlColecciones(view.getContext());
         return new ColeccDialogAdapter.ViewHolder(view);
         }
 
@@ -77,6 +75,7 @@ public void onBindViewHolder(ViewHolder holder, int position) {
                 for(StorageReference archivo : listResult.getItems()){
                     File libro = new File(ruta);
                     if(libro.getName().equals(archivo.getName())){
+                        //Libro ya pertenece a una carpeta. No se puede quitar el check.
                         holder.elegirColecc.setChecked(true);
                         holder.elegirColecc.setEnabled(false);
                     }

@@ -32,6 +32,7 @@ import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ArchivosEpub;
+import com.example.epubook.vista.ColeccAdapter;
 import com.example.epubook.vista.ColeccDialogAdapter;
 import com.example.epubook.vista.LibroAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
@@ -576,4 +577,64 @@ public class ControlDialogos {
     }
 
 
+
+    public void dialogoEliminarColecc(Coleccion coleccion, View view, List<Coleccion> listaColecciones, int position, ColeccAdapter adapter) {
+        ConstraintLayout confirmacion = view.findViewById(R.id.dialogoConfirm);
+        View vista = LayoutInflater.from(context).inflate(R.layout.dialogo_confirmacion, confirmacion);
+
+        TextView tituloDialog, infoDialog;
+        Button cancelarDialog, aceptarDialog;
+
+        tituloDialog = vista.findViewById(R.id.confirmTitulo);
+        infoDialog = vista.findViewById(R.id.infoConfirm);
+        cancelarDialog = vista.findViewById(R.id.btcancelar);
+        aceptarDialog = vista.findViewById(R.id.btaceptar);
+
+        //Creo alertdialog y le doy el diseño con el layout.
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(vista);
+        final AlertDialog alertDialog = builder.create();
+
+        Coleccion colecc = listaColecciones.get(position);
+
+        //Muestro información en el dialog.
+        tituloDialog.setText("¿Desea eliminarlo?");
+        infoDialog.setText("Se eliminará la colección "+colecc.getNombre()+".");
+        cancelarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón cancelar.
+                adapter.notifyItemChanged(position);
+                alertDialog.dismiss();
+            }
+        });
+
+        aceptarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón aceptar.
+                alertDialog.dismiss();
+                controlColecciones.eliminarColeccion(position, listaColecciones, adapter, coleccion, view);
+            }
+        });
+
+        //Muestra diálogo.
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        //En caso de darle al botón atrás desde el dispositvo, no lo permitirá.
+        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
 }

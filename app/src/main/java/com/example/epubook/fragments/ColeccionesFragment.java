@@ -1,16 +1,21 @@
 package com.example.epubook.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,7 +29,6 @@ import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ColeccAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
-import com.example.epubook.vista.SuperposItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +36,10 @@ import java.util.List;
 public class ColeccionesFragment extends Fragment {
 
     List<Coleccion> listaColeccion = new ArrayList<>();
-    List<Libro> listaLibros = new ArrayList<>();
-    LibroColeccAdapter libroColeccAdapter;
+    private List<Libro> listaLibros = new ArrayList<>();
+    private LibroColeccAdapter libroColeccAdapter;
 
-    private RecyclerView recyclerView, recyclerCotenido;
+    public static RecyclerView recyclerView, recyclerCotenido;
     private ColeccAdapter coleccAdapter;
 
     ControlColecciones controlColecciones;
@@ -44,8 +48,7 @@ public class ColeccionesFragment extends Fragment {
     private TextView noColecc, titulo, titulo2;
     private ImageView imgColecc, contenedor;
 
-    LinearLayout toolbarInicio;
-    LinearLayout toolbar;
+    private LinearLayout toolbarInicio, toolbar;
 
     @Override
     public void onAttach(Context context) {
@@ -82,13 +85,15 @@ public class ColeccionesFragment extends Fragment {
         imgColecc = view.findViewById(R.id.imgColecc);
         contenedor = view.findViewById(R.id.contenedorColecc);
 
+        Animation animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.anim_fragcolecc);
+        imgColecc.startAnimation(animation);
+        titulo.startAnimation(animation);
+        titulo2.startAnimation(animation);
+
         coleccAdapter = new ColeccAdapter(listaColeccion);
         recyclerView.setAdapter(coleccAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        int tamanio = 100;
-        SuperposItems superposItems = new SuperposItems(tamanio);
-        recyclerView.addItemDecoration(superposItems);
 
         libroColeccAdapter = new LibroColeccAdapter(listaLibros);
         recyclerCotenido.setAdapter(libroColeccAdapter);
@@ -99,7 +104,7 @@ public class ColeccionesFragment extends Fragment {
         coleccAdapter.setOnColeccListener(new ColeccAdapter.OnColeccClick() {
             @Override
             public void onColeccClick(int pos) {
-                //Al pulsa alguna coleccion, oculto titulos e imagen de portada.Y control del toolbar eliminar.
+                //Al pulsar alguna coleccion, oculto titulos e imagen de portada.Y control del toolbar eliminar.
                 titulo.setVisibility(View.GONE);
                 titulo2.setVisibility(View.GONE);
                 imgColecc.setVisibility(View.GONE);
@@ -160,10 +165,12 @@ public class ColeccionesFragment extends Fragment {
             public void onClick(View view) {
                 if(toolbar.getVisibility()==View.VISIBLE){
                     toolbar.setVisibility(View.GONE);
+                    toolbarInicio.setVisibility(View.VISIBLE);
                 }
             }
         });
 
     }
+
 }
 

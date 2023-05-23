@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Epubook">
         <activity
+            android:name=".vista.PantallaEscribir"
+            android:exported="false" />
+        <activity
+            android:name=".vista.PantallaExplorar"
+            android:exported="false" />
+        <activity
             android:name=".vista.LectorEpub"
             android:exported="false" />
         <activity

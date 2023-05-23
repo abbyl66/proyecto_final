@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.modelo.Coleccion;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class ColeccAdapter extends RecyclerView.Adapter<ColeccAdapter.ViewHolder
     private OnColeccClick coleccListener;
     private int itemSelect = -1;
     private boolean animacion = true;
+    private ControlDialogos controlDialogos;
 
     public ColeccAdapter(List<Coleccion> listaColecciones){
         this.listaColecciones = listaColecciones;
@@ -48,10 +51,24 @@ public class ColeccAdapter extends RecyclerView.Adapter<ColeccAdapter.ViewHolder
         Coleccion coleccion = listaColecciones.get(position);
         holder.nombreColecc.setText(coleccion.getNombre());
 
+        controlDialogos = new ControlDialogos(holder.itemView.getContext());
+
         if(position==itemSelect){
+            //Efecto highlight item.
             holder.relativeLayout.setBackgroundResource(R.drawable.itemcolecc_fondo);
             holder.nombreColecc.setTextColor(Color.parseColor("#f9d2d7"));
+
+            //Si una colección está seleccionada, aparece el image button para poder eliminarlo.
+            holder.eliminarColecc.setVisibility(View.VISIBLE);
+            holder.eliminarColecc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    controlDialogos.dialogoEliminarColecc(coleccion, view, listaColecciones, position, ColeccAdapter.this);
+                }
+            });
+
         }else{
+            holder.eliminarColecc.setVisibility(View.INVISIBLE);
             holder.relativeLayout.setBackgroundResource(0);
             holder.relativeLayout.setBackgroundColor(Color.parseColor("#f9d2d7"));
             holder.nombreColecc.setTextColor(Color.WHITE);
@@ -74,12 +91,14 @@ public class ColeccAdapter extends RecyclerView.Adapter<ColeccAdapter.ViewHolder
         private TextView nombreColecc;
         private RelativeLayout relativeLayout;
         private ColeccAdapter adapter;
+        private ImageButton eliminarColecc;
 
         public ViewHolder(View itemView, ColeccAdapter adapter) {
             super(itemView);
             this.adapter = adapter;
             nombreColecc = itemView.findViewById(R.id.coleccNombre);
             relativeLayout = itemView.findViewById(R.id.fondoColeccColor);
+            eliminarColecc = itemView.findViewById(R.id.btEliminarColecc);
 
             itemView.setOnClickListener(this);
 

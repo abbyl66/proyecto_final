@@ -152,23 +152,31 @@ public class ControlEpub {
 
             String uid = user.getUid();
 
+            //Obtengo referencia de mis libros.
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference reference = storage.getReference();
             StorageReference referenceMisLibros = reference.child(uid).child("misLibros");
 
+            //Recorro los libros encontrados.
             referenceMisLibros.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
                 @Override
                 public void onSuccess(ListResult listResult) {
                     noLibros.setVisibility(View.VISIBLE);
                     listaLibros.clear();
+
+                    //Obtengo los archivos epub.
                     for(StorageReference epub : listResult.getItems()){
                         try {
                             noLibros.setVisibility(View.GONE);
                             progressBar.setVisibility(View.VISIBLE);
 
+                            //Hago la referencia al archivo.
                             StorageReference referenceEpub = referenceMisLibros.child(epub.getName());
 
+                            //Lo guardo en cache.
                             File archivoCache = cargarCacheEpub(epub.getName(), librosFragment.getActivity());
+
+                            //Compruebo si ya se ha guardado en cache, si es así los muestro.
                             if(existeEpub(epub.getName(), librosFragment.getActivity())){
                                 String ruta = archivoCache.getAbsolutePath();
                                 List<Libro> libros = mostrarMisLibros(ruta);
@@ -177,6 +185,7 @@ public class ControlEpub {
                                 libroAdapter.notifyDataSetChanged();
                                 progressBar.setVisibility(View.GONE);
                             }else{
+                                //Si no es así, creo un archivo temporal que usaré para guardarlo en cache.
                                 File epubLocal = File.createTempFile(epub.getName(), "epub");
 
                                 referenceEpub.getFile(epubLocal).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
@@ -230,13 +239,21 @@ public class ControlEpub {
             String titulo = metadata.getFirstTitle();
 
             List<Author> autores = metadata.getAuthors();
-            Author nombreAutor = autores.get(0);
-            String autor = nombreAutor.getFirstname() + " " +nombreAutor.getLastname();
+            String autor;
+
+            if(!autores.isEmpty()){
+                Author nombreAutor = autores.get(0);
+                autor = nombreAutor.getFirstname() + " " +nombreAutor.getLastname();
+
+            }else {
+                autor = "";
+            }
 
             Resource portada = libroEpub.getResources().getById("cover");
+            Resource portada2 = libroEpub.getResources().getById("cover.jpg");
 
             //No encuentra la portada. Cargo una portada por defecto.
-            if(portada == null){
+            if(portada == null && portada2 == null){
                 LayoutInflater inflater = LayoutInflater.from(context);
                 View view = inflater.inflate(R.layout.no_portada, null);
 
@@ -262,14 +279,32 @@ public class ControlEpub {
 
 
             }else{
-                //Obtengo la portada.
-                byte[] portadaByte = portada.getData();
-                Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+                if(portada != null){
+                    //Error raro: Entra al resource con id "cover", sin embargo su id es "cover.jpg". Controlado.
+                    if(portada.getId().equals(libroEpub.getCoverImage().getId())){
+                        //Obtengo la portada
+                        byte[] portadaByte = portada.getData();
+                        Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+                        Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+                        listaLibros.add(libro);
 
-                Libro libro = new Libro(titulo, autor, portadaBm, ruta);
-                listaLibros.add(libro);
-
+                    //cover.jpg
+                    }else{
+                        //Obtengo la portada.
+                        byte[] portadaByte = portada2.getData();
+                        Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+                        Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+                        listaLibros.add(libro);
+                    }
+                }else if(portada2!=null){
+                    //Obtengo la portada.
+                    byte[] portadaByte = portada2.getData();
+                    Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+                    Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+                    listaLibros.add(libro);
+                }
             }
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -318,12 +353,14 @@ public class ControlEpub {
         return new File(ruta, nombre);
     }
 
+    //Método para eliminar libro de mis libros.
     public void eliminarEpub(int pos, List<Libro> listalibros, LibroAdapter libroAdapter) {
         Libro libro = listalibros.get(pos);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
 
+        //Referencia del archivo que elimaré.
         FirebaseStorage storage = FirebaseStorage.getInstance();
         File epub = new File(libro.getRuta());
         StorageReference referenceLibro = storage.getReference().child(uid).child("misLibros").child(epub.getName());
@@ -338,20 +375,28 @@ public class ControlEpub {
         });
     }
 
+    //Método para eliminar libro de una colección.
     public void eliminarLibroC(int pos, List<Libro> listalibros, LibroColeccAdapter libroColeccAdapter, Coleccion coleccion, ColeccionesFragment coleccionesFragment) {
+        //Obtengo libro con pos.
         Libro libro = listalibros.get(pos);
 
+        //Accedo a firebase storage.
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
         FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        //Creo fichero con la ruta del libro obtenido.
         File epub = new File(libro.getRuta());
 
+        //Extraigo el nombre de la ruta.
         String archivo = epub.getName();
         int index = archivo.lastIndexOf('.');
         String nombreArch = archivo.substring(0, index);
 
+        //Referencia del archivo que se eliminará.
         StorageReference referenceLibro = storage.getReference().child(uid).child("misColecciones").child(coleccion.getNombre()).child(nombreArch+".epub");
 
+        //Elimino el archivo epub de la colección.
         referenceLibro.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

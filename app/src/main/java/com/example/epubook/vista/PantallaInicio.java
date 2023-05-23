@@ -29,8 +29,8 @@ public class PantallaInicio extends AppCompatActivity{
     private FloatingActionButton botonAniadir;
     private DrawerLayout drawerLayout;
     private ImageView menu;
-    private LinearLayout inicio, perfil, ajustes, cerrarSesion;
-    private BottomNavigationView bottomNavigationView;
+    private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
+    public static BottomNavigationView bottomNavigationView;
 
     private ControlUsuario controlUsuario = new ControlUsuario(PantallaInicio.this);
     private ControlDialogos controlDialogos = new ControlDialogos(PantallaInicio.this);
@@ -52,6 +52,8 @@ public class PantallaInicio extends AppCompatActivity{
         perfil = findViewById(R.id.perfil);
         ajustes = findViewById(R.id.ajustes);
         cerrarSesion = findViewById(R.id.cerrarSesion);
+        escribir = findViewById(R.id.escribir);
+        explorar = findViewById(R.id.explorar);
 
 
         //Al pulsar en menú, inicio, perfil, ajustes o cerrar sesión, se muestran sus pantallas o funciones.
@@ -87,6 +89,20 @@ public class PantallaInicio extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 controlUsuario.abrirActivity(PantallaInicio.this, PantallaAjustes.class);
+            }
+        });
+
+        escribir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controlUsuario.abrirActivity(PantallaInicio.this, PantallaEscribir.class);
+            }
+        });
+
+        explorar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controlUsuario.abrirActivity(PantallaInicio.this, PantallaExplorar.class);
             }
         });
 

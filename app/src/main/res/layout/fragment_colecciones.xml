@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:id="@+id/fragmentColecciones"
     tools:context=".fragments.ColeccionesFragment"
     android:background="@drawable/fondo_colecc"
     android:layout_height="match_parent"
@@ -92,7 +93,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerContenidoColecc"
             android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:visibility="visible"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="40dp"
@@ -101,7 +102,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="65dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginBottom="60dp"
             android:id="@+id/recyclerViewColecc"
             android:scrollbars="vertical"

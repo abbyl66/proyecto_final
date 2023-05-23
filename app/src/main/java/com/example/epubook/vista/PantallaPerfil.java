@@ -31,7 +31,7 @@ public class PantallaPerfil extends AppCompatActivity {
     //Mismas variables que se usan para el fragment desplegable.
     private DrawerLayout drawerLayout;
     private ImageView menu;
-    private LinearLayout inicio, perfil, ajustes, cerrarSesion;
+    private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
 
     //Variables que usaré para mostrar la información del usuario.
     private TextView nombrePerfil, emailPerfil, userPerfil, contrPerfil;
@@ -55,6 +55,8 @@ public class PantallaPerfil extends AppCompatActivity {
         perfil = findViewById(R.id.perfil);
         ajustes = findViewById(R.id.ajustes);
         cerrarSesion = findViewById(R.id.cerrarSesion);
+        escribir = findViewById(R.id.escribir);
+        explorar = findViewById(R.id.explorar);
 
         nombrePerfil = findViewById(R.id.nombrePerfil);
         emailPerfil = findViewById(R.id.emailPerfil);
@@ -121,6 +123,20 @@ public class PantallaPerfil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 controlUsuario.abrirActivity(PantallaPerfil.this, PantallaAjustes.class);
+            }
+        });
+
+        escribir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controlUsuario.abrirActivity(PantallaPerfil.this, PantallaEscribir.class);
+            }
+        });
+
+        explorar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                controlUsuario.abrirActivity(PantallaPerfil.this, PantallaExplorar.class);
             }
         });
 
