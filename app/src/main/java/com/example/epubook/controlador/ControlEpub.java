@@ -19,6 +19,7 @@ import com.example.epubook.fragments.LibrosFragment;
 import com.example.epubook.modelo.ArchivoEpub;
 import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
+import com.example.epubook.modelo.LibroExplorar;
 import com.example.epubook.vista.EpubAdapter;
 import com.example.epubook.vista.LibroAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
@@ -115,7 +116,17 @@ public class ControlEpub {
             @Override
             public void onSuccess(ListResult listResult) {
                 for(StorageReference libro : listResult.getItems()){
-                    if(libro.getName().equals(epub.getName())){
+                    //Extraigo el nombre de la ruta.
+                    String archivo = epub.getName();
+                    int index = archivo.lastIndexOf('.');
+                    String nombreArch = archivo.substring(0, index);
+
+                    String archivo2 = libro.getName();
+                    int index2 = archivo2.lastIndexOf('.');
+                    String nombreArch2 = archivo2.substring(0, index2);
+
+                    //Los igualo para saber si ya existe.
+                    if(nombreArch.equals(nombreArch2)){
                         Toast.makeText(activity, "El fichero ya existe en la biblioteca.", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -224,6 +235,8 @@ public class ControlEpub {
 
     }
 
+
+
     public List<Libro> mostrarMisLibros(String ruta){
         List<Libro> listaLibros = new ArrayList<>();
 
@@ -301,6 +314,95 @@ public class ControlEpub {
                     byte[] portadaByte = portada2.getData();
                     Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
                     Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+                    listaLibros.add(libro);
+                }
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return listaLibros;
+    }
+
+    public List<LibroExplorar> mostrarLibrosExp(String ruta){
+        List<LibroExplorar> listaLibros = new ArrayList<>();
+
+        try {
+            //Leer archivo epub.
+            File archivoEpub = new File(ruta);
+
+            EpubReader reader = new EpubReader();
+            Book libroEpub = reader.readEpub(new FileInputStream(archivoEpub));
+
+            Metadata metadata = libroEpub.getMetadata();
+
+            String titulo = metadata.getFirstTitle();
+
+            List<Author> autores = metadata.getAuthors();
+            String autor;
+
+            if(!autores.isEmpty()){
+                Author nombreAutor = autores.get(0);
+                autor = nombreAutor.getFirstname() + " " +nombreAutor.getLastname();
+
+            }else {
+                autor = "";
+            }
+
+            Resource portada = libroEpub.getResources().getById("cover");
+            Resource portada2 = libroEpub.getResources().getById("cover.jpg");
+
+            //No encuentra la portada. Cargo una portada por defecto.
+            if(portada == null && portada2 == null){
+                LayoutInflater inflater = LayoutInflater.from(context);
+                View view = inflater.inflate(R.layout.no_portada, null);
+
+                //Le pongo a la portada que se generará por defecto, el título del libro.
+                TextView tituloPortada = view.findViewById(R.id.txtNombrePortada);
+                tituloPortada.setText(titulo);
+
+                //Tamaño de la vista.
+                int w = View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY);
+                int h = View.MeasureSpec.makeMeasureSpec(1280, View.MeasureSpec.EXACTLY);
+                view.measure(w, h);
+                view.layout(0, 0, 800, 1280);
+
+                //A partir de la vista, obtengo el bitmap.
+                RelativeLayout relativeLayout = view.findViewById(R.id.vistaNoportada);
+                relativeLayout.setDrawingCacheEnabled(true);
+                relativeLayout.buildDrawingCache();
+                Bitmap bitmap = Bitmap.createBitmap(relativeLayout.getDrawingCache());
+                relativeLayout.setDrawingCacheEnabled(false);
+
+                LibroExplorar libro = new LibroExplorar(titulo, autor, bitmap, ruta, false, false);
+                listaLibros.add(libro);
+
+
+            }else{
+                if(portada != null){
+                    //Error raro: Entra al resource con id "cover", sin embargo su id es "cover.jpg". Controlado.
+                    if(portada.getId().equals(libroEpub.getCoverImage().getId())){
+                        //Obtengo la portada
+                        byte[] portadaByte = portada.getData();
+                        Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false);
+                        listaLibros.add(libro);
+
+                        //cover.jpg
+                    }else{
+                        //Obtengo la portada.
+                        byte[] portadaByte = portada2.getData();
+                        Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false);
+                        listaLibros.add(libro);
+                    }
+                }else if(portada2!=null){
+                    //Obtengo la portada.
+                    byte[] portadaByte = portada2.getData();
+                    Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+                    LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false);
                     listaLibros.add(libro);
                 }
             }

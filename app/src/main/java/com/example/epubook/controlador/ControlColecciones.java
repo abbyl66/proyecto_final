@@ -3,16 +3,13 @@ package com.example.epubook.controlador;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 import com.example.epubook.R;
-import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ColeccAdapter;
@@ -61,7 +58,7 @@ public class ControlColecciones {
         //Era necesario crear un fichero vacío para crear una carpeta en firebase storage.
         StorageReference referenceVacio = referenceMiColecc.child("ficheroVacio");
 
-        InputStream vacio = new ByteArrayInputStream(new byte[0]);  
+        InputStream vacio = new ByteArrayInputStream(new byte[0]);
         UploadTask uploadTask = referenceVacio.putStream(vacio);
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override

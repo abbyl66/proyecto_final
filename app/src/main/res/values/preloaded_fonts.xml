@@ -3,6 +3,7 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alata</item>
         <item>@font/bebas_neue</item>
+        <item>@font/leckerli_one</item>
         <item>@font/spartan_extrabold</item>
     </array>
 </resources>

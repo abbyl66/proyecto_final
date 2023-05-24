@@ -1,23 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="190dp">
+    android:layout_height="140dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <ImageView
+        android:id="@+id/contenedorCat"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/contenedor_noblanco"></ImageView>
 
-    <ImageView
-        android:layout_width="130dp"
-        android:layout_height="160dp"
-        android:id="@+id/portadaCat"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardPortada"
+        android:layout_width="80dp"
+        android:layout_height="120dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
+        android:elevation="20dp"
         android:layout_marginBottom="15dp"
-        android:src="@drawable/contenedor_todoblanco" />
+        app:cardCornerRadius="20dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:id="@+id/portadaCat"
+            android:src="@drawable/contenedor_todoblanco" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/tituloLibCat"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/contenedorCat"
+        android:layout_toEndOf="@+id/cardPortada"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/alata"
+        android:text="Título"
+        android:textAlignment="textStart"
+        android:textSize="13sp"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/autorLibCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tituloLibCat"
+        android:layout_toEndOf="@+id/cardPortada"
+        android:fontFamily="@font/alata"
+        android:text="Autor"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="textStart"
+        android:textSize="10sp"></TextView>
+
+    <ProgressBar
+        android:id="@+id/libroCatCarg"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@+id/resumenCat"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/contenedor_todoblanco"
+        android:layout_marginStart="150dp"
+        android:gravity="center"
+        android:layout_marginTop="25dp"
+        android:visibility="invisible"
+        android:layout_marginEnd="39dp"></ProgressBar>
+
+    <Button
+        android:id="@+id/descLibroCat"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="Descargar"
+        android:textSize="8sp"
+        android:layout_below="@+id/resumenCat"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/contenedor_todoblanco"
+        android:layout_marginStart="150dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"></Button>
+
+
+    <TextView
+        android:id="@+id/resumenCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/contenedorCat"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:fontFamily="@font/alata"
+        android:text="Sinopsis"
+        android:textSize="11sp"></TextView>
+
+    <TextView
+        android:id="@+id/volverItem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/contenedorCat"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:visibility="invisible"
+        android:fontFamily="@font/alata"
+        android:text="Volver"
+        android:textSize="11sp"></TextView>
+
+
 </RelativeLayout>

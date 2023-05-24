@@ -28,7 +28,7 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card"
-                android:layout_width="84dp"
+                android:layout_width="80dp"
                 android:layout_height="110dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
@@ -38,7 +38,7 @@
 
                 <ImageView
                     android:id="@+id/portadaLibroColecc"
-                    android:layout_width="84dp"
+                    android:layout_width="80dp"
                     android:layout_height="110dp"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"

@@ -109,7 +109,17 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
             public void onSuccess(ListResult listResult) {
                 holder.guardandoEpub.setVisibility(View.INVISIBLE);
                 for(StorageReference epub : listResult.getItems()){
-                    if(archivoEpub.getNombre().equals(epub.getName())){
+                    //Extraigo el nombre de la ruta.
+                    String archivo = epub.getName();
+                    int index = archivo.lastIndexOf('.');
+                    String nombreArch = archivo.substring(0, index);
+
+                    String archivo2 = archivoEpub.getNombre();
+                    int index2 = archivo2.lastIndexOf('.');
+                    String nombreArch2 = archivo2.substring(0, index2);
+
+                    //Los igualo para saber si ya existe.
+                    if(nombreArch.equals(nombreArch2)){
                         holder.epubGuardado.setVisibility(View.VISIBLE);
                         break;
                     }else{

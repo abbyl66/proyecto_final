@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +18,7 @@ import com.example.epubook.R;
 import com.example.epubook.controlador.ControlExplorar;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.modelo.Libro;
+import com.example.epubook.modelo.LibroExplorar;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -25,14 +27,20 @@ import java.util.List;
 public class PantallaExplorar extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private ImageView menu;
+    private ImageView menu, fondoExpl;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
 
-    private List<Libro> listaLibros = new ArrayList<>();
+    private List<LibroExplorar> listaLibros = new ArrayList<>();
+    private List<LibroExplorar> listaLibCat = new ArrayList<>();
     private List<String> listaCategorias = new ArrayList<>();
     private ExpCabeceraAdapter cabeceraAdapter;
     private CategoriaAdapter categoriaAdapter;
-    private RecyclerView recyclerCabecera, recyclerCat;
+    private LibroCatAdapter libroCatAdapter;
+    private RecyclerView recyclerCabecera, recyclerCat, recyclerLibroCat;
+    private boolean unClick = true;
+    final  int dobleClickTiempo = 700;
+    Handler handler = new Handler();
+    Runnable runnable;
 
     ControlExplorar controlExplorar = new ControlExplorar(PantallaExplorar.this);
     ControlUsuario controlUsuario = new ControlUsuario(PantallaExplorar.this);
@@ -53,6 +61,8 @@ public class PantallaExplorar extends AppCompatActivity {
         escribir = findViewById(R.id.escribir);
         explorar = findViewById(R.id.explorar);
 
+        fondoExpl = findViewById(R.id.imgExpl);
+
         //Recycler cabecera.
         recyclerCabecera = findViewById(R.id.recyclerCabExp);
         cabeceraAdapter = new ExpCabeceraAdapter(listaLibros);
@@ -68,6 +78,45 @@ public class PantallaExplorar extends AppCompatActivity {
         recyclerCat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         controlExplorar.mostrarCategorias(listaCategorias, categoriaAdapter);
+
+
+        recyclerLibroCat = findViewById(R.id.recyclerLibCat);
+        recyclerLibroCat.setVisibility(View.GONE);
+        fondoExpl.setVisibility(View.VISIBLE);
+
+        categoriaAdapter.setOnCatListener(new CategoriaAdapter.OnCatClick() {
+            @Override
+            public void onCatClick(int pos) {
+
+                if(unClick){
+
+                    unClick = false;
+
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            unClick = true;
+                        }
+                    };
+
+                    //Tiempo que no funcionará el click.
+                    handler.postDelayed(runnable, dobleClickTiempo);
+
+                    recyclerLibroCat.setVisibility(View.VISIBLE);
+                    fondoExpl.setVisibility(View.GONE);
+
+                    //Recycler libros según categoría.
+                    libroCatAdapter = new LibroCatAdapter(listaLibCat);
+                    recyclerLibroCat.setAdapter(libroCatAdapter);
+                    recyclerLibroCat.setLayoutManager(new LinearLayoutManager(PantallaExplorar.this));
+
+                    controlExplorar.mostrarLibrosCat(listaLibCat, libroCatAdapter, listaCategorias.get(pos), PantallaExplorar.this);
+
+
+                }
+
+            }
+        });
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +173,7 @@ public class PantallaExplorar extends AppCompatActivity {
         });
 
     }
+
 
     public static void openDrawer(DrawerLayout drawerLayout){
         drawerLayout.openDrawer(GravityCompat.START);

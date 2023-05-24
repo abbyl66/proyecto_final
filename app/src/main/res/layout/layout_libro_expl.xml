@@ -19,16 +19,39 @@
             <ImageView
                 android:id="@+id/portadaExpl"
                 android:layout_width="match_parent"
-                android:elevation="10dp"
-                android:layout_height="190dp"></ImageView>
+                android:layout_height="195dp"></ImageView>
 
-            <ImageButton
-                android:id="@+id/portbtDesc"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:src="@drawable/baseline_file_download_24"
                 android:layout_alignParentBottom="true"
-                android:background="@color/nob"></ImageButton>
+                android:background="@color/nob"
+                android:layout_height="30dp">
+
+                <ImageButton
+                    android:id="@+id/portbtDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_file_download_24"
+                    android:background="@color/nob"></ImageButton>
+
+                <ProgressBar
+                    android:id="@+id/libroCabCarg"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:outlineSpotShadowColor="@color/rosa"
+                    android:visibility="invisible"></ProgressBar>
+
+                <ImageView
+                    android:id="@+id/libroCabDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_baseline_check_circle_24"
+                    android:visibility="invisible"></ImageView>
+
+            </RelativeLayout>
+
 
 
         </RelativeLayout>
