@@ -23,6 +23,7 @@ import com.example.epubook.modelo.LibroExplorar;
 import com.example.epubook.vista.EpubAdapter;
 import com.example.epubook.vista.LibroAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
+import com.example.epubook.vista.PantallaExplorar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,6 +58,9 @@ public class ControlEpub {
     public ControlEpub(Context context){
         this.context = context;
     }
+
+    PantallaExplorar pantallaExplorar = new PantallaExplorar();
+    public ControlExplorar controlExplorar = new ControlExplorar(context);
 
     //Método que recoge los archivos epub.
     public void mostrarEpub(File direc, List<ArchivoEpub> aEpub, TextView noEpub){
@@ -111,6 +115,8 @@ public class ControlEpub {
         StorageReference referenceLibros = referenceUsuario.child("misLibros");
         StorageReference referenceEpub = referenceLibros.child(epub.getName());
 
+        controlExplorar.guardarLibroBd(ruta);
+
         //Compruebo que no seleccionen el mismo fichero.
         referenceLibros.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
@@ -138,6 +144,7 @@ public class ControlEpub {
                         archivoEpub.setDescargando(false);
                         archivoEpub.setGuardado(true);
                         epubAdapter.notifyDataSetChanged();
+
                         Toast.makeText(context, "Libro guardado", Toast.LENGTH_SHORT).show();
 
                     }
@@ -376,7 +383,7 @@ public class ControlEpub {
                 Bitmap bitmap = Bitmap.createBitmap(relativeLayout.getDrawingCache());
                 relativeLayout.setDrawingCacheEnabled(false);
 
-                LibroExplorar libro = new LibroExplorar(titulo, autor, bitmap, ruta, false, false);
+                LibroExplorar libro = new LibroExplorar(titulo, autor, bitmap, ruta, false, false, controlExplorar.numDescargas);
                 listaLibros.add(libro);
 
 
@@ -387,7 +394,7 @@ public class ControlEpub {
                         //Obtengo la portada
                         byte[] portadaByte = portada.getData();
                         Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false);
+                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false, controlExplorar.numDescargas);
                         listaLibros.add(libro);
 
                         //cover.jpg
@@ -395,14 +402,14 @@ public class ControlEpub {
                         //Obtengo la portada.
                         byte[] portadaByte = portada2.getData();
                         Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false);
+                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false, controlExplorar.numDescargas);
                         listaLibros.add(libro);
                     }
                 }else if(portada2!=null){
                     //Obtengo la portada.
                     byte[] portadaByte = portada2.getData();
                     Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                    LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false);
+                    LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false, controlExplorar.numDescargas);
                     listaLibros.add(libro);
                 }
             }

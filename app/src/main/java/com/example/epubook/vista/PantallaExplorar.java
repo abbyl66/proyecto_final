@@ -7,11 +7,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
@@ -19,8 +27,15 @@ import com.example.epubook.controlador.ControlExplorar;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.modelo.LibroExplorar;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +43,10 @@ public class PantallaExplorar extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ImageView menu, fondoExpl;
+    private LinearLayout espacio, fondorosa;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
+
+    private EditText buscarLibros;
 
     private List<LibroExplorar> listaLibros = new ArrayList<>();
     private List<LibroExplorar> listaLibCat = new ArrayList<>();
@@ -62,6 +80,9 @@ public class PantallaExplorar extends AppCompatActivity {
         explorar = findViewById(R.id.explorar);
 
         fondoExpl = findViewById(R.id.imgExpl);
+        buscarLibros = findViewById(R.id.buscarLibExpl);
+        espacio = findViewById(R.id.espacio);
+        fondorosa = findViewById(R.id.fondoRosa);
 
         //Recycler cabecera.
         recyclerCabecera = findViewById(R.id.recyclerCabExp);
@@ -83,6 +104,8 @@ public class PantallaExplorar extends AppCompatActivity {
         recyclerLibroCat = findViewById(R.id.recyclerLibCat);
         recyclerLibroCat.setVisibility(View.GONE);
         fondoExpl.setVisibility(View.VISIBLE);
+
+        buscarNuevosLibros();
 
         categoriaAdapter.setOnCatListener(new CategoriaAdapter.OnCatClick() {
             @Override
@@ -117,6 +140,7 @@ public class PantallaExplorar extends AppCompatActivity {
 
             }
         });
+
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,4 +214,52 @@ public class PantallaExplorar extends AppCompatActivity {
         super.onPause();
         closeDrawer(drawerLayout);
     }
+
+    public void buscarNuevosLibros(){
+        buscarLibros.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) buscarLibros.getLayoutParams();
+
+                if(charSequence.toString().isEmpty()){
+                    fondoExpl.setVisibility(View.VISIBLE);
+                    recyclerCat.setVisibility(View.VISIBLE);
+                    recyclerCabecera.setVisibility(View.VISIBLE);
+                    recyclerLibroCat.setVisibility(View.INVISIBLE);
+                    espacio.setVisibility(View.INVISIBLE);
+                    fondorosa.setVisibility(View.VISIBLE);
+                    layoutParams.setMargins(layoutParams.leftMargin, 670, layoutParams.rightMargin, layoutParams.bottomMargin);
+                    buscarLibros.setLayoutParams(layoutParams);
+
+                }else{
+                    fondoExpl.setVisibility(View.GONE);
+                    recyclerCat.setVisibility(View.GONE);
+                    recyclerCabecera.setVisibility(View.INVISIBLE);
+                    recyclerLibroCat.setVisibility(View.VISIBLE);
+                    fondorosa.setVisibility(View.GONE);
+                    espacio.setVisibility(View.VISIBLE);
+                    layoutParams.setMargins(layoutParams.leftMargin, 80, layoutParams.rightMargin, layoutParams.bottomMargin);
+                    buscarLibros.setLayoutParams(layoutParams);
+
+                    libroCatAdapter = new LibroCatAdapter(listaLibros);
+                    recyclerLibroCat.setAdapter(libroCatAdapter);
+                    recyclerLibroCat.setLayoutManager(new LinearLayoutManager(PantallaExplorar.this));
+                    libroCatAdapter.getFilter().filter(charSequence);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
+
 }

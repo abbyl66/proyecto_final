@@ -3,6 +3,8 @@ package com.example.epubook.vista;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -48,6 +50,9 @@ public class ExpCabeceraAdapter extends RecyclerView.Adapter<ExpCabeceraAdapter.
         controlExplorar = new ControlExplorar(holder.itemView.getContext());
 
         comprobarDescargado(holder, libro);
+
+        Animation anim = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_portadas);
+        holder.itemView.startAnimation(anim);
 
         holder.descargar.setOnClickListener(new View.OnClickListener() {
             @Override

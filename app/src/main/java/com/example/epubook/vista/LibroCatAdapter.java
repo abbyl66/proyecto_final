@@ -3,7 +3,11 @@ package com.example.epubook.vista;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,9 +29,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHolder> {
+public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHolder> implements Filterable {
 
     List<LibroExplorar> listaLibros = new ArrayList<>();
+    List<LibroExplorar> librosFiltro = new ArrayList<>();
     ControlExplorar controlExplorar;
 
     ExpCabeceraAdapter expCabeceraAdapter;
@@ -35,6 +40,7 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
 
     public LibroCatAdapter(List<LibroExplorar> listaLibros){
         this.listaLibros = listaLibros;
+        this.librosFiltro = listaLibros;
     }
 
     @NonNull
@@ -46,7 +52,7 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        LibroExplorar libro = listaLibros.get(position);
+        LibroExplorar libro = librosFiltro.get(position);
         holder.titulo.setText(libro.getTitulo());
         holder.autor.setText(libro.getAutor());
         holder.portada.setImageBitmap(libro.getPortada());
@@ -55,6 +61,9 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
         expCabeceraAdapter = new ExpCabeceraAdapter(listaLibros);
 
         comprobarDescargado(holder, libro);
+
+        Animation anim = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_librocat);
+        holder.itemView.startAnimation(anim);
 
         holder.descargar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +123,44 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return listaLibros.size();
+        return librosFiltro.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                FilterResults results = new FilterResults();
+                List<LibroExplorar> libros = new ArrayList<>();
+
+                if(charSequence == null || charSequence.length() == 0){
+                    libros.addAll(listaLibros);
+                }else{
+                    String titulo = charSequence.toString().toLowerCase().trim();
+                    String noEspacios = titulo.replaceAll(" ", "");
+
+                    for(LibroExplorar libro : listaLibros){
+                        String resultado = libro.getTitulo().toLowerCase().replaceAll("[\\s-]+", "");
+                        if(resultado.contains(noEspacios)){
+                            libros.add(libro);
+                        }
+                    }
+
+                    librosFiltro = libros;
+                }
+
+                results.values = libros;
+                results.count = libros.size();
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                librosFiltro = (List<LibroExplorar>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

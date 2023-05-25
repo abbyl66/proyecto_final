@@ -2,7 +2,12 @@ package com.example.epubook.controlador;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.modelo.LibroExplorar;
 import com.example.epubook.vista.CategoriaAdapter;
@@ -31,6 +36,8 @@ import nl.siegmann.epublib.epub.EpubReader;
 public class ControlExplorar {
     Context context;
 
+    public static int numDescargas;
+
     public ControlExplorar(Context context){
         this.context = context;
     }
@@ -50,19 +57,27 @@ public class ControlExplorar {
         referenceExpl.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
+
+                final int[] contador = {0};
+                List<LibroExplorar> listaCont = new ArrayList<>();
+
                 for(StorageReference epub : listResult.getItems()){
 
                     try {
                         StorageReference referenceArchivo = referenceExpl.child(epub.getName());
-
                         File archivoTemp = File.createTempFile(epub.getName(), "epub");
+
                         referenceArchivo.getFile(archivoTemp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 List<LibroExplorar> libros = controlEpub.mostrarLibrosExp(archivoTemp.getAbsolutePath());
+                                listaCont.addAll(libros);
+                                contador[0]++;
 
-                                listaLibros.addAll(libros);
-                                cabeceraAdapter.notifyDataSetChanged();
+                                if(contador[0] == listResult.getItems().size()){
+                                    listaLibros.addAll(listaCont);
+                                    cabeceraAdapter.notifyDataSetChanged();
+                                }
                             }
                         });
 
@@ -73,7 +88,6 @@ public class ControlExplorar {
 
             }
         });
-
 
     }
 
@@ -114,6 +128,7 @@ public class ControlExplorar {
                                     String[] nombreEsp = categoria.split("\\,");
                                     categoria = nombreEsp[nombreEsp.length-1];//Romance
 
+                                    //Muestro categorias sin repetir.
                                     if(!categorias.contains(categoria)){
                                         listaCategorias.add(categoria);
                                         categorias.add(categoria);
@@ -250,6 +265,8 @@ public class ControlExplorar {
                         libro.setDescargando(false);
                         libro.setGuardado(true);
                         expCabeceraAdapter.notifyDataSetChanged();
+                        numDescargas = libro.getNumDescargas()+1;
+                        libro.setNumDescargas(numDescargas);
                         Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
 
                     }
@@ -328,5 +345,59 @@ public class ControlExplorar {
 
             }
         });
+    }
+
+
+    //Este método guarda los libros que el usuario carga en la aplicación desde su dispositivol. Así la bd explorar tendrá más libros.
+    public void guardarLibroBd(String ruta) {
+
+        //Creo fichero mediante la ruta pasada por parámetro
+        File epub = new File(ruta);
+        Uri uri = Uri.fromFile(epub);
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference reference = firebaseStorage.getReference();
+
+        //Nodo explorar y fichero a descargar.
+        StorageReference referenceExplorar = reference.child("AAAExplorar");
+        StorageReference referenceEpub = referenceExplorar.child(epub.getName());
+
+        //Listo todos los elemtendo de la referencia explorar.
+        referenceExplorar.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                for(StorageReference libro : listResult.getItems()){
+                    //Extraigo el nombre de la ruta.
+                    String archivo = epub.getName();
+                    int index = archivo.lastIndexOf('.');
+                    String nombreArch = archivo.substring(0, index);
+
+                    String archivo2 = libro.getName();
+                    int index2 = archivo2.lastIndexOf('.');
+                    String nombreArch2 = archivo2.substring(0, index2);
+
+                    //Los igualo para saber si ya existe.
+                    if(nombreArch.equals(nombreArch2)){
+                        Log.d("Libro existe", "Existe");
+                        return;
+                    }
+                }
+
+                referenceEpub.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.d("Libro guardado", "Hecho");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d("Libro no guardado", "Fallo");
+                    }
+                });
+
+
+            }
+        });
+
     }
 }

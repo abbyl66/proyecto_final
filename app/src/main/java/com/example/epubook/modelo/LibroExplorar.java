@@ -11,16 +11,28 @@ public class LibroExplorar {
     boolean guardado;
     boolean descargando;
 
+    int numDescargas;
+
     public LibroExplorar() {
     }
 
-    public LibroExplorar(String titulo, String autor, Bitmap portada, String ruta, boolean guardado, boolean descargando) {
+    public LibroExplorar(String titulo, String autor, Bitmap portada, String ruta, boolean guardado, boolean descargando, int numDescargas) {
         this.titulo = titulo;
         this.autor = autor;
         this.portada = portada;
         this.ruta = ruta;
         this.guardado = guardado;
         this.descargando = descargando;
+        this.numDescargas = numDescargas;
+    }
+
+
+    public int getNumDescargas() {
+        return numDescargas;
+    }
+
+    public void setNumDescargas(int numDescargas) {
+        this.numDescargas = numDescargas;
     }
 
     public String getTitulo() {

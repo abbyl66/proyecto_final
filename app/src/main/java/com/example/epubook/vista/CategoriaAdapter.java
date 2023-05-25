@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +50,8 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
         holder.nombre.setText(categoria);
         holder.puntoGuia.setVisibility(View.INVISIBLE);
 
+        Animation anim = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_categ);
+        holder.itemView.startAnimation(anim);
 
         if (position == itemSelect) {
 
