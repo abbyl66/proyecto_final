@@ -7,11 +7,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -21,7 +23,10 @@ public class PantallaEscribir extends AppCompatActivity {
     private ImageView menu;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
 
+    private ImageButton nuevo;
+
     ControlUsuario controlUsuario = new ControlUsuario(PantallaEscribir.this);
+    ControlDialogos controlDialogos = new ControlDialogos(PantallaEscribir.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,16 @@ public class PantallaEscribir extends AppCompatActivity {
         cerrarSesion = findViewById(R.id.cerrarSesion);
         escribir = findViewById(R.id.escribir);
         explorar = findViewById(R.id.explorar);
+
+        nuevo = findViewById(R.id.crearLibro);
+
+        nuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaEscribir.this, PantallaCrear.class);
+                startActivity(intent);
+            }
+        });
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/fragmentColecciones"
     tools:context=".fragments.ColeccionesFragment"
-    android:background="@drawable/fondo_colecc"
+    style="@style/fondoColecc"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -106,7 +106,7 @@
             android:layout_marginBottom="60dp"
             android:id="@+id/recyclerViewColecc"
             android:scrollbars="vertical"
-            android:background="@color/rosa">
+            style="@style/fondoItemsC">
 
         </androidx.recyclerview.widget.RecyclerView>
 

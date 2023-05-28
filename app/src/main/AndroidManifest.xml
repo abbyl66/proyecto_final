@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Epubook">
         <activity
+            android:name=".vista.PantallaCrear"
+            android:exported="false" />
+        <activity
             android:name=".vista.PantallaEscribir"
             android:exported="false" />
         <activity

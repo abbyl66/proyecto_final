@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:padding="5dp"
-    android:background="@drawable/item_archivosepub"
+    style="@style/fondoEpub"
     android:layout_marginBottom="5dp"
     android:elevation="8dp"
     android:orientation="horizontal">

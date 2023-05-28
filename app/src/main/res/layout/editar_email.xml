@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:id="@+id/vistaEditarEmail"
     android:orientation="vertical"
-    android:background="@drawable/fondo_perfil"
+    style="@style/fondoPerfil"
     tools:context=".vista.CambiarEmail">
 
     <Button
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/marco_rosa"
+            style="@style/fondoDatosP"
             android:orientation="vertical"
             android:padding="24dp">
 
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="Editar Email"
                 android:textAlignment="center"
-                android:textColor="@color/rosa"
+                style="@style/txtColorR"
                 android:fontFamily="@font/alata"
                 android:textSize="36dp"
                 android:textStyle="bold"></TextView>
@@ -69,7 +69,7 @@
                 android:drawableTint="@color/rosa"
                 android:textColorHint="@color/grey"
                 android:padding="8dp"
-                android:textColor="#FF4D4D4D"></EditText>
+                style="@style/colorTxtP"></EditText>
             <EditText
                 android:id="@+id/confirEmail"
                 android:layout_width="match_parent"
@@ -85,7 +85,7 @@
                 android:drawableTint="@color/rosa"
                 android:textColorHint="@color/grey"
                 android:padding="8dp"
-                android:textColor="#FF4D4D4D"></EditText>
+                style="@style/colorTxtP"></EditText>
 
 
             <Button

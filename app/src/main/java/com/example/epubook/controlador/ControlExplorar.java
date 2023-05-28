@@ -123,7 +123,13 @@ public class ControlExplorar {
                                     Book libroEpub = reader.readEpub(new FileInputStream(archivoTemp));
                                     Metadata metadata = libroEpub.getMetadata();
 
-                                    String categoria = metadata.getSubjects().get(0);
+                                    String categoria;
+                                    if(metadata.getSubjects().size() == 0){
+                                        categoria = "Desconocido";
+                                    }else{
+                                        categoria = metadata.getSubjects().get(0);
+                                    }
+
                                     //Novela,Romance - Al dividirlo por una , coge la ultima parte despues de esta.
                                     String[] nombreEsp = categoria.split("\\,");
                                     categoria = nombreEsp[nombreEsp.length-1];//Romance
@@ -187,7 +193,12 @@ public class ControlExplorar {
 
                                     Metadata metadata = libroEpub.getMetadata();
 
-                                    String catLibro = metadata.getSubjects().get(0);
+                                    String catLibro;
+                                    if(metadata.getSubjects().size() == 0){
+                                        catLibro = "Desconocido";
+                                    }else{
+                                        catLibro = metadata.getSubjects().get(0);
+                                    }
 
                                     String[] nombreEsp = catLibro.split("\\,");
                                     catLibro = nombreEsp[nombreEsp.length-1];

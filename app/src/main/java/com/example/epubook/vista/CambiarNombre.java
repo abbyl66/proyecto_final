@@ -37,8 +37,8 @@ public class CambiarNombre extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.editar_nombre);
         setTheme(R.style.temaRosa);
+        setContentView(R.layout.editar_nombre);
 
         View vista = findViewById(R.id.vistaCambioNombre);
 

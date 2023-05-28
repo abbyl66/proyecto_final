@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:id="@+id/fragmentLibros"
     tools:context=".fragments.LibrosFragment"
-    android:background="@drawable/fondo_inicio"
+    style="@style/fondoLibros"
     android:layout_height="match_parent"
      android:layout_width="match_parent">
 

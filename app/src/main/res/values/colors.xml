@@ -14,4 +14,7 @@
     <color name="rosa">#FFf9d2d7</color>
     <color name="grey">#FFE6E6E6</color>
     <color name="nob">#FFFAFAFA</color>
+    <color name="dark">#FF424242</color>
+    <color name="greyD">#FFAAACB1</color>
+    <color name="negroTxt">#FF4D4D4D</color>
 </resources>

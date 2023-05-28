@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/fondo"
     tools:context=".vista.PantallaAjustes"
     android:id="@+id/dsp_contenido">
 
@@ -14,21 +15,38 @@
         <include
             layout="@layout/toolbar"></include>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ajustes"
-            android:layout_gravity="center"
-            android:layout_marginTop="400dp"
-            android:textColor="@color/celeste"
-            android:textSize="36sp"></TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cambiar tema"
+                android:fontFamily="@font/alata"
+                style="@style/txtAjustes"
+                android:textSize="17sp"
+                android:layout_margin="15dp"></TextView>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cambiarModo"
+                android:thumb="@drawable/cambio_modo"
+                app:track="@drawable/fondo_modo"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+            </androidx.appcompat.widget.SwitchCompat>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        style="@style/fondoDrawer"
         android:layout_gravity="start">
 
         <include

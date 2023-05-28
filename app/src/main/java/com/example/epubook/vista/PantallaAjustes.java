@@ -1,6 +1,8 @@
 package com.example.epubook.vista;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -9,7 +11,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -36,10 +40,44 @@ public class PantallaAjustes extends AppCompatActivity {
 
     ControlUsuario controlUsuario = new ControlUsuario(PantallaAjustes.this);
 
+    private SwitchCompat cambiarTema;
+    boolean temaOscuro;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.activity_pantalla_ajustes);
+
+        cambiarTema = findViewById(R.id.cambiarModo);
+        sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE);
+        temaOscuro = sharedPreferences.getBoolean("temaOscuro", false);
+
+        if(temaOscuro){
+            cambiarTema.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+
+        cambiarTema.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(temaOscuro){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("temaOscuro", false);
+
+                }else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    editor = sharedPreferences.edit();
+                    editor.putBoolean("temaOscuro", true);
+                }
+
+                editor.apply();
+
+            }
+        });
 
         drawerLayout = findViewById(R.id.dsp_contenido);
         menu = findViewById(R.id.menu);

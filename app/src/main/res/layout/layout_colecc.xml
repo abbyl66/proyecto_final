@@ -4,7 +4,7 @@
     android:layout_height="170dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
-    android:background="@color/rosa"
+    style="@style/fondoItemsC"
     app:cardCornerRadius="10dp"
     android:layout_gravity="right"
     android:id="@+id/fondoColeccColor"

@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:id="@+id/vistaCambioUser"
     android:orientation="vertical"
-    android:background="@drawable/fondo_perfil"
+    style="@style/fondoPerfil"
     tools:context=".vista.CambiarUser">
 
     <Button
@@ -67,7 +67,7 @@
                 android:drawableTint="@color/rosa"
                 android:textColorHint="@color/grey"
                 android:padding="8dp"
-                android:textColor="#FF4D4D4D"></EditText>
+                style="@style/colorTxtP"></EditText>
 
 
             <Button

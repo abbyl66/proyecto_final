@@ -38,7 +38,7 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/rosa</item>
         <item name="colorSecondaryVariant">@color/rosa</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/rosa</item>
         <item name="android:statusBarColor">@color/rosa</item>
     </style>
 
@@ -47,4 +47,41 @@
         <item name="passwordToggleEnabled">true</item>
         <item name="passwordToggleDrawable">@drawable/ic_baseline_visible_contr</item>
     </style>
+
+    <!--Pantalla Ajustes-->
+    <style name="txtAjustes"><item name="android:textColor">@color/dark</item></style>
+    <style name="fondo"><item name="android:background">@color/white</item></style>
+
+    <!--Toolbar-->
+    <style name="fondoRosa"><item name="android:background">@color/rosa</item></style>
+
+
+    <style name="fondoTint"><item name="android:backgroundTint">@color/rosa</item></style>
+    <style name="fondoCard"><item name="android:background">@color/white</item></style>
+    <style name="tituloColor"><item name="android:textColor">@color/rosa</item></style>
+    <style name="textColor"><item name="android:textColor">@color/black</item></style>
+    <style name="txtColorW"><item name="android:textColor">@color/white</item></style>
+
+    <!--Pantalla perfil-->
+    <style name="txtColorR"><item name="android:textColor">@color/rosa</item></style>
+    <style name="txtDatosP"><item name="android:textColor">@color/greyD</item></style>
+    <style name="fondoPerfil"><item name="android:background">@drawable/fondo_perfil</item></style>
+    <style name="fondoDatosP"><item name="android:background">@drawable/contblanco_marrosa</item></style>
+
+    <!--Drawer-->
+    <style name="fondoDrawer"><item name="android:background">@color/white</item></style>
+
+    <!--Editar perfil-->
+    <style name="colorTxtP"><item name="android:textColor">@color/negroTxt</item></style>
+
+    <!--Inicio-->
+    <style name="tintAdd"><item name="android:backgroundTint">@color/white</item></style>
+    <style name="fondoLibros"><item name="android:background">@drawable/fondo_inicio</item></style>
+    <style name="fondoIni"><item name="android:background">@color/white</item></style>
+    <style name="fondoColecc"><item name="android:background">@drawable/fondo_colecc</item></style>
+    <style name="fondoItemsC"><item name="android:background">@color/rosa</item></style>
+    <style name="fondoEpub"><item name="android:background">@drawable/item_archivosepub</item></style>
+    <style name="colorTxtButton"><item name="android:textColor">@color/white</item></style>
+    <style name="colorTxtEx"><item name="android:textColor">@color/negroTxt</item></style>
+
 </resources>
