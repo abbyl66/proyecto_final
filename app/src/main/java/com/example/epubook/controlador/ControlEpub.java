@@ -2,16 +2,23 @@ package com.example.epubook.controlador;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.epubook.R;
 import com.example.epubook.fragments.ColeccionesFragment;
@@ -58,9 +65,7 @@ public class ControlEpub {
     public ControlEpub(Context context){
         this.context = context;
     }
-
-    PantallaExplorar pantallaExplorar = new PantallaExplorar();
-    public ControlExplorar controlExplorar = new ControlExplorar(context);
+    private ControlExplorar controlExplorar = new ControlExplorar(context);
 
     //Método que recoge los archivos epub.
     public void mostrarEpub(File direc, List<ArchivoEpub> aEpub, TextView noEpub){
@@ -463,7 +468,7 @@ public class ControlEpub {
     }
 
     //Método para eliminar libro de mis libros.
-    public void eliminarEpub(int pos, List<Libro> listalibros, LibroAdapter libroAdapter) {
+    public void eliminarEpub(int pos, List<Libro> listalibros, LibroAdapter libroAdapter, View view) {
         Libro libro = listalibros.get(pos);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -474,14 +479,15 @@ public class ControlEpub {
         File epub = new File(libro.getRuta());
         StorageReference referenceLibro = storage.getReference().child(uid).child("misLibros").child(epub.getName());
 
-        referenceLibro.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                listalibros.remove(pos);
-                libroAdapter.notifyItemRemoved(pos);
-                libroAdapter.notifyDataSetChanged();
-            }
-        });
+       referenceLibro.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+           @Override
+           public void onSuccess(Void unused) {
+               listalibros.remove(pos);
+               libroAdapter.notifyItemRemoved(pos);
+               libroAdapter.notifyDataSetChanged();
+               Toast.makeText(view.getContext(), libro.getTitulo()+" se ha eliminado.", Toast.LENGTH_SHORT).show();
+           }
+       });
     }
 
     //Método para eliminar libro de una colección.
@@ -517,4 +523,6 @@ public class ControlEpub {
 
 
     }
+
+
 }

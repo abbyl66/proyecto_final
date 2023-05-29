@@ -107,9 +107,11 @@ public class LibrosFragment extends Fragment{
 
         buscarLibros();
 
+        //Barra de búsqueda de libros.
         buscarBoton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Controlo posibles errores si se mantiene visible o no.
                 if(buscar.getVisibility() == View.VISIBLE){
                     animEditxtDer.setAnimationListener(new Animation.AnimationListener() {
                         @Override
@@ -140,6 +142,7 @@ public class LibrosFragment extends Fragment{
             }
         });
 
+        //Deslizo para eliminar libro.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new DeslizarCardView(LibrosFragment.this, libroAdapter));
         itemTouchHelper.attachToRecyclerView(recyclerView);
 

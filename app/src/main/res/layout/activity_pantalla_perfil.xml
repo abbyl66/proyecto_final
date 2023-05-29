@@ -19,21 +19,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/nombreTitP"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre"
-                style="@style/txtColorW"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:inputType="textCapSentences"
-                android:textAlignment="center"
-                android:fontFamily="@font/alata"
-                android:layout_marginTop="20dp"
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/imgPerfil"
+                android:outlineProvider="background"
+                android:clipToOutline="true"
+                android:src="@drawable/user"
+                android:background="@drawable/fondo_imgperfil"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></TextView>
+                app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+            <ImageButton
+                android:id="@+id/cambimgP"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/baseline_add_circle_outline_24"
+                android:background="@drawable/fondo_cambimgp"
+                app:layout_constraintBottom_toBottomOf="@+id/imgPerfil"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="85dp"
+                android:layout_marginTop="70dp"
+                app:layout_constraintStart_toStartOf="@+id/imgPerfil"
+                app:layout_constraintTop_toTopOf="parent"></ImageButton>
+
+            <TextView
+                android:id="@+id/nombreTitP"
+                style="@style/txtColorW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alata"
+                android:inputType="textCapSentences"
+                android:text="Nombre"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/imgPerfil"
+                app:layout_constraintStart_toStartOf="@id/imgPerfil"
+                app:layout_constraintTop_toBottomOf="@+id/imgPerfil"></TextView>
 
             <LinearLayout
                 android:id="@+id/layoutPerfil"
@@ -126,196 +151,7 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
 
-                    <TextView
-                        android:id="@+id/nombretxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/alata"
-                        android:text="Nombre"
-                        style="@style/txtColorR"
-                        android:textSize="15sp"
-                        android:textStyle="bold"></TextView>
-
-                    <TextView
-                        android:id="@+id/nombrePerfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/alata"
-                        android:text="Nombre"
-                        android:textAlignment="viewEnd"
-                        style="@style/txtDatosP"
-                        android:textSize="18sp"></TextView>
-
-                    <Button
-                        android:id="@+id/editarNombre"
-                        android:layout_width="35dp"
-                        android:layout_height="45dp"
-                        android:layout_marginStart="10dp"
-                        android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        android:padding="6dp"
-                        app:cornerRadius="10dp"></Button>
-
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="10dp"
-                    android:alpha="0.5"
-                    android:background="@color/rosa"
-                    android:shadowColor="@color/rosa"
-                    android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/emailtxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/alata"
-                        android:text="Email"
-                        style="@style/txtColorR"
-                        android:textSize="15sp"
-                        android:textStyle="bold"></TextView>
-
-                    <TextView
-                        android:id="@+id/emailPerfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/alata"
-                        android:text="Email"
-                        android:textAlignment="viewEnd"
-                        style="@style/txtDatosP"
-                        android:textSize="12sp"></TextView>
-
-                    <Button
-                        android:id="@+id/editarEmail"
-                        android:layout_width="35dp"
-                        android:layout_height="45dp"
-                        android:layout_marginStart="10dp"
-                        android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        android:padding="6dp"
-                        app:cornerRadius="10dp"></Button>
-
-
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1.5dp"
-                    android:layout_margin="10dp"
-                    android:alpha="0.5"
-                    android:background="@color/rosa"
-                    android:shadowColor="@color/rosa"
-                    android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/usertxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/alata"
-                        android:text="Usuario"
-                        style="@style/txtColorR"
-                        android:textSize="15sp"
-                        android:textStyle="bold"></TextView>
-
-                    <TextView
-                        android:id="@+id/userPerfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/alata"
-                        android:text="Usuario"
-                        android:textAlignment="viewEnd"
-                        style="@style/txtDatosP"
-                        android:textSize="18sp"></TextView>
-
-                    <Button
-                        android:id="@+id/editarUsuario"
-                        android:layout_width="35dp"
-                        android:layout_height="45dp"
-                        android:layout_marginStart="10dp"
-                        android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        android:padding="6dp"
-                        app:cornerRadius="10dp"></Button>
-
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="10dp"
-                    android:alpha="0.5"
-                    android:background="@color/rosa"
-                    android:shadowColor="@color/rosa"
-                    android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:id="@+id/contrtxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/alata"
-                        android:text="Contraseña"
-                        style="@style/txtColorR"
-                        android:textSize="15sp"
-                        android:textStyle="bold"></TextView>
-
-                    <TextView
-                        android:id="@+id/contrPerfil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="**********"
-                        android:textAlignment="viewEnd"
-                        style="@style/txtDatosP"
-                        android:textSize="18sp"></TextView>
-
-                    <Button
-                        android:id="@+id/editarContr"
-                        android:layout_width="35dp"
-                        android:layout_height="45dp"
-                        android:layout_marginStart="10dp"
-                        android:drawableRight="@drawable/ic_baseline_refresh_24"
-                        android:padding="6dp"
-                        app:cornerRadius="10dp"></Button>
-
-                </LinearLayout>
 
             </LinearLayout>
 

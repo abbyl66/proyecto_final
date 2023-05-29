@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/fondo"
+    style="@style/fondoRosa"
     tools:context=".vista.PantallaAjustes"
     android:id="@+id/dsp_contenido">
 
@@ -15,33 +15,182 @@
         <include
             layout="@layout/toolbar"></include>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            
-            <TextView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cambiar tema"
-                android:fontFamily="@font/alata"
-                style="@style/txtAjustes"
-                android:textSize="17sp"
-                android:layout_margin="15dp"></TextView>
+                android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/cambiarModo"
-                android:thumb="@drawable/cambio_modo"
-                app:track="@drawable/fondo_modo"
-                android:gravity="center"
-                android:layout_marginTop="10dp">
-            </androidx.appcompat.widget.SwitchCompat>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:elevation="5dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/contenedorInfo"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    style="@style/contenedorAjust"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/baseline_change_circle_24"
+                            android:layout_marginTop="35dp"
+                            android:layout_marginStart="10dp"></ImageView>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cambiar tema"
+                            android:fontFamily="@font/alata"
+                            style="@style/txtAjustes"
+                            android:textSize="17sp"
+                            android:layout_margin="25dp"></TextView>
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/cambiarModo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:gravity="center"
+                            android:thumb="@drawable/cambio_modo"
+                            app:track="@drawable/fondo_modo"></androidx.appcompat.widget.SwitchCompat>
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:alpha="0.5"
+                        android:background="@color/rosa"
+                        android:shadowColor="@color/rosa"
+                        android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
+
+
+                    <LinearLayout
+                        android:id="@+id/datosPers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/baseline_person_outline_24"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginStart="10dp"></ImageView>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Datos personales"
+                            android:fontFamily="@font/alata"
+                            style="@style/txtAjustes"
+                            android:textSize="17sp"
+                            android:layout_margin="25dp"></TextView>
+
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:alpha="0.5"
+                        android:background="@color/rosa"
+                        android:shadowColor="@color/rosa"
+                        android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
+
+                    <LinearLayout
+                        android:id="@+id/cambiarContr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/baseline_lock_reset_24"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginStart="10dp"></ImageView>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cambiar contraseña"
+                            android:fontFamily="@font/alata"
+                            style="@style/txtAjustes"
+                            android:textSize="17sp"
+                            android:layout_margin="25dp"></TextView>
+
+
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:alpha="0.5"
+                        android:background="@color/rosa"
+                        android:shadowColor="@color/rosa"
+                        android:shadowRadius="10"></androidx.appcompat.widget.AppCompatImageView>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/baseline_info_24"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginStart="10dp"></ImageView>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Información"
+                            android:fontFamily="@font/alata"
+                            style="@style/txtAjustes"
+                            android:textSize="17sp"
+                            android:layout_margin="25dp"></TextView>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imagenAjust"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="end"
+                    android:layout_marginStart="111dp"
+                    android:elevation="5dp"
+                    android:src="@drawable/fondo_ajustes"></ImageView>
+
+
+            </RelativeLayout>
 
     </LinearLayout>
+
 
     <RelativeLayout
         android:layout_width="300dp"

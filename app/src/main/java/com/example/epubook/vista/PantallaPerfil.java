@@ -1,13 +1,17 @@
 package com.example.epubook.vista;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +21,7 @@ import com.example.epubook.R;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,21 +30,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 
 public class PantallaPerfil extends AppCompatActivity {
 
     //Mismas variables que se usan para el fragment desplegable.
     private DrawerLayout drawerLayout;
-    private ImageView menu;
+    private ImageView menu, imagenPerfil;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
 
     //Variables que usaré para mostrar la información del usuario.
-    private TextView nombrePerfil, emailPerfil, userPerfil, contrPerfil;
-    private TextView nombreTitulo;
+    private TextView nombreTitulo, numLibros, numColecc;
+    private ImageButton cambiarFoto;
 
-    private Button cambiarNombre, cambiarUsuario, cambiarEmail;
-
-    private FirebaseAuth auth;
+    public static final int imagenCod = 1;
 
     ControlUsuario controlUsuario = new ControlUsuario(PantallaPerfil.this);
 
@@ -58,43 +66,22 @@ public class PantallaPerfil extends AppCompatActivity {
         escribir = findViewById(R.id.escribir);
         explorar = findViewById(R.id.explorar);
 
-        nombrePerfil = findViewById(R.id.nombrePerfil);
-        emailPerfil = findViewById(R.id.emailPerfil);
-        userPerfil = findViewById(R.id.userPerfil);
-        contrPerfil = findViewById(R.id.contrPerfil);
         nombreTitulo = findViewById(R.id.nombreTitP);
+        cambiarFoto = findViewById(R.id.cambimgP);
+        imagenPerfil = findViewById(R.id.imgPerfil);
 
+        numLibros = findViewById(R.id.librosPerfil);
+        numColecc = findViewById(R.id.coleccPerfil);
 
-        cambiarNombre = findViewById(R.id.editarNombre);
-        cambiarUsuario = findViewById(R.id.editarUsuario);
-        cambiarEmail = findViewById(R.id.editarEmail);
-
-        auth = FirebaseAuth.getInstance();
+        numLibrosColecc();
 
         infoUsuario();
 
-
-        cambiarNombre.setOnClickListener(new View.OnClickListener() {
+        cambiarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(PantallaPerfil.this, CambiarNombre.class);
-                startActivity(intent);
-            }
-        });
-
-        cambiarUsuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PantallaPerfil.this, CambiarUser.class);
-                startActivity(intent);
-            }
-        });
-
-        cambiarEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PantallaPerfil.this, CambiarEmail.class);
-                startActivity(intent);
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, imagenCod);
             }
         });
 
@@ -155,6 +142,55 @@ public class PantallaPerfil extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == imagenCod && resultCode == RESULT_OK && data != null){
+            Uri imagenUri = data.getData();
+
+            imagenPerfil.setImageURI(imagenUri);
+            guardarFotoPerfil(imagenUri);
+            Toast.makeText(this, "Foto de perfil cambiado.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void guardarFotoPerfil(Uri uri) {
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+        reference.child("fotoPerfil").setValue(uri.toString());
+
+    }
+
+    private void numLibrosColecc() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        //Referencia del archivo que elimaré.
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference referenceLibro = storage.getReference().child(uid).child("misLibros");
+        StorageReference referenceColecc = storage.getReference().child(uid).child("misColecciones");
+
+        referenceLibro.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                int num = listResult.getItems().size();
+                numLibros.setText(String.valueOf(num));
+            }
+        });
+
+        referenceColecc.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult listResult) {
+                int num = listResult.getPrefixes().size();
+                numColecc.setText(String.valueOf(num));
+            }
+        });
+
+    }
+
     //Método para obtener información del usuario que mostraré en la pantalla perfil.
     public void infoUsuario(){
 
@@ -174,14 +210,10 @@ public class PantallaPerfil extends AppCompatActivity {
                     Usuario usuario = snapshot.getValue(Usuario.class);
 
                     String nombre = usuario.getNombre();
-                    String user = usuario.getUser();
-                    String email = usuario.getEmail();
+                    String foto = usuario.getFotoPerfil();
 
-                    nombreTitulo.setText("Información de " +nombre);
-                    nombrePerfil.setText(nombre);
-                    userPerfil.setText(user);
-                    emailPerfil.setText(email);
-
+                    nombreTitulo.setText(nombre);
+                    imagenPerfil.setImageURI(Uri.parse(foto));
                 }
 
                 @Override

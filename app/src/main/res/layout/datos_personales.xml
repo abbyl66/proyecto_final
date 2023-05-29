@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/fondodatos"
+    tools:context=".vista.DatosPersonales"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:elevation="5dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/contenedorInfo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        style="@style/contenedorAjust"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Datos personales"
+            android:textSize="20sp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/alata"
+            android:textStyle="bold"></TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_alternate_email_24"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="10dp"></ImageView>
+
+
+        <TextView
+            android:id="@+id/correoUser"
+            style="@style/txtAjustes"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:fontFamily="@font/alata"
+            android:text="correo@correo.com"
+            android:textSize="13sp"></TextView>
+
+        <Button
+            android:id="@+id/editarEmail"
+            android:layout_width="35dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="15dp"
+            android:drawableRight="@drawable/ic_baseline_refresh_24"
+            android:padding="6dp"
+            app:cornerRadius="10dp"></Button>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/baseline_account_circle_24"
+                android:layout_marginStart="10dp"></ImageView>
+
+
+            <TextView
+                android:id="@+id/usuarioUser"
+                style="@style/txtAjustes"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:fontFamily="@font/alata"
+                android:text="usuario"
+                android:textSize="15sp"></TextView>
+
+            <Button
+                android:id="@+id/editarUsuario"
+                android:layout_width="35dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="15dp"
+                android:drawableRight="@drawable/ic_baseline_refresh_24"
+                android:padding="6dp"
+                app:cornerRadius="10dp"></Button>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

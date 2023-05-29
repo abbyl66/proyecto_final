@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -390,7 +392,7 @@ public class ControlDialogos {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    //Dialogo eliminar item
+    //Dialogo eliminar item libro de mis libros.
     public void dialogoEliminarItem(View vista, int pos, List<Libro> listalibros, LibroAdapter libroAdapter){
         //Variables del dialog personalizado.
         ConstraintLayout confirmacion = vista.findViewById(R.id.dialogoConfirm);
@@ -428,7 +430,7 @@ public class ControlDialogos {
             public void onClick(View view) {
                 //Si le da al botón aceptar.
                 alertDialog.dismiss();
-                controlEpub.eliminarEpub(pos, listalibros, libroAdapter);
+                controlEpub.eliminarEpub(pos, listalibros, libroAdapter, view);
             }
         });
 
@@ -453,7 +455,7 @@ public class ControlDialogos {
     }
 
     //Dialogo recycler elegir coleccion.
-    public void dialogoColeccion(View vista, int posicion, String rutaLibro){
+    public void dialogoColeccion(View vista, int posicion, String rutaLibro, ImageView guardarColecc, View itemView){
         //Variables del dialog personalizado.
         ConstraintLayout elegirColeccion = vista.findViewById(R.id.dialogoColecc);
         View view = LayoutInflater.from(context).inflate(R.layout.dialogo_colecciones, elegirColeccion);
@@ -492,7 +494,7 @@ public class ControlDialogos {
             public void onClick(View view) {
                 //Si le da al botón aceptar.
                 alertDialog.dismiss();
-                controlColecciones.aniadirLibro(colecciones, rutaLibro);
+                controlColecciones.aniadirLibro(colecciones, rutaLibro, guardarColecc, itemView);
             }
         });
 
@@ -638,6 +640,7 @@ public class ControlDialogos {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
+
 
 
 }

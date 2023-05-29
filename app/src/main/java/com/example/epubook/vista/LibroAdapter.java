@@ -76,7 +76,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 ControlDialogos controlDialogos = new ControlDialogos(view.getContext());
-                controlDialogos.dialogoColeccion(view, position, libro.getRuta());
+                controlDialogos.dialogoColeccion(view, position, libro.getRuta(), holder.guardarColecc, holder.itemView);
             }
         });
 
@@ -86,6 +86,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
 
     //Pinta imageview de guardado en celeste si el libro ya ha sido guardado en alguna coleccion.
     private void comprobarLibrosGuardados(ViewHolder holder, Libro libro) {
+        //Accedo a la bd.
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference reference = firebaseStorage.getReference();
 
@@ -95,6 +96,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
 
         StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
 
+        //Recorro mis colecciones.
         referenceColecc.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
@@ -105,6 +107,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
                             for(StorageReference libros : listResult.getItems()){
                                 if(!libros.getName().equals("ficheroVacio")){
                                     File libroEpub = new File(libro.getRuta());
+                                    //En caso de que encuentre un libro con el mismo nombre, lo señalará como guardado.
                                     if (libroEpub.getName().equals(libros.getName())){
                                         holder.guardarColecc.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.celeste));
                                         break;

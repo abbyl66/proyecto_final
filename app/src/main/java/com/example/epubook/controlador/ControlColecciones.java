@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.epubook.R;
@@ -129,7 +131,7 @@ public class ControlColecciones {
 
     }
 
-    public void aniadirLibro(List<Coleccion> colecciones, String ruta) {
+    public void aniadirLibro(List<Coleccion> colecciones, String ruta, ImageView guardarColecc, View itemView) {
         for(Coleccion coleccion : colecciones){
             if(coleccion.isSeleccionado()){
                 File archivo = new File(ruta);
@@ -149,7 +151,8 @@ public class ControlColecciones {
                 referenceRuta.putBytes(ruta.getBytes()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        System.out.println("Libro guardado");
+                        Toast.makeText(itemView.getContext(), "Libro guardado", Toast.LENGTH_SHORT).show();
+                        guardarColecc.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.celeste));
                     }
                 });
 

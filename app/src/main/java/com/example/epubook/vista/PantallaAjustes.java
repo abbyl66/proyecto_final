@@ -36,7 +36,7 @@ public class PantallaAjustes extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ImageView menu;
-    private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
+    private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar, datospers, cambiarContr;
 
     ControlUsuario controlUsuario = new ControlUsuario(PantallaAjustes.this);
 
@@ -87,6 +87,24 @@ public class PantallaAjustes extends AppCompatActivity {
         cerrarSesion = findViewById(R.id.cerrarSesion);
         escribir = findViewById(R.id.escribir);
         explorar = findViewById(R.id.explorar);
+        datospers = findViewById(R.id.datosPers);
+        cambiarContr = findViewById(R.id.cambiarContr);
+
+        datospers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaAjustes.this, DatosPersonales.class);
+                startActivity(intent);
+            }
+        });
+
+        cambiarContr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaAjustes.this, CambiarContrasenia.class);
+                startActivity(intent);
+            }
+        });
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override

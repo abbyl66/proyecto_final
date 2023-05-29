@@ -83,5 +83,6 @@
     <style name="fondoEpub"><item name="android:background">@drawable/item_archivosepub</item></style>
     <style name="colorTxtButton"><item name="android:textColor">@color/white</item></style>
     <style name="colorTxtEx"><item name="android:textColor">@color/negroTxt</item></style>
+    <style name="contenedorAjust"><item name="android:background">@drawable/contenedor_todoblanco</item></style>
 
 </resources>

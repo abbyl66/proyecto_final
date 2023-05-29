@@ -15,48 +15,68 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Epubook">
         <activity
-            android:name=".vista.PantallaCrear"
+            android:name=".vista.CambiarContrasenia"
             android:exported="false" />
+        <activity
+            android:name=".vista.DatosPersonales"
+            android:exported="false" />
+        <activity
+            android:name=".vista.PantallaCrear"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.PantallaEscribir"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.PantallaExplorar"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.LectorEpub"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.ArchivosEpub"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.CambiarNombre"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.CambiarUser"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.CambiarEmail"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.PantallaAjustes"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.PantallaPerfil"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.PantallaInicio"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
             android:name=".vista.Registrarse"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.PantallaEmpezar"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".vista.PlantillaDeslizar"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,7 +85,8 @@
         </activity>
         <activity
             android:name=".vista.InicioSesion"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
