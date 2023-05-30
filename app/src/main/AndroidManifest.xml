@@ -21,14 +21,6 @@
             android:name=".vista.DatosPersonales"
             android:exported="false" />
         <activity
-            android:name=".vista.PantallaCrear"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".vista.PantallaEscribir"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".vista.PantallaExplorar"
             android:exported="false"
             android:screenOrientation="portrait" />

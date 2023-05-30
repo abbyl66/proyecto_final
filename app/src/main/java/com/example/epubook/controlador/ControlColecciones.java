@@ -18,10 +18,13 @@ import com.example.epubook.vista.ColeccAdapter;
 import com.example.epubook.vista.ColeccDialogAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
 import com.example.epubook.vista.PantallaInicio;
+import com.example.epubook.vista.PantallaPerfil;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
@@ -42,6 +45,7 @@ public class ControlColecciones {
     public ControlColecciones(Context context){
         this.context = context;
     }
+    private PantallaPerfil pantallaPerfil = new PantallaPerfil();
 
     public void nuevaColeccion(String nombreColeccion, Activity activity, Dialog dialog, BottomNavigationView bottomNavigationView) {
 
@@ -65,6 +69,12 @@ public class ControlColecciones {
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //Notifico a historial.
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String uid = user.getUid();
+                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+                pantallaPerfil.historial.add("Has creado "+ nombreColeccion+ " a tus colecciones.");
+                reference.child("historial").setValue(pantallaPerfil.historial);
                 Toast.makeText(activity, "Colección creada", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
                 bottomNavigationView.setSelectedItemId(R.id.mab_coleccion);
@@ -151,6 +161,16 @@ public class ControlColecciones {
                 referenceRuta.putBytes(ruta.getBytes()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        //Notifico a historial.
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = user.getUid();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                        String arch = archivo.getName();
+                        int index = arch.lastIndexOf('.');
+                        String nombreArch = arch.substring(0, index);
+                        pantallaPerfil.historial.add("Has añadido "+ nombreArch+ " a "+coleccion.getNombre());
+                        reference.child("historial").setValue(pantallaPerfil.historial);
                         Toast.makeText(itemView.getContext(), "Libro guardado", Toast.LENGTH_SHORT).show();
                         guardarColecc.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.celeste));
                     }
@@ -244,6 +264,10 @@ public class ControlColecciones {
         PantallaInicio pantallaInicio = new PantallaInicio();
         pantallaInicio.bottomNavigationView.setSelectedItemId(R.id.mab_libros);
 
+        //Notifico a historial.
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+        pantallaPerfil.historial.add("Has eliminado la colección "+ coleccion.getNombre()+ ".");
+        reference.child("historial").setValue(pantallaPerfil.historial);
         Toast.makeText(view.getContext(), "Colección eliminada.", Toast.LENGTH_SHORT).show();
 
 

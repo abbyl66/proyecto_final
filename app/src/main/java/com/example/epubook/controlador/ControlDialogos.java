@@ -59,7 +59,6 @@ public class ControlDialogos {
     ControlEmail controlEmail = new ControlEmail(context);
     ControlColecciones controlColecciones = new ControlColecciones(context);
     ControlEpub controlEpub = new ControlEpub(context);
-    ControlEscribir controlEscribir = new ControlEscribir(context);
 
     //Métodos para mostrar dialogo de confirmación:
 

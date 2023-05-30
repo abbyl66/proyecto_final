@@ -1,18 +1,30 @@
 package com.example.epubook.modelo;
 
+import java.util.List;
+
 public class Usuario {
 
     private String nombre, email, user, ctrsenia, fotoPerfil;
+    private List<String> historial;
 
     public Usuario() {
     }
 
-    public Usuario(String nombre, String email, String user, String ctrsenia, String fotoPerfil) {
+    public Usuario(String nombre, String email, String user, String ctrsenia, String fotoPerfil, List<String> historial) {
         this.nombre = nombre;
         this.email = email;
         this.user = user;
         this.ctrsenia = ctrsenia;
         this.fotoPerfil = fotoPerfil;
+        this.historial = historial;
+    }
+
+    public List<String> getHistorial() {
+        return historial;
+    }
+
+    public void setHistorial(List<String> historial) {
+        this.historial = historial;
     }
 
     public String getFotoPerfil() {

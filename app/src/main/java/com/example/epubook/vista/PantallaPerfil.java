@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -35,17 +37,25 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PantallaPerfil extends AppCompatActivity {
 
     //Mismas variables que se usan para el fragment desplegable.
     private DrawerLayout drawerLayout;
     private ImageView menu, imagenPerfil;
-    private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
+    private LinearLayout inicio, perfil, ajustes, cerrarSesion, explorar;
 
     //Variables que usaré para mostrar la información del usuario.
-    private TextView nombreTitulo, numLibros, numColecc;
+    private TextView nombreTitulo, numLibros, numColecc, noacciones;
     private ImageButton cambiarFoto;
+    private Button cambiarNombre;
+    public static List<String> historial = new ArrayList<>();
+
+    private RecyclerView recyclerHistorial;
+    private HistorialAdapter historialAdapter;
 
     public static final int imagenCod = 1;
 
@@ -63,12 +73,16 @@ public class PantallaPerfil extends AppCompatActivity {
         perfil = findViewById(R.id.perfil);
         ajustes = findViewById(R.id.ajustes);
         cerrarSesion = findViewById(R.id.cerrarSesion);
-        escribir = findViewById(R.id.escribir);
         explorar = findViewById(R.id.explorar);
 
         nombreTitulo = findViewById(R.id.nombreTitP);
         cambiarFoto = findViewById(R.id.cambimgP);
         imagenPerfil = findViewById(R.id.imgPerfil);
+
+        recyclerHistorial = findViewById(R.id.recyclerHistorial);
+        noacciones = findViewById(R.id.noacciones);
+
+        cambiarNombre = findViewById(R.id.cambiarNombre);
 
         numLibros = findViewById(R.id.librosPerfil);
         numColecc = findViewById(R.id.coleccPerfil);
@@ -77,11 +91,29 @@ public class PantallaPerfil extends AppCompatActivity {
 
         infoUsuario();
 
+        if(historial.size() < 0){
+            recyclerHistorial.setVisibility(View.GONE);
+            noacciones.setVisibility(View.VISIBLE);
+        }else{
+            recyclerHistorial.setVisibility(View.VISIBLE);
+            noacciones.setVisibility(View.GONE);
+        }
+
+
         cambiarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, imagenCod);
+            }
+        });
+
+        cambiarNombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaPerfil.this, CambiarNombre.class);
+                startActivity(intent);
+                finish();
             }
         });
 
@@ -110,13 +142,6 @@ public class PantallaPerfil extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 controlUsuario.abrirActivity(PantallaPerfil.this, PantallaAjustes.class);
-            }
-        });
-
-        escribir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controlUsuario.abrirActivity(PantallaPerfil.this, PantallaEscribir.class);
             }
         });
 
@@ -163,6 +188,7 @@ public class PantallaPerfil extends AppCompatActivity {
         reference.child("fotoPerfil").setValue(uri.toString());
 
     }
+
 
     private void numLibrosColecc() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -211,9 +237,16 @@ public class PantallaPerfil extends AppCompatActivity {
 
                     String nombre = usuario.getNombre();
                     String foto = usuario.getFotoPerfil();
+                    List<String> historialUser = usuario.getHistorial();
 
                     nombreTitulo.setText(nombre);
                     imagenPerfil.setImageURI(Uri.parse(foto));
+
+                    Collections.reverse(historialUser);
+
+                    historialAdapter = new HistorialAdapter(historialUser);
+                    recyclerHistorial.setAdapter(historialAdapter);
+                    recyclerHistorial.setLayoutManager(new LinearLayoutManager(PantallaPerfil.this));
                 }
 
                 @Override

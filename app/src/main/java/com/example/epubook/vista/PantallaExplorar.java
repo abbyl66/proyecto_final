@@ -44,7 +44,7 @@ public class PantallaExplorar extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ImageView menu, fondoExpl;
     private LinearLayout espacio, fondorosa;
-    private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
+    private LinearLayout inicio, perfil, ajustes, cerrarSesion, explorar;
 
     private EditText buscarLibros;
 
@@ -76,7 +76,6 @@ public class PantallaExplorar extends AppCompatActivity {
         perfil = findViewById(R.id.perfil);
         ajustes = findViewById(R.id.ajustes);
         cerrarSesion = findViewById(R.id.cerrarSesion);
-        escribir = findViewById(R.id.escribir);
         explorar = findViewById(R.id.explorar);
 
         fondoExpl = findViewById(R.id.imgExpl);
@@ -170,12 +169,6 @@ public class PantallaExplorar extends AppCompatActivity {
             }
         });
 
-        escribir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controlUsuario.abrirActivity(PantallaExplorar.this, PantallaEscribir.class);
-            }
-        });
 
         explorar.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -14,9 +14,13 @@ import com.example.epubook.vista.CategoriaAdapter;
 import com.example.epubook.vista.ExpCabeceraAdapter;
 import com.example.epubook.vista.LibroCatAdapter;
 import com.example.epubook.vista.PantallaExplorar;
+import com.example.epubook.vista.PantallaPerfil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
@@ -41,6 +45,7 @@ public class ControlExplorar {
     public ControlExplorar(Context context){
         this.context = context;
     }
+    private PantallaPerfil pantallaPerfil = new PantallaPerfil();
 
     //Método para mostrar libros de la bd, disponibles para descargar.
     public void mostrarLibrosExp(List<LibroExplorar> listaLibros, ExpCabeceraAdapter cabeceraAdapter, PantallaExplorar pantallaExplorar) {
@@ -278,6 +283,18 @@ public class ControlExplorar {
                         expCabeceraAdapter.notifyDataSetChanged();
                         numDescargas = libro.getNumDescargas()+1;
                         libro.setNumDescargas(numDescargas);
+
+                        //Notifico a historial.
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = user.getUid();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                        //Extraigo el nombre de la ruta.
+                        String archivo = epub.getName();
+                        int index = archivo.lastIndexOf('.');
+                        String nombreArch = archivo.substring(0, index);
+                        pantallaPerfil.historial.add("Has descargado "+ nombreArch+ ".");
+                        reference.child("historial").setValue(pantallaPerfil.historial);
                         Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
 
                     }
@@ -343,6 +360,16 @@ public class ControlExplorar {
                         libro.setDescargando(false);
                         libro.setGuardado(true);
                         libroCatAdapter.notifyDataSetChanged();
+                        //Notifico a historial.
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = user.getUid();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
+                        String archivo = epub.getName();
+                        int index = archivo.lastIndexOf('.');
+                        String nombreArch = archivo.substring(0, index);
+                        pantallaPerfil.historial.add("Has descargado "+nombreArch+".");
+                        reference.child("historial").setValue(pantallaPerfil.historial);
                         Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
 
                     }

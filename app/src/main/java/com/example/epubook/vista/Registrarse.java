@@ -115,7 +115,7 @@ public class Registrarse extends AppCompatActivity {
                         FirebaseUser user = auth.getCurrentUser();
 
                         //Realtime Database: guardo el usuario con sus datos en la bd realtime.
-                        Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia, null);
+                        Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia, null, null);
                         reference.child(user.getUid()).setValue(nuevoUsuario);
 
                         //Mando mensaje de que se ha registrado y enviado correo de verificación de email.

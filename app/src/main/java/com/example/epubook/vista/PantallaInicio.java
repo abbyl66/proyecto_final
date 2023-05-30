@@ -29,7 +29,7 @@ public class PantallaInicio extends AppCompatActivity{
     private FloatingActionButton botonAniadir;
     private DrawerLayout drawerLayout;
     private ImageView menu;
-    private LinearLayout inicio, perfil, ajustes, cerrarSesion, escribir, explorar;
+    private LinearLayout inicio, perfil, ajustes, cerrarSesion, explorar;
     public static BottomNavigationView bottomNavigationView;
 
     private ControlUsuario controlUsuario = new ControlUsuario(PantallaInicio.this);
@@ -52,7 +52,6 @@ public class PantallaInicio extends AppCompatActivity{
         perfil = findViewById(R.id.perfil);
         ajustes = findViewById(R.id.ajustes);
         cerrarSesion = findViewById(R.id.cerrarSesion);
-        escribir = findViewById(R.id.escribir);
         explorar = findViewById(R.id.explorar);
 
 
@@ -89,13 +88,6 @@ public class PantallaInicio extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 controlUsuario.abrirActivity(PantallaInicio.this, PantallaAjustes.class);
-            }
-        });
-
-        escribir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                controlUsuario.abrirActivity(PantallaInicio.this, PantallaEscribir.class);
             }
         });
 
