@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.storage.StorageManager;
 import android.os.storage.StorageVolume;
 import android.text.Editable;
@@ -44,10 +45,17 @@ public class ArchivosEpub extends AppCompatActivity {
     EditText buscarArchivo;
     ImageView atras;
 
+    //Creo una lista de archivos donde se recogerán los archivos epub.
+    List<ArchivoEpub> archivosEpub = new ArrayList<>();
+
     TextView noEpub;
 
     ControlDialogos controlDialogos = new ControlDialogos(ArchivosEpub.this);
     ControlEpub controlEpub = new ControlEpub(ArchivosEpub.this);
+    private boolean unClick = true;
+    final  int dobleClickTiempo = 800;
+    Handler handler = new Handler();
+    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +92,6 @@ public class ArchivosEpub extends AppCompatActivity {
             controlDialogos.dialogoConfirmacion(miVista, ArchivosEpub.this);
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()){
-                onResume();
                 cargarEpub();
             }
 
@@ -103,9 +110,6 @@ public class ArchivosEpub extends AppCompatActivity {
     //Método para obtener ficheros epub del almacenamiento del usuario.
     @TargetApi(Build.VERSION_CODES.R)
     public void cargarEpub(){
-
-        //Creo una lista de archivos donde se recogerán los archivos epub.
-        List<ArchivoEpub> archivosEpub = new ArrayList<>();
 
         //Accedo al almacenamiento del dispositivo.
         StorageManager storageManager = (StorageManager) this.getSystemService(Context.STORAGE_SERVICE);
@@ -126,8 +130,24 @@ public class ArchivosEpub extends AppCompatActivity {
         epubAdapter.setOnItemClickListener(new EpubAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos) {
-                archivosEpub.get(pos).setDescargando(true);
-                controlEpub.aniadirArchivoEpub(archivosEpub.get(pos).getUri(), ArchivosEpub.this, archivosEpub.get(pos), epubAdapter);
+
+                if(unClick) {
+
+                    unClick = false;
+
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            unClick = true;
+                        }
+                    };
+
+                    //Tiempo que no funcionará el click.
+                    handler.postDelayed(runnable, dobleClickTiempo);
+
+                    epubAdapter.getArchivosFiltro().get(pos).setDescargando(true);
+                    controlEpub.aniadirArchivoEpub(epubAdapter.getArchivosFiltro().get(pos).getUri(), ArchivosEpub.this, epubAdapter.getArchivosFiltro().get(pos), epubAdapter);
+                }
             }
         });
 
@@ -137,11 +157,6 @@ public class ArchivosEpub extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        cargarEpub();
-    }
 
 
 
@@ -155,7 +170,9 @@ public class ArchivosEpub extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 epubAdapter.getFilter().filter(charSequence);
+
             }
 
             @Override

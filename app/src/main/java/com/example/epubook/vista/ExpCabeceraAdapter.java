@@ -100,6 +100,7 @@ public class ExpCabeceraAdapter extends RecyclerView.Adapter<ExpCabeceraAdapter.
                         break;
                     }else{
                         holder.descargado.setVisibility(View.INVISIBLE);
+                        holder.descargar.setVisibility(View.VISIBLE);
                     }
                 }
             }

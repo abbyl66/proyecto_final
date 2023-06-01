@@ -130,6 +130,10 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         });
     }
 
+    public List<ArchivoEpub> getArchivosFiltro(){
+        return archivosFiltro;
+    }
+
     //Método para dar formato al tamanio.
     public String formatoTamanio(Double tamanio){
         String tam = "";

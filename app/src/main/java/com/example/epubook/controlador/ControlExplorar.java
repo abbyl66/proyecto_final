@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.modelo.LibroExplorar;
@@ -14,13 +15,15 @@ import com.example.epubook.vista.CategoriaAdapter;
 import com.example.epubook.vista.ExpCabeceraAdapter;
 import com.example.epubook.vista.LibroCatAdapter;
 import com.example.epubook.vista.PantallaExplorar;
-import com.example.epubook.vista.PantallaPerfil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
@@ -45,10 +48,9 @@ public class ControlExplorar {
     public ControlExplorar(Context context){
         this.context = context;
     }
-    private PantallaPerfil pantallaPerfil = new PantallaPerfil();
 
     //Método para mostrar libros de la bd, disponibles para descargar.
-    public void mostrarLibrosExp(List<LibroExplorar> listaLibros, ExpCabeceraAdapter cabeceraAdapter, PantallaExplorar pantallaExplorar) {
+    public void mostrarLibrosExp(List<LibroExplorar> listaLibros, ExpCabeceraAdapter cabeceraAdapter, PantallaExplorar pantallaExplorar, ProgressBar cargandoLibros, RecyclerView recyclerCabecera) {
         ControlEpub controlEpub = new ControlEpub(pantallaExplorar);
 
         listaLibros.clear();
@@ -63,33 +65,11 @@ public class ControlExplorar {
             @Override
             public void onSuccess(ListResult listResult) {
 
-                final int[] contador = {0};
-                List<LibroExplorar> listaCont = new ArrayList<>();
-
-                for(StorageReference epub : listResult.getItems()){
-
-                    try {
-                        StorageReference referenceArchivo = referenceExpl.child(epub.getName());
-                        File archivoTemp = File.createTempFile(epub.getName(), "epub");
-
-                        referenceArchivo.getFile(archivoTemp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                List<LibroExplorar> libros = controlEpub.mostrarLibrosExp(archivoTemp.getAbsolutePath());
-                                listaCont.addAll(libros);
-                                contador[0]++;
-
-                                if(contador[0] == listResult.getItems().size()){
-                                    listaLibros.addAll(listaCont);
-                                    cabeceraAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        });
-
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+                //Al tratarse de muchos libros, hago uso de una carga asíncrona.
+                CargarLibrosAsync cargarLibrosAsync = new CargarLibrosAsync(pantallaExplorar, controlEpub, cabeceraAdapter, listaLibros);
+                cargarLibrosAsync.execute(listResult.getItems());
+                cargandoLibros.setVisibility(View.GONE);
+                recyclerCabecera.setVisibility(View.VISIBLE);
 
             }
         });
@@ -289,13 +269,29 @@ public class ControlExplorar {
                         String uid = user.getUid();
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
 
-                        //Extraigo el nombre de la ruta.
-                        String archivo = epub.getName();
-                        int index = archivo.lastIndexOf('.');
-                        String nombreArch = archivo.substring(0, index);
-                        pantallaPerfil.historial.add("Has descargado "+ nombreArch+ ".");
-                        reference.child("historial").setValue(pantallaPerfil.historial);
-                        Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
+                        reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+
+                                    String archivo = epub.getName();
+                                    int index = archivo.lastIndexOf('.');
+                                    String nombreArch = archivo.substring(0, index);
+
+                                    List<String> listaAcc = (List<String>) snapshot.getValue();
+
+                                    listaAcc.add("Has descargado "+ nombreArch+ ".");
+                                    reference.child("historial").setValue(listaAcc);
+                                    Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -360,17 +356,34 @@ public class ControlExplorar {
                         libro.setDescargando(false);
                         libro.setGuardado(true);
                         libroCatAdapter.notifyDataSetChanged();
+
                         //Notifico a historial.
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         String uid = user.getUid();
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
 
-                        String archivo = epub.getName();
-                        int index = archivo.lastIndexOf('.');
-                        String nombreArch = archivo.substring(0, index);
-                        pantallaPerfil.historial.add("Has descargado "+nombreArch+".");
-                        reference.child("historial").setValue(pantallaPerfil.historial);
-                        Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
+                        reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+
+                                    String archivo = epub.getName();
+                                    int index = archivo.lastIndexOf('.');
+                                    String nombreArch = archivo.substring(0, index);
+
+                                    List<String> listaAcc = (List<String>) snapshot.getValue();
+
+                                    listaAcc.add("Has descargado "+nombreArch+".");
+                                    reference.child("historial").setValue(listaAcc);
+                                    Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {

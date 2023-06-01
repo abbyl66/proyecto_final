@@ -96,7 +96,7 @@ public class LibrosFragment extends Fragment{
         libroAdapter.setOnItemClickListener(new LibroAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos) {
-                String ruta = listalibros.get(pos).getRuta();
+                String ruta = libroAdapter.getLibrosFiltro().get(pos).getRuta();
                 Intent intent = new Intent(requireContext(), LectorEpub.class);
                 intent.putExtra("ruta", ruta);
                 requireContext().startActivity(intent);
@@ -179,6 +179,6 @@ public class LibrosFragment extends Fragment{
     }
 
     public void eliminarEpub(LibrosFragment librosFragment, int pos) {
-        controlDialogos.dialogoEliminarItem(librosFragment.getView(), pos, listalibros, libroAdapter);
+        controlDialogos.dialogoEliminarItem(librosFragment.getView(), pos, listalibros, libroAdapter, noLibros);
     }
 }

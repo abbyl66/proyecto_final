@@ -1,8 +1,10 @@
 package com.example.epubook.vista;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +50,8 @@ public class PantallaExplorar extends AppCompatActivity {
 
     private EditText buscarLibros;
 
+    private ProgressBar cargandoLibros;
+
     private List<LibroExplorar> listaLibros = new ArrayList<>();
     private List<LibroExplorar> listaLibCat = new ArrayList<>();
     private List<String> listaCategorias = new ArrayList<>();
@@ -82,6 +86,7 @@ public class PantallaExplorar extends AppCompatActivity {
         buscarLibros = findViewById(R.id.buscarLibExpl);
         espacio = findViewById(R.id.espacio);
         fondorosa = findViewById(R.id.fondoRosa);
+        cargandoLibros = findViewById(R.id.cargandoLibros);
 
         //Recycler cabecera.
         recyclerCabecera = findViewById(R.id.recyclerCabExp);
@@ -89,7 +94,9 @@ public class PantallaExplorar extends AppCompatActivity {
         recyclerCabecera.setAdapter(cabeceraAdapter);
         recyclerCabecera.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        controlExplorar.mostrarLibrosExp(listaLibros, cabeceraAdapter, PantallaExplorar.this);
+        cargandoLibros.setVisibility(View.VISIBLE);
+        recyclerCabecera.setVisibility(View.GONE);
+        controlExplorar.mostrarLibrosExp(listaLibros, cabeceraAdapter, PantallaExplorar.this, cargandoLibros, recyclerCabecera);
 
         //Recycler categorias.
         recyclerCat = findViewById(R.id.recyclerCategoria);
@@ -191,6 +198,10 @@ public class PantallaExplorar extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Dialogo salir.", Toast.LENGTH_SHORT).show();
+    }
 
     public static void openDrawer(DrawerLayout drawerLayout){
         drawerLayout.openDrawer(GravityCompat.START);
@@ -227,6 +238,7 @@ public class PantallaExplorar extends AppCompatActivity {
                     recyclerLibroCat.setVisibility(View.INVISIBLE);
                     espacio.setVisibility(View.INVISIBLE);
                     fondorosa.setVisibility(View.VISIBLE);
+                    categoriaAdapter.notifyDataSetChanged();
                     layoutParams.setMargins(layoutParams.leftMargin, 670, layoutParams.rightMargin, layoutParams.bottomMargin);
                     buscarLibros.setLayoutParams(layoutParams);
 

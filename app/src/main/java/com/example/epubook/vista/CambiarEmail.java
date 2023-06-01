@@ -79,7 +79,7 @@ public class CambiarEmail extends AppCompatActivity {
         verificado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Compriebo que el usuario haya accedido.
+                //Compruebo que el usuario haya accedido.
                 if(user != null){
                     //Recargo los datos del usuario.
                     user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {

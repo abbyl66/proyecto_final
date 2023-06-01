@@ -154,6 +154,11 @@ public class PantallaAjustes extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Dialogo salir.", Toast.LENGTH_SHORT).show();
+    }
+
     public static void openDrawer(DrawerLayout drawerLayout){
         drawerLayout.openDrawer(GravityCompat.START);
     }

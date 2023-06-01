@@ -2,23 +2,18 @@ package com.example.epubook.controlador;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.annotation.NonNull;
 
 import com.example.epubook.R;
 import com.example.epubook.fragments.ColeccionesFragment;
@@ -30,14 +25,16 @@ import com.example.epubook.modelo.LibroExplorar;
 import com.example.epubook.vista.EpubAdapter;
 import com.example.epubook.vista.LibroAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
-import com.example.epubook.vista.PantallaExplorar;
 import com.example.epubook.vista.PantallaPerfil;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
@@ -69,7 +66,6 @@ public class ControlEpub {
         this.context = context;
     }
     private ControlExplorar controlExplorar = new ControlExplorar(context);
-    private PantallaPerfil pantallaPerfil = new PantallaPerfil();
 
     //Método que recoge los archivos epub.
     public void mostrarEpub(File direc, List<ArchivoEpub> aEpub, TextView noEpub){
@@ -107,6 +103,7 @@ public class ControlEpub {
 
     //Método para recibir el fichero que el usuario desea agregar a la app.
     @TargetApi(Build.VERSION_CODES.O)
+
     public void aniadirArchivoEpub(String ruta, Activity activity, ArchivoEpub archivoEpub, EpubAdapter epubAdapter){
 
         //Creo fichero mediante la ruta pasada por parámetro
@@ -163,11 +160,24 @@ public class ControlEpub {
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         String uid = user.getUid();
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
-                        pantallaPerfil.historial.add("Has añadido "+ nombreArch+ " a tus libros.");
-                        reference.child("historial").setValue(pantallaPerfil.historial);
 
+                        reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    List<String> listaAcc = (List<String>) snapshot.getValue();
 
-                        Toast.makeText(context, "Libro guardado", Toast.LENGTH_SHORT).show();
+                                    listaAcc.add("Has añadido "+ nombreArch+ " a tus libros.");
+                                    reference.child("historial").setValue(listaAcc);
+                                    Toast.makeText(activity, "Libro guardado", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -367,7 +377,12 @@ public class ControlEpub {
 
             Metadata metadata = libroEpub.getMetadata();
 
-            String titulo = metadata.getFirstTitle();
+            String t = metadata.getFirstTitle();
+            String titulo="";
+
+            if(!t.isEmpty()){
+                titulo = t;
+            }
 
             List<Author> autores = metadata.getAuthors();
             String autor;
@@ -385,25 +400,7 @@ public class ControlEpub {
 
             //No encuentra la portada. Cargo una portada por defecto.
             if(portada == null && portada2 == null){
-                LayoutInflater inflater = LayoutInflater.from(context);
-                View view = inflater.inflate(R.layout.no_portada, null);
-
-                //Le pongo a la portada que se generará por defecto, el título del libro.
-                TextView tituloPortada = view.findViewById(R.id.txtNombrePortada);
-                tituloPortada.setText(titulo);
-
-                //Tamaño de la vista.
-                int w = View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY);
-                int h = View.MeasureSpec.makeMeasureSpec(1280, View.MeasureSpec.EXACTLY);
-                view.measure(w, h);
-                view.layout(0, 0, 800, 1280);
-
-                //A partir de la vista, obtengo el bitmap.
-                RelativeLayout relativeLayout = view.findViewById(R.id.vistaNoportada);
-                relativeLayout.setDrawingCacheEnabled(true);
-                relativeLayout.buildDrawingCache();
-                Bitmap bitmap = Bitmap.createBitmap(relativeLayout.getDrawingCache());
-                relativeLayout.setDrawingCacheEnabled(false);
+                Bitmap bitmap = obtenerPortada(titulo);
 
                 LibroExplorar libro = new LibroExplorar(titulo, autor, bitmap, ruta, false, false, controlExplorar.numDescargas);
                 listaLibros.add(libro);
@@ -414,25 +411,16 @@ public class ControlEpub {
                     //Error raro: Entra al resource con id "cover", sin embargo su id es "cover.jpg". Controlado.
                     if(portada.getId().equals(libroEpub.getCoverImage().getId())){
                         //Obtengo la portada
-                        byte[] portadaByte = portada.getData();
-                        Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false, controlExplorar.numDescargas);
-                        listaLibros.add(libro);
+                        portadaLibro(portada, titulo, autor, ruta, listaLibros);
 
                         //cover.jpg
                     }else{
                         //Obtengo la portada.
-                        byte[] portadaByte = portada2.getData();
-                        Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                        LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false, controlExplorar.numDescargas);
-                        listaLibros.add(libro);
+                       portadaLibro(portada2, titulo, autor, ruta, listaLibros);
                     }
                 }else if(portada2!=null){
                     //Obtengo la portada.
-                    byte[] portadaByte = portada2.getData();
-                    Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                    LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false, controlExplorar.numDescargas);
-                    listaLibros.add(libro);
+                    portadaLibro(portada2, titulo, autor, ruta, listaLibros);
                 }
             }
 
@@ -442,6 +430,42 @@ public class ControlEpub {
         }
 
         return listaLibros;
+    }
+
+    public Bitmap obtenerPortada(String titulo){
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.no_portada, null);
+
+        //Le pongo a la portada que se generará por defecto, el título del libro.
+        TextView tituloPortada = view.findViewById(R.id.txtNombrePortada);
+        tituloPortada.setText(titulo);
+
+        //Tamaño de la vista.
+        int w = View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY);
+        int h = View.MeasureSpec.makeMeasureSpec(1280, View.MeasureSpec.EXACTLY);
+        view.measure(w, h);
+        view.layout(0, 0, 800, 1280);
+
+        //A partir de la vista, obtengo el bitmap.
+        RelativeLayout relativeLayout = view.findViewById(R.id.vistaNoportada);
+        relativeLayout.setDrawingCacheEnabled(true);
+        relativeLayout.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(relativeLayout.getDrawingCache());
+        relativeLayout.setDrawingCacheEnabled(false);
+
+        return bitmap;
+    }
+
+    public void portadaLibro(Resource portada, String titulo, String autor, String ruta, List<LibroExplorar> listaLibros) {
+
+        try {
+            byte[] portadaByte = portada.getData();
+            Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
+            LibroExplorar libro = new LibroExplorar(titulo, autor, portadaBm, ruta, false, false, controlExplorar.numDescargas);
+            listaLibros.add(libro);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     //En caso de guardar un nuevo fichero epub, se guarda en el cache.
@@ -485,7 +509,7 @@ public class ControlEpub {
     }
 
     //Método para eliminar libro de mis libros.
-    public void eliminarEpub(int pos, List<Libro> listalibros, LibroAdapter libroAdapter, View view) {
+    public void eliminarEpub(int pos, List<Libro> listalibros, LibroAdapter libroAdapter, View view, TextView noLibros) {
         Libro libro = listalibros.get(pos);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -503,12 +527,35 @@ public class ControlEpub {
                libroAdapter.notifyItemRemoved(pos);
                libroAdapter.notifyDataSetChanged();
 
+               //Notifico a historial.
                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                String uid = user.getUid();
                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
-               pantallaPerfil.historial.add("Has eliminado "+ libro.getTitulo()+ " de tus libros.");
-               Toast.makeText(view.getContext(), libro.getTitulo()+" se ha eliminado.", Toast.LENGTH_SHORT).show();
-               reference.child("historial").setValue(pantallaPerfil.historial);
+
+               reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                   @Override
+                   public void onDataChange(@NonNull DataSnapshot snapshot) {
+                       if(snapshot.exists()){
+                           List<String> listaAcc = (List<String>) snapshot.getValue();
+
+                           listaAcc.add("Has eliminado "+ libro.getTitulo()+ " de tus libros.");
+                           reference.child("historial").setValue(listaAcc);
+                           Toast.makeText(view.getContext(), libro.getTitulo()+" se ha eliminado.", Toast.LENGTH_SHORT).show();
+                       }
+                   }
+
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError error) {
+
+                   }
+               });
+
+               if(listalibros.size() == 0){
+                   noLibros.setVisibility(View.VISIBLE);
+               }else{
+                   noLibros.setVisibility(View.GONE);
+               }
+
            }
        });
     }
@@ -542,12 +589,29 @@ public class ControlEpub {
                 libroColeccAdapter.notifyItemRemoved(pos);
                 libroColeccAdapter.notifyDataSetChanged();
 
-
+                //Notifico a historial.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String uid = user.getUid();
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
-                pantallaPerfil.historial.add("Has eliminado "+ nombreArch+ " de "+coleccion.getNombre()+".");
-                reference.child("historial").setValue(pantallaPerfil.historial);
+
+                reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            List<String> listaAcc = (List<String>) snapshot.getValue();
+
+                            listaAcc.add("Has eliminado "+ nombreArch+ " de "+coleccion.getNombre()+".");
+                            reference.child("historial").setValue(listaAcc);
+                            Toast.makeText(coleccionesFragment.getContext(), "Libro eliminado", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
             }
         });
 

@@ -13,6 +13,7 @@ import com.example.epubook.R;
 import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,12 +25,13 @@ import com.google.firebase.database.ValueEventListener;
 
 public class CambiarContrasenia extends AppCompatActivity {
 
-    private EditText contrActual, contrNuev1, contrNuev2;
+    private TextInputEditText contrActual, contrNuev1, contrNuev2;
     private Button cambiarContr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.activity_cambiar_contrasenia);
 
         contrActual = findViewById(R.id.contrActual);

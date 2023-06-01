@@ -1,8 +1,10 @@
 package com.example.epubook.vista;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,13 +26,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 public class Registrarse extends AppCompatActivity {
 
-    private EditText regNombre, regEmail, regUser, regContr;
+    private EditText regNombre, regEmail, regUser;
+    private TextInputEditText regContr;
     private TextView regIniciar;
-    private Button botonReg;
+    private Button botonReg, verificar;
 
     //Variables para Firebase Realtime Database.
     private FirebaseDatabase database;
@@ -53,6 +59,7 @@ public class Registrarse extends AppCompatActivity {
         regContr = findViewById(R.id.reg_ctrsenia);
         botonReg = findViewById(R.id.btreg_regist);
         regIniciar = findViewById(R.id.btreg_iniciar);
+        verificar = findViewById(R.id.verificarEmail);
 
         database = FirebaseDatabase.getInstance();
         reference = database.getReference("users");
@@ -63,6 +70,29 @@ public class Registrarse extends AppCompatActivity {
                 comprobarUsuario();
             }
         });
+
+        verificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(user!=null){
+                    user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(user.isEmailVerified()){
+                                Toast.makeText(Registrarse.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Registrarse.this, PantallaInicio.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                Toast.makeText(Registrarse.this, "Debes verificar tu email", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
 
         regIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +127,9 @@ public class Registrarse extends AppCompatActivity {
     }
 
     public void registarUsuario(){
+
+        StorageReference refFoto = FirebaseStorage.getInstance().getReference().child("AAAUsuarios/user.png");
+
         String nombre = regNombre.getText().toString();
         String email = regEmail.getText().toString();
         String usuario = regUser.getText().toString();
@@ -114,18 +147,27 @@ public class Registrarse extends AppCompatActivity {
                         //Asigno a nuevo usuario un id: user.getUid().
                         FirebaseUser user = auth.getCurrentUser();
 
-                        //Realtime Database: guardo el usuario con sus datos en la bd realtime.
-                        Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia, null, null);
-                        reference.child(user.getUid()).setValue(nuevoUsuario);
+                        //Recogo foto de perfil por defecto que guardo en firebase storage.
+                        refFoto.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                //Realtime Database: guardo el usuario con sus datos en la bd realtime.
+                                Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia, String.valueOf(uri), null);
+                                reference.child(user.getUid()).setValue(nuevoUsuario);
+                            }
+                        });
 
                         //Mando mensaje de que se ha registrado y enviado correo de verificación de email.
                         user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(Task<Void> task) {
-                                Toast.makeText(Registrarse.this, "Registro exitoso. Verifica tu email.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Registrarse.this, PantallaInicio.class);
-                                startActivity(intent);
-                                finish();
+                                Toast.makeText(Registrarse.this, "No cierres la app. Verifica tu email", Toast.LENGTH_SHORT).show();
+                                botonReg.setVisibility(View.GONE);
+                                verificar.setVisibility(View.VISIBLE);
+                                regNombre.setEnabled(false);
+                                regEmail.setEnabled(false);
+                                regUser.setEnabled(false);
+                                regContr.setEnabled(false);
                             }
                         });
 

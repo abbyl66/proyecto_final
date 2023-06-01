@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.epubook.R;
 import com.example.epubook.modelo.Coleccion;
@@ -23,8 +25,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
@@ -45,7 +50,6 @@ public class ControlColecciones {
     public ControlColecciones(Context context){
         this.context = context;
     }
-    private PantallaPerfil pantallaPerfil = new PantallaPerfil();
 
     public void nuevaColeccion(String nombreColeccion, Activity activity, Dialog dialog, BottomNavigationView bottomNavigationView) {
 
@@ -69,13 +73,30 @@ public class ControlColecciones {
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                 //Notifico a historial.
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 String uid = user.getUid();
                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
-                pantallaPerfil.historial.add("Has creado "+ nombreColeccion+ " a tus colecciones.");
-                reference.child("historial").setValue(pantallaPerfil.historial);
-                Toast.makeText(activity, "Colección creada", Toast.LENGTH_SHORT).show();
+
+                reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+                            List<String> listaAcc = (List<String>) snapshot.getValue();
+
+                            listaAcc.add("Has creado "+ nombreColeccion+ " a tus colecciones.");
+                            reference.child("historial").setValue(listaAcc);
+                            Toast.makeText(activity, "Colección creada", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 dialog.dismiss();
                 bottomNavigationView.setSelectedItemId(R.id.mab_coleccion);
             }
@@ -161,17 +182,34 @@ public class ControlColecciones {
                 referenceRuta.putBytes(ruta.getBytes()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
                         //Notifico a historial.
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         String uid = user.getUid();
                         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
 
-                        String arch = archivo.getName();
-                        int index = arch.lastIndexOf('.');
-                        String nombreArch = arch.substring(0, index);
-                        pantallaPerfil.historial.add("Has añadido "+ nombreArch+ " a "+coleccion.getNombre());
-                        reference.child("historial").setValue(pantallaPerfil.historial);
-                        Toast.makeText(itemView.getContext(), "Libro guardado", Toast.LENGTH_SHORT).show();
+                        reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+
+                                    String arch = archivo.getName();
+                                    int index = arch.lastIndexOf('.');
+                                    String nombreArch = arch.substring(0, index);
+
+                                    List<String> listaAcc = (List<String>) snapshot.getValue();
+
+                                    listaAcc.add("Has añadido "+ nombreArch+ " a "+coleccion.getNombre());
+                                    reference.child("historial").setValue(listaAcc);
+                                    Toast.makeText(itemView.getContext(), "Libro guardado", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                         guardarColecc.setColorFilter(ContextCompat.getColor(itemView.getContext(), R.color.celeste));
                     }
                 });
@@ -182,7 +220,7 @@ public class ControlColecciones {
         }
     }
 
-    public void mostrarContenidoColecc(List<Libro> listaLibros, LibroColeccAdapter libroAdapter, Coleccion pos, FragmentActivity activity) {
+    public void mostrarContenidoColecc(List<Libro> listaLibros, LibroColeccAdapter libroAdapter, Coleccion pos, FragmentActivity activity, TextView noLibrosColecc, RecyclerView recyclerCotenido) {
 
         controlEpub = new ControlEpub(activity);
         listaLibros.clear();
@@ -219,6 +257,7 @@ public class ControlColecciones {
                                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                                 List<Libro> libros = controlEpub.mostrarMisLibros(archivoTemp.getAbsolutePath());
                                                 listaLibros.addAll(libros);
+
                                                 libroAdapter.notifyDataSetChanged();
 
 
@@ -266,10 +305,25 @@ public class ControlColecciones {
 
         //Notifico a historial.
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
-        pantallaPerfil.historial.add("Has eliminado la colección "+ coleccion.getNombre()+ ".");
-        reference.child("historial").setValue(pantallaPerfil.historial);
-        Toast.makeText(view.getContext(), "Colección eliminada.", Toast.LENGTH_SHORT).show();
 
+        reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+
+                    List<String> listaAcc = (List<String>) snapshot.getValue();
+
+                    listaAcc.add("Has eliminado la colección "+ coleccion.getNombre()+ ".");
+                    reference.child("historial").setValue(listaAcc);
+                    Toast.makeText(view.getContext(), "Colección eliminada", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }

@@ -41,6 +41,10 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
         void onItemClick(int pos);
     }
 
+    public List<Libro> getLibrosFiltro(){
+        return librosFiltro;
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener){
         listenerClick = listener;
     }
@@ -80,7 +84,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
             }
         });
 
-        comprobarLibrosGuardados(holder, libro);
+        comprobarLibrosGuardados(holder, getLibrosFiltro().get(position));
 
     }
 
@@ -107,10 +111,12 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
                             for(StorageReference libros : listResult.getItems()){
                                 if(!libros.getName().equals("ficheroVacio")){
                                     File libroEpub = new File(libro.getRuta());
-                                    //En caso de que encuentre un libro con el mismo nombre, lo señalará como guardado.
+                                    //En caso de que encuentre un libro con el mismo nombre, lo señalará como guardado. Color.
                                     if (libroEpub.getName().equals(libros.getName())){
                                         holder.guardarColecc.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.celeste));
                                         break;
+                                    }else{
+                                        holder.guardarColecc.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.grey));
                                     }
 
                                 }
@@ -150,6 +156,7 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
                     }
 
                     librosFiltro = libros;
+
                 }
 
                 results.values = libros;

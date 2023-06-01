@@ -43,7 +43,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -392,7 +391,7 @@ public class ControlDialogos {
     }
 
     //Dialogo eliminar item libro de mis libros.
-    public void dialogoEliminarItem(View vista, int pos, List<Libro> listalibros, LibroAdapter libroAdapter){
+    public void dialogoEliminarItem(View vista, int pos, List<Libro> listalibros, LibroAdapter libroAdapter, TextView noLibros){
         //Variables del dialog personalizado.
         ConstraintLayout confirmacion = vista.findViewById(R.id.dialogoConfirm);
         View view = LayoutInflater.from(context).inflate(R.layout.dialogo_confirmacion, confirmacion);
@@ -410,7 +409,7 @@ public class ControlDialogos {
         builder.setView(view);
         final AlertDialog alertDialog = builder.create();
 
-        Libro epub = listalibros.get(pos);
+        Libro epub = libroAdapter.getLibrosFiltro().get(pos);
 
         //Muestro información en el dialog.
         tituloDialog.setText("¿Desea eliminarlo?");
@@ -429,7 +428,7 @@ public class ControlDialogos {
             public void onClick(View view) {
                 //Si le da al botón aceptar.
                 alertDialog.dismiss();
-                controlEpub.eliminarEpub(pos, listalibros, libroAdapter, view);
+                controlEpub.eliminarEpub(pos, listalibros, libroAdapter, view, noLibros);
             }
         });
 

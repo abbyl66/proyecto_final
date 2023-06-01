@@ -1,10 +1,15 @@
 package com.example.epubook.modelo;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+
 import java.util.List;
 
 public class Usuario {
 
-    private String nombre, email, user, ctrsenia, fotoPerfil;
+    private String nombre, email, user, ctrsenia;
+    private String fotoPerfil;
     private List<String> historial;
 
     public Usuario() {

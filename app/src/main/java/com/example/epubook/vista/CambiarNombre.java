@@ -1,6 +1,7 @@
 package com.example.epubook.vista;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -80,6 +81,8 @@ public class CambiarNombre extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             reference.child("nombre").setValue(nombre.getText().toString());
                             Toast.makeText(CambiarNombre.this, "Nombre cambiado.", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(CambiarNombre.this, PantallaPerfil.class);
+                            startActivity(intent);
                             finish();
                         }
 
@@ -93,6 +96,10 @@ public class CambiarNombre extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     //Muestro nombre en el edittext.

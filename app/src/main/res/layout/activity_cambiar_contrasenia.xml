@@ -65,19 +65,81 @@
                 android:layout_marginStart="10dp"></ImageView>
 
 
-            <EditText
-                android:id="@+id/contrActual"
-                style="@style/txtAjustes"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/marco_rosa"
-                android:padding="10dp"
-                android:paddingStart="20dp"
+                app:passwordToggleEnabled="true"
                 android:textColorHint="@color/grey"
-                android:layout_margin="15dp"
                 android:fontFamily="@font/alata"
-                android:hint="Contraseña actual"
-                android:textSize="15sp"></EditText>
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/marco_rosa"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                app:passwordToggleTint="@color/rosa"
+                android:layout_marginEnd="15dp"
+                app:boxBackgroundMode="outline"
+                android:hint="Contraseña actual">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contrActual"
+                    style="@style/txtAjustes"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/alata"
+                    android:padding="10dp"
+                    android:paddingStart="20dp"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColorHint="@color/grey"
+                    android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:src="@drawable/baseline_lock_reset_24"
+                android:layout_marginStart="10dp"></ImageView>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                android:textColorHint="@color/grey"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/marco_rosa"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:passwordToggleTint="@color/rosa"
+                android:fontFamily="@font/alata"
+                app:boxBackgroundMode="outline"
+                android:hint="Contraseña nueva">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contrNueva1"
+                    style="@style/txtAjustes"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:paddingStart="20dp"
+                    android:fontFamily="@font/alata"
+                    android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
         </LinearLayout>
@@ -94,50 +156,37 @@
                 android:src="@drawable/baseline_lock_reset_24"
                 android:layout_marginStart="10dp"></ImageView>
 
-
-            <EditText
-                android:id="@+id/contrNueva1"
-                style="@style/txtAjustes"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/marco_rosa"
-                android:padding="10dp"
-                android:paddingStart="20dp"
-                android:textColorHint="@color/grey"
-                android:layout_margin="15dp"
+                app:passwordToggleEnabled="true"
                 android:fontFamily="@font/alata"
-                android:hint="Contraseña nueva"
-                android:textSize="15sp"></EditText>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"
-                android:src="@drawable/baseline_lock_reset_24"
-                android:layout_marginStart="10dp"></ImageView>
-
-
-            <EditText
-                android:id="@+id/contrNueva2"
-                style="@style/txtAjustes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/marco_rosa"
-                android:padding="10dp"
-                android:paddingStart="20dp"
+                android:layout_marginBottom="15dp"
                 android:textColorHint="@color/grey"
-                android:layout_margin="15dp"
-                android:fontFamily="@font/alata"
                 android:hint="Repetir contraseña nueva"
-                android:textSize="15sp"></EditText>
+                android:background="@drawable/marco_rosa"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:passwordToggleTint="@color/rosa"
+                app:boxBackgroundMode="outline">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contrNueva2"
+                    style="@style/txtAjustes"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:paddingStart="20dp"
+                    android:singleLine="true"
+                    android:inputType="textPassword"
+                    android:fontFamily="@font/alata"
+                    android:textSize="15sp"></com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
 
         </LinearLayout>
@@ -145,7 +194,7 @@
         <Button
             android:id="@+id/btCambiarContr"
             android:layout_width="230dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:text="Cambiar Contraseña"
             android:layout_marginTop="10dp"
             app:cornerRadius="20dp"

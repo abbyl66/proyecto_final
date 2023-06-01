@@ -51,21 +51,35 @@
                 android:padding="8dp"
                 android:textColor="#FF4D4D4D"></EditText>
 
-            <EditText
-                android:id="@+id/ini_ctrsenia"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:inputType="textPassword"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/celeste"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:singleLine="true"
                 android:fontFamily="@font/alata"
-                android:textColorHint="@color/grey"
                 android:background="@drawable/marco_celes"
-                android:drawableLeft="@drawable/ic_baseline_lock_24"
-                android:drawablePadding="8dp"
+                android:textColorHint="@color/grey"
                 android:hint="Contraseña"
-                android:padding="8dp"
-                android:textColor="#FF4D4D4D"></EditText>
+                app:boxBackgroundMode="outline"
+                android:textColor="#FF4D4D4D">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ini_ctrsenia"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:drawableStart="@drawable/ic_baseline_lock_24"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/alata"
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="#FF4D4D4D"></com.google.android.material.textfield.TextInputEditText>
+
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btini_iniciar"

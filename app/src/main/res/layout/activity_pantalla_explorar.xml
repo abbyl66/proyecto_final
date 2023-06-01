@@ -39,6 +39,15 @@
                     android:textColor="@color/white"
                     android:elevation="5dp"></TextView>
 
+                <ProgressBar
+                    android:id="@+id/cargandoLibros"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:visibility="gone"
+                    android:indeterminateTint="@color/white"
+                    android:layout_gravity="center"></ProgressBar>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerCabExp"
                     android:orientation="horizontal"

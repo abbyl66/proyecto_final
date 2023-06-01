@@ -1,5 +1,6 @@
 package com.example.epubook.vista;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -19,10 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.epubook.R;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +55,6 @@ public class PantallaPerfil extends AppCompatActivity {
     private TextView nombreTitulo, numLibros, numColecc, noacciones;
     private ImageButton cambiarFoto;
     private Button cambiarNombre;
-    public static List<String> historial = new ArrayList<>();
 
     private RecyclerView recyclerHistorial;
     private HistorialAdapter historialAdapter;
@@ -90,14 +92,6 @@ public class PantallaPerfil extends AppCompatActivity {
         numLibrosColecc();
 
         infoUsuario();
-
-        if(historial.size() < 0){
-            recyclerHistorial.setVisibility(View.GONE);
-            noacciones.setVisibility(View.VISIBLE);
-        }else{
-            recyclerHistorial.setVisibility(View.VISIBLE);
-            noacciones.setVisibility(View.GONE);
-        }
 
 
         cambiarFoto.setOnClickListener(new View.OnClickListener() {
@@ -173,9 +167,10 @@ public class PantallaPerfil extends AppCompatActivity {
         if(requestCode == imagenCod && resultCode == RESULT_OK && data != null){
             Uri imagenUri = data.getData();
 
-            imagenPerfil.setImageURI(imagenUri);
             guardarFotoPerfil(imagenUri);
             Toast.makeText(this, "Foto de perfil cambiado.", Toast.LENGTH_SHORT).show();
+            imagenPerfil.setImageURI(imagenUri);
+
         }
     }
 
@@ -185,6 +180,9 @@ public class PantallaPerfil extends AppCompatActivity {
         String uid = user.getUid();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
 
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("AAAUsuarios").child(uid);
+
+        storageReference.putFile(uri);
         reference.child("fotoPerfil").setValue(uri.toString());
 
     }
@@ -236,17 +234,36 @@ public class PantallaPerfil extends AppCompatActivity {
                     Usuario usuario = snapshot.getValue(Usuario.class);
 
                     String nombre = usuario.getNombre();
-                    String foto = usuario.getFotoPerfil();
                     List<String> historialUser = usuario.getHistorial();
 
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("AAAUsuarios").child(uid);
+                    storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            Glide.with(PantallaPerfil.this).load(uri).into(imagenPerfil);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(PantallaPerfil.this, "Fallo", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    
                     nombreTitulo.setText(nombre);
-                    imagenPerfil.setImageURI(Uri.parse(foto));
 
-                    Collections.reverse(historialUser);
 
-                    historialAdapter = new HistorialAdapter(historialUser);
-                    recyclerHistorial.setAdapter(historialAdapter);
-                    recyclerHistorial.setLayoutManager(new LinearLayoutManager(PantallaPerfil.this));
+                    if(historialUser != null){
+                        Collections.reverse(historialUser);
+
+                        historialAdapter = new HistorialAdapter(historialUser);
+                        recyclerHistorial.setAdapter(historialAdapter);
+                        recyclerHistorial.setLayoutManager(new LinearLayoutManager(PantallaPerfil.this));
+                    }else{
+                        noacciones.setVisibility(View.VISIBLE);
+                        recyclerHistorial.setVisibility(View.GONE);
+                    }
                 }
 
                 @Override
@@ -256,6 +273,12 @@ public class PantallaPerfil extends AppCompatActivity {
             });
 
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, "Dialogo salir.", Toast.LENGTH_SHORT).show();
 
     }
 

@@ -1,5 +1,6 @@
 package com.example.epubook.vista;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -9,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +22,8 @@ import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +39,11 @@ public class PantallaInicio extends AppCompatActivity{
 
     private ControlUsuario controlUsuario = new ControlUsuario(PantallaInicio.this);
     private ControlDialogos controlDialogos = new ControlDialogos(PantallaInicio.this);
+
+    private boolean unClick = true;
+    final  int dobleClickTiempo = 700;
+    Handler handler = new Handler();
+    Runnable runnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +63,23 @@ public class PantallaInicio extends AppCompatActivity{
         ajustes = findViewById(R.id.ajustes);
         cerrarSesion = findViewById(R.id.cerrarSesion);
         explorar = findViewById(R.id.explorar);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user != null){
+            if(!user.isEmailVerified()){
+                FirebaseAuth.getInstance().signOut();
+                user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d(task.toString(), "Usuario eliminado");
+                        Intent intent = new Intent(PantallaInicio.this, PlantillaDeslizar.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+        }
 
 
         //Al pulsar en menú, inicio, perfil, ajustes o cerrar sesión, se muestran sus pantallas o funciones.
@@ -115,15 +142,30 @@ public class PantallaInicio extends AppCompatActivity{
         //Control al pulsar en el menú inferior.
         bottomNavigationView.setBackground(null);
         bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()){
-                case R.id.mab_libros:
-                    replaceFragment(new LibrosFragment());
-                    break;
-                case R.id.mab_coleccion:
-                    replaceFragment(new ColeccionesFragment());
-                    break;
-            }
+            if(unClick){
 
+                unClick = false;
+
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        unClick = true;
+                    }
+                };
+
+                //Tiempo que no funcionará el click.
+                handler.postDelayed(runnable, dobleClickTiempo);
+
+
+                switch (item.getItemId()){
+                    case R.id.mab_libros:
+                        replaceFragment(new LibrosFragment());
+                        break;
+                    case R.id.mab_coleccion:
+                        replaceFragment(new ColeccionesFragment());
+                        break;
+                }
+            }
             return true;
         });
 
@@ -131,7 +173,22 @@ public class PantallaInicio extends AppCompatActivity{
         botonAniadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                controlDialogos.mostrarDialogoAniadir(PantallaInicio.this, bottomNavigationView);
+                if(unClick) {
+
+                    unClick = false;
+
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            unClick = true;
+                        }
+                    };
+
+                    //Tiempo que no funcionará el click.
+                    handler.postDelayed(runnable, dobleClickTiempo);
+
+                    controlDialogos.mostrarDialogoAniadir(PantallaInicio.this, bottomNavigationView);
+                }
             }
         });
 

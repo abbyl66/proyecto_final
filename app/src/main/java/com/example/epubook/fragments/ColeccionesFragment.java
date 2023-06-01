@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,14 @@ public class ColeccionesFragment extends Fragment {
     ControlColecciones controlColecciones;
     ControlDialogos controlDialogos;
 
-    private TextView noColecc, titulo, titulo2;
+    private TextView noColecc, titulo, titulo2, noLibrosColecc;
     private ImageView imgColecc, contenedor;
 
     private LinearLayout toolbarInicio, toolbar;
+    private boolean unClick = true;
+    final  int dobleClickTiempo = 700;
+    Handler handler = new Handler();
+    Runnable runnable;
 
     @Override
     public void onAttach(Context context) {
@@ -81,6 +86,7 @@ public class ColeccionesFragment extends Fragment {
         titulo2 = view.findViewById(R.id.tituloColecc2);
         imgColecc = view.findViewById(R.id.imgColecc);
         contenedor = view.findViewById(R.id.contenedorColecc);
+        noLibrosColecc = view.findViewById(R.id.noLibrosColecc);
 
         Animation animation = AnimationUtils.loadAnimation(requireActivity(), R.anim.anim_fragcolecc);
         imgColecc.startAnimation(animation);
@@ -101,28 +107,44 @@ public class ColeccionesFragment extends Fragment {
         coleccAdapter.setOnColeccListener(new ColeccAdapter.OnColeccClick() {
             @Override
             public void onColeccClick(int pos) {
-                //Al pulsar alguna coleccion, oculto titulos e imagen de portada.Y control del toolbar eliminar.
-                titulo.setVisibility(View.GONE);
-                titulo2.setVisibility(View.GONE);
-                imgColecc.setVisibility(View.GONE);
-                toolbar.setVisibility(View.GONE);
-                toolbarInicio.setVisibility(View.VISIBLE);
 
-                //Uso un contendor blanco para que el aspecto del fragment colecciones se vea bien.
-                if(pos==0){
-                    contenedor.setVisibility(View.VISIBLE);
-                }else{
-                    contenedor.setVisibility(View.INVISIBLE);
-                }
+                if(unClick) {
 
-                controlColecciones.mostrarContenidoColecc(listaLibros, libroColeccAdapter, listaColeccion.get(pos), getActivity());
+                    unClick = false;
 
-                libroColeccAdapter.setItemLongClick(new LibroColeccAdapter.ItemLongClick() {
-                    @Override
-                    public void onItemLongClick(View view, int posLibro) {
-                        toolbarEliminarItem(posLibro, listaColeccion.get(pos), view);
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            unClick = true;
+                        }
+                    };
+
+                    //Tiempo que no funcionará el click.
+                    handler.postDelayed(runnable, dobleClickTiempo);
+
+                    //Al pulsar alguna coleccion, oculto titulos e imagen de portada.Y control del toolbar eliminar.
+                    titulo.setVisibility(View.GONE);
+                    titulo2.setVisibility(View.GONE);
+                    imgColecc.setVisibility(View.GONE);
+                    toolbar.setVisibility(View.GONE);
+                    toolbarInicio.setVisibility(View.VISIBLE);
+
+                    //Uso un contendor blanco para que el aspecto del fragment colecciones se vea bien.
+                    if (pos == 0) {
+                        contenedor.setVisibility(View.VISIBLE);
+                    } else {
+                        contenedor.setVisibility(View.INVISIBLE);
                     }
-                });
+
+                    controlColecciones.mostrarContenidoColecc(listaLibros, libroColeccAdapter, listaColeccion.get(pos), getActivity(), noLibrosColecc, recyclerCotenido);
+
+                    libroColeccAdapter.setItemLongClick(new LibroColeccAdapter.ItemLongClick() {
+                        @Override
+                        public void onItemLongClick(View view, int posLibro) {
+                            toolbarEliminarItem(posLibro, listaColeccion.get(pos), view);
+                        }
+                    });
+                }
 
             }
         });
