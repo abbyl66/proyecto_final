@@ -49,6 +49,7 @@ public class LibroColeccAdapter extends RecyclerView.Adapter<LibroColeccAdapter.
         //Animacion de libros dentro de colecciones.
         Animation anim = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.items_libros_colecc);
         holder.itemView.startAnimation(anim);
+
     }
 
     @Override

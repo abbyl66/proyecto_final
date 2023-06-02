@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -182,8 +183,10 @@ public class PantallaPerfil extends AppCompatActivity {
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("AAAUsuarios").child(uid);
 
-        storageReference.putFile(uri);
-        reference.child("fotoPerfil").setValue(uri.toString());
+        File file = new File(uri.getPath());
+
+        storageReference.child(file.getName()).putFile(uri);
+        reference.child("fotoPerfil").setValue(file.getName());
 
     }
 
@@ -235,8 +238,9 @@ public class PantallaPerfil extends AppCompatActivity {
 
                     String nombre = usuario.getNombre();
                     List<String> historialUser = usuario.getHistorial();
+                    String foto = usuario.getFotoPerfil();
 
-                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("AAAUsuarios").child(uid);
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("AAAUsuarios").child(uid).child(foto);
                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -247,7 +251,7 @@ public class PantallaPerfil extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(PantallaPerfil.this, "Fallo", Toast.LENGTH_SHORT).show();
+                            Log.d("Error", e.getMessage());
                         }
                     });
                     

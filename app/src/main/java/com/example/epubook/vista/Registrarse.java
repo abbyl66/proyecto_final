@@ -29,6 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Registrarse extends AppCompatActivity {
 
@@ -128,6 +131,10 @@ public class Registrarse extends AppCompatActivity {
 
     public void registarUsuario(){
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference referenceH = FirebaseDatabase.getInstance().getReference("users").child(uid);
+
         StorageReference refFoto = FirebaseStorage.getInstance().getReference().child("AAAUsuarios/user.png");
 
         String nombre = regNombre.getText().toString();
@@ -151,9 +158,12 @@ public class Registrarse extends AppCompatActivity {
                         refFoto.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
+                                List<String> historial = new ArrayList<>();
+                                historial.add("Te has unido a Epubook.");
                                 //Realtime Database: guardo el usuario con sus datos en la bd realtime.
-                                Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia, String.valueOf(uri), null);
+                                Usuario nuevoUsuario = new Usuario(nombre, email, usuario, contrasenia, String.valueOf(uri), historial);
                                 reference.child(user.getUid()).setValue(nuevoUsuario);
+
                             }
                         });
 

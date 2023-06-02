@@ -1,5 +1,10 @@
 package com.example.epubook.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -10,9 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -141,6 +148,9 @@ public class ColeccionesFragment extends Fragment {
                     libroColeccAdapter.setItemLongClick(new LibroColeccAdapter.ItemLongClick() {
                         @Override
                         public void onItemLongClick(View view, int posLibro) {
+                            Animation anim = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_itemc);
+                            view.startAnimation(anim);
+
                             toolbarEliminarItem(posLibro, listaColeccion.get(pos), view);
                         }
                     });
@@ -169,10 +179,19 @@ public class ColeccionesFragment extends Fragment {
         toolbar.setVisibility(View.VISIBLE);
 
         ImageButton eliminar = requireActivity().findViewById(R.id.eliminarLibColecc);
+        ImageButton atras = requireActivity().findViewById(R.id.cancelarToolbar);
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 controlDialogos.dialogoEliminarLibroColecc(view, posLibro, listaLibros, libroColeccAdapter, coleccion, ColeccionesFragment.this);
+                toolbar.setVisibility(View.GONE);
+                toolbarInicio.setVisibility(View.VISIBLE);
+            }
+        });
+
+        atras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 toolbar.setVisibility(View.GONE);
                 toolbarInicio.setVisibility(View.VISIBLE);
             }
@@ -188,6 +207,7 @@ public class ColeccionesFragment extends Fragment {
                 }
             }
         });
+
 
     }
 

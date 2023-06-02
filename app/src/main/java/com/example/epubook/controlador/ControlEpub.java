@@ -546,7 +546,6 @@ public class ControlEpub {
 
                    @Override
                    public void onCancelled(@NonNull DatabaseError error) {
-
                    }
                });
 
