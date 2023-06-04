@@ -71,7 +71,7 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
                 holder.descargando.setVisibility(View.VISIBLE);
                 holder.descargar.setVisibility(View.INVISIBLE);
 
-                controlExplorar.descargarLibroCat(libro.getRuta(), libro, LibroCatAdapter.this);
+                controlExplorar.descargarLibroCat(libro.getRuta(), libro, LibroCatAdapter.this, view);
             }
         });
 

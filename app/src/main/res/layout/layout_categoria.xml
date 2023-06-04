@@ -21,6 +21,6 @@
         android:layout_height="10dp"
         android:visibility="invisible"
         android:layout_gravity="center"
-        android:src="@drawable/baseline_circle_24"></ImageView>
+        android:src="@drawable/circulocat"></ImageView>
 
 </LinearLayout>

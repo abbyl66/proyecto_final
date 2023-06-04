@@ -131,10 +131,6 @@ public class Registrarse extends AppCompatActivity {
 
     public void registarUsuario(){
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-        DatabaseReference referenceH = FirebaseDatabase.getInstance().getReference("users").child(uid);
-
         StorageReference refFoto = FirebaseStorage.getInstance().getReference().child("AAAUsuarios/user.png");
 
         String nombre = regNombre.getText().toString();

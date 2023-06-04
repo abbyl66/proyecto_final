@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -33,6 +34,7 @@ import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.modelo.Coleccion;
 import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ColeccAdapter;
+import com.example.epubook.vista.LectorEpub;
 import com.example.epubook.vista.LibroColeccAdapter;
 
 import java.util.ArrayList;
@@ -154,6 +156,18 @@ public class ColeccionesFragment extends Fragment {
                             toolbarEliminarItem(posLibro, listaColeccion.get(pos), view);
                         }
                     });
+
+                    libroColeccAdapter.setItemClick(new LibroColeccAdapter.ItemClick() {
+                        @Override
+                        public void onItemClick(int pos) {
+                            String ruta = listaLibros.get(pos).getRuta();
+                            Intent intent = new Intent(requireContext(), LectorEpub.class);
+                            intent.putExtra("ruta", ruta);
+                            requireContext().startActivity(intent);
+                        }
+                    });
+
+
                 }
 
             }
@@ -204,6 +218,11 @@ public class ColeccionesFragment extends Fragment {
                 if(toolbar.getVisibility()==View.VISIBLE){
                     toolbar.setVisibility(View.GONE);
                     toolbarInicio.setVisibility(View.VISIBLE);
+                }else if(toolbar.getVisibility()==View.GONE){
+                    String ruta = listaLibros.get(posLibro).getRuta();
+                    Intent intent = new Intent(requireContext(), LectorEpub.class);
+                    intent.putExtra("ruta", ruta);
+                    requireContext().startActivity(intent);
                 }
             }
         });

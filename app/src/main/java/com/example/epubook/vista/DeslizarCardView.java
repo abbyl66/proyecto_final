@@ -35,7 +35,7 @@ public class DeslizarCardView extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        int pos = viewHolder.getAdapterPosition();
+        int pos = viewHolder.getPosition();
         if(direction == ItemTouchHelper.LEFT){
             librosFragment.eliminarEpub(librosFragment, pos);
         }

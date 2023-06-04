@@ -1,5 +1,7 @@
 package com.example.epubook.vista;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ public class LibroColeccAdapter extends RecyclerView.Adapter<LibroColeccAdapter.
     private List<Libro> listaLibros;
 
     private ItemLongClick itemLongClick;
+
+    private ItemClick itemClick;
     public LibroColeccAdapter(List<Libro> listaLibros){
         this.listaLibros = listaLibros;
     }
@@ -34,12 +38,20 @@ public class LibroColeccAdapter extends RecyclerView.Adapter<LibroColeccAdapter.
         void onItemLongClick(View view, int pos);
     }
 
+    public interface ItemClick{
+        void onItemClick(int pos);
+    }
+
+    public void setItemClick(ItemClick itemClick){
+        this.itemClick = itemClick;
+    }
+
     public void setItemLongClick(ItemLongClick itemLongClick){
         this.itemLongClick = itemLongClick;
     }
 
     @Override
-    public void onBindViewHolder(LibroColeccAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(LibroColeccAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Libro libro = listaLibros.get(position);
         holder.titulo.setText(libro.getTitulo());
         holder.autor.setText(libro.getAutor());
@@ -57,7 +69,7 @@ public class LibroColeccAdapter extends RecyclerView.Adapter<LibroColeccAdapter.
         return listaLibros.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView titulo, autor;
         private ImageView portada;
 
@@ -70,6 +82,7 @@ public class LibroColeccAdapter extends RecyclerView.Adapter<LibroColeccAdapter.
             autor = itemView.findViewById(R.id.autorLibroColecc);
             portada = itemView.findViewById(R.id.portadaLibroColecc);
 
+            itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
@@ -83,7 +96,17 @@ public class LibroColeccAdapter extends RecyclerView.Adapter<LibroColeccAdapter.
                     return false;
                 }
             });
+        }
 
+        @Override
+        public void onClick(View view) {
+            if(libroColeccAdapter.itemClick != null){
+                int pos = getAdapterPosition();
+                if(pos!=RecyclerView.NO_POSITION){
+                    libroColeccAdapter.itemClick.onItemClick(pos);
+                }
+
+            }
         }
     }
 

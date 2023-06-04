@@ -26,8 +26,10 @@ import com.example.epubook.vista.EpubAdapter;
 import com.example.epubook.vista.LibroAdapter;
 import com.example.epubook.vista.LibroColeccAdapter;
 import com.example.epubook.vista.PantallaPerfil;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -115,6 +117,9 @@ public class ControlEpub {
 
         String uidUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        DatabaseReference refUser = FirebaseDatabase.getInstance().getReference("users").child(uidUsuario);
+
+
         //Nodo usuario, donde guardaré los ficheros epub de cada usuario.
         StorageReference referenceUsuario = reference.child(uidUsuario);
 
@@ -156,19 +161,14 @@ public class ControlEpub {
                         int index = archivo.lastIndexOf('.');
                         String nombreArch = archivo.substring(0, index);
 
-                        //Notifico a historial.
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        String uid = user.getUid();
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
-
-                        reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                        refUser.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
                                     List<String> listaAcc = (List<String>) snapshot.getValue();
 
                                     listaAcc.add("Has añadido "+ nombreArch+ " a tus libros.");
-                                    reference.child("historial").setValue(listaAcc);
+                                    refUser.child("historial").setValue(listaAcc);
                                     Toast.makeText(activity, "Libro guardado", Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -520,42 +520,44 @@ public class ControlEpub {
         File epub = new File(libro.getRuta());
         StorageReference referenceLibro = storage.getReference().child(uid).child("misLibros").child(epub.getName());
 
-       referenceLibro.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+       referenceLibro.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
            @Override
-           public void onSuccess(Void unused) {
-               listalibros.remove(pos);
-               libroAdapter.notifyItemRemoved(pos);
-               libroAdapter.notifyDataSetChanged();
+           public void onComplete(@NonNull Task<Void> task) {
+               if(task.isSuccessful()){
+                   listalibros.remove(pos);
+                   libroAdapter.notifyItemRemoved(pos);
+                   libroAdapter.notifyDataSetChanged();
 
-               //Notifico a historial.
-               FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-               String uid = user.getUid();
-               DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
+                   //Notifico a historial.
+                   FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                   String uid = user.getUid();
+                   DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child(uid);
 
-               reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(@NonNull DataSnapshot snapshot) {
-                       if(snapshot.exists()){
-                           List<String> listaAcc = (List<String>) snapshot.getValue();
+                   reference.child("historial").addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot snapshot) {
+                           if(snapshot.exists()){
+                               List<String> listaAcc = (List<String>) snapshot.getValue();
 
-                           listaAcc.add("Has eliminado "+ libro.getTitulo()+ " de tus libros.");
-                           reference.child("historial").setValue(listaAcc);
-                           Toast.makeText(view.getContext(), libro.getTitulo()+" se ha eliminado.", Toast.LENGTH_SHORT).show();
+                               listaAcc.add("Has eliminado "+ libro.getTitulo()+ " de tus libros.");
+                               reference.child("historial").setValue(listaAcc);
+                               Toast.makeText(view.getContext(), libro.getTitulo()+" se ha eliminado.", Toast.LENGTH_SHORT).show();
+                           }
                        }
-                   }
 
-                   @Override
-                   public void onCancelled(@NonNull DatabaseError error) {
-                   }
-               });
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError error) {
+                       }
+                   });
 
-               if(listalibros.size() == 0){
-                   noLibros.setVisibility(View.VISIBLE);
-               }else{
-                   noLibros.setVisibility(View.GONE);
+                   if(listalibros.size() == 0){
+                       noLibros.setVisibility(View.VISIBLE);
+                   }else{
+                       noLibros.setVisibility(View.GONE);
+                   }
                }
-
            }
+
        });
     }
 

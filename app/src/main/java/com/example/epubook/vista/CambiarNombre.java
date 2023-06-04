@@ -81,9 +81,7 @@ public class CambiarNombre extends AppCompatActivity {
                         public void onDataChange(DataSnapshot snapshot) {
                             reference.child("nombre").setValue(nombre.getText().toString());
                             Toast.makeText(CambiarNombre.this, "Nombre cambiado.", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(CambiarNombre.this, PantallaPerfil.class);
-                            startActivity(intent);
-                            finish();
+                            CambiarNombre.this.finish();
                         }
 
                         @Override

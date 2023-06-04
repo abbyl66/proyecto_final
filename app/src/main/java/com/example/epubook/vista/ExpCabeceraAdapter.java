@@ -59,7 +59,7 @@ public class ExpCabeceraAdapter extends RecyclerView.Adapter<ExpCabeceraAdapter.
             public void onClick(View view) {
                 holder.descargando.setVisibility(View.VISIBLE);
                 holder.descargar.setVisibility(View.INVISIBLE);
-                controlExplorar.descargarLibroCab(libro.getRuta(), libro, ExpCabeceraAdapter.this);
+                controlExplorar.descargarLibroCab(libro.getRuta(), libro, ExpCabeceraAdapter.this, view);
             }
         });
 

@@ -95,6 +95,7 @@ public class PantallaPerfil extends AppCompatActivity {
         infoUsuario();
 
 
+
         cambiarFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,7 +109,6 @@ public class PantallaPerfil extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PantallaPerfil.this, CambiarNombre.class);
                 startActivity(intent);
-                finish();
             }
         });
 
@@ -244,8 +244,12 @@ public class PantallaPerfil extends AppCompatActivity {
                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-
-                            Glide.with(PantallaPerfil.this).load(uri).into(imagenPerfil);
+                            if(PantallaPerfil.this.isDestroyed()){
+                                System.out.println("No carga imagen.");
+                                return;
+                            }else{
+                                Glide.with(PantallaPerfil.this).load(uri).into(imagenPerfil);
+                            }
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

@@ -212,7 +212,7 @@ public class ControlExplorar {
 
     }
 
-    public void descargarLibroCab(String ruta, LibroExplorar libro, ExpCabeceraAdapter expCabeceraAdapter) {
+    public void descargarLibroCab(String ruta, LibroExplorar libro, ExpCabeceraAdapter expCabeceraAdapter, View view) {
         libro.setDescargando(true);
         //Creo fichero mediante la ruta pasada por parámetro
         File epub = new File(ruta);
@@ -250,7 +250,7 @@ public class ControlExplorar {
                         libro.setDescargando(false);
                         libro.setGuardado(true);
                         expCabeceraAdapter.notifyDataSetChanged();
-                        Toast.makeText(context, "El libro ya existe en tu biblioteca.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "El libro ya existe en tu biblioteca.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -282,7 +282,7 @@ public class ControlExplorar {
 
                                     listaAcc.add("Has descargado "+ nombreArch+ ".");
                                     reference.child("historial").setValue(listaAcc);
-                                    Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(), "Libro descargado", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -297,7 +297,7 @@ public class ControlExplorar {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        Toast.makeText(context, "No se ha podido descargar el libro.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "No se ha podido descargar el libro.", Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -307,7 +307,7 @@ public class ControlExplorar {
 
     }
 
-    public void descargarLibroCat(String ruta, LibroExplorar libro, LibroCatAdapter libroCatAdapter) {
+    public void descargarLibroCat(String ruta, LibroExplorar libro, LibroCatAdapter libroCatAdapter, View view) {
         libro.setDescargando(true);
         //Creo fichero mediante la ruta pasada por parámetro
         File epub = new File(ruta);
@@ -345,7 +345,7 @@ public class ControlExplorar {
                         libro.setDescargando(false);
                         libro.setGuardado(true);
                         libroCatAdapter.notifyDataSetChanged();
-                        Toast.makeText(context, "El libro ya existe en tu biblioteca.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "El libro ya existe en tu biblioteca.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -375,7 +375,7 @@ public class ControlExplorar {
 
                                     listaAcc.add("Has descargado "+nombreArch+".");
                                     reference.child("historial").setValue(listaAcc);
-                                    Toast.makeText(context, "Libro descargado", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(view.getContext(), "Libro descargado", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -389,7 +389,7 @@ public class ControlExplorar {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        Toast.makeText(context, "No se ha podido descargar el libro.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "No se ha podido descargar el libro.", Toast.LENGTH_SHORT).show();
                     }
                 });
 

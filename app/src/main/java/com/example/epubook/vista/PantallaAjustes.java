@@ -1,5 +1,6 @@
 package com.example.epubook.vista;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
@@ -16,7 +17,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,20 +27,32 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.epubook.R;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
+import com.example.epubook.modelo.Usuario;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class PantallaAjustes extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ImageView menu;
     private LinearLayout inicio, perfil, ajustes, cerrarSesion, explorar, datospers, cambiarContr;
-
     ControlUsuario controlUsuario = new ControlUsuario(PantallaAjustes.this);
 
     private SwitchCompat cambiarTema;
@@ -88,6 +103,7 @@ public class PantallaAjustes extends AppCompatActivity {
         explorar = findViewById(R.id.explorar);
         datospers = findViewById(R.id.datosPers);
         cambiarContr = findViewById(R.id.cambiarContr);
+
 
         datospers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +169,7 @@ public class PantallaAjustes extends AppCompatActivity {
         });
 
     }
+
 
     @Override
     public void onBackPressed() {

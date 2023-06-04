@@ -9,25 +9,40 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.epubook.R;
 import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
+import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.List;
 
 public class PantallaInicio extends AppCompatActivity{
 
@@ -65,13 +80,22 @@ public class PantallaInicio extends AppCompatActivity{
         explorar = findViewById(R.id.explorar);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        StorageReference storageReference =  FirebaseStorage.getInstance().getReference().child(user.getUid());
+        StorageReference usuariosFoto =  FirebaseStorage.getInstance().getReference().child("AAAUsuarios").child(user.getUid());
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
 
+        //En caso de que no se lleva a cabo el proceso de registro con el email verificado, se elimina el usuario.
         if(user != null){
             if(!user.isEmailVerified()){
                 FirebaseAuth.getInstance().signOut();
                 user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        //Tambien elimino los campos que se crean de forma automática para cada usuario para almacenar su información.
+                        storageReference.delete();
+                        databaseReference.removeValue();
+                        usuariosFoto.delete();
+
                         Log.d(task.toString(), "Usuario eliminado");
                         Intent intent = new Intent(PantallaInicio.this, PlantillaDeslizar.class);
                         startActivity(intent);
