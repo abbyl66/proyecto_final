@@ -40,11 +40,12 @@ public class CargarLibrosAsync extends AsyncTask<List<StorageReference>, Void, L
         StorageReference reference = firebaseStorage.getReference();
         StorageReference referenceExpl = reference.child("AAAExplorar");
 
-        final int librosTotal = storageReferences[0].size();
+        final int librosTotal = 6;
         final int[] contador = {0};
 
         //Recorro los libros.
-        for(StorageReference epub : storageReferences[0]){
+        for(int i=0; i<librosTotal; i++){
+            StorageReference epub = storageReferences[0].get(i);
             try{
 
                 //A patir del nodo explorar, consigo el del fichero que obtendré.
@@ -55,7 +56,7 @@ public class CargarLibrosAsync extends AsyncTask<List<StorageReference>, Void, L
                 referenceArchivo.getFile(archivoTemp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        List<LibroExplorar> libros =   controlEpub.mostrarLibrosExp(archivoTemp.getAbsolutePath());
+                        List<LibroExplorar> libros =  controlEpub.mostrarLibrosExp(archivoTemp.getAbsolutePath());
                         listaCont.addAll(libros);
 
                         synchronized (contador){

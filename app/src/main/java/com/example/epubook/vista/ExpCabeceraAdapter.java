@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.epubook.R;
 import com.example.epubook.controlador.ControlExplorar;
 import com.example.epubook.modelo.Libro;
@@ -45,7 +46,7 @@ public class ExpCabeceraAdapter extends RecyclerView.Adapter<ExpCabeceraAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LibroExplorar libro = listaLibros.get(position);
-        holder.portada.setImageBitmap(libro.getPortada());
+        Glide.with(holder.itemView.getContext()).asBitmap().load(libro.getPortada()).into(holder.portada);
 
         controlExplorar = new ControlExplorar(holder.itemView.getContext());
 
@@ -111,8 +112,7 @@ public class ExpCabeceraAdapter extends RecyclerView.Adapter<ExpCabeceraAdapter.
     //Limito el numero de libros que saldrán.
     @Override
     public int getItemCount() {
-        int limite = 6;
-        return Math.min(listaLibros.size(), limite);
+        return listaLibros.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

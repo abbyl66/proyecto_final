@@ -1,6 +1,7 @@
 package com.example.epubook.modelo;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 
 public class LibroExplorar {
 
@@ -13,8 +14,6 @@ public class LibroExplorar {
 
     int numDescargas;
 
-    public LibroExplorar() {
-    }
 
     public LibroExplorar(String titulo, String autor, Bitmap portada, String ruta, boolean guardado, boolean descargando, int numDescargas) {
         this.titulo = titulo;
@@ -25,6 +24,7 @@ public class LibroExplorar {
         this.descargando = descargando;
         this.numDescargas = numDescargas;
     }
+
 
 
     public int getNumDescargas() {

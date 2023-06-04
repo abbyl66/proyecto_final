@@ -116,7 +116,7 @@ public class ControlExplorar {
                                         categoria = metadata.getSubjects().get(0);
                                     }
 
-                                    //Novela,Romance - Al dividirlo por una , coge la ultima parte despues de esta.
+                                    //Novela,Romance - Al dividirlo por una "," coge la ultima parte después de esta.
                                     String[] nombreEsp = categoria.split("\\,");
                                     categoria = nombreEsp[nombreEsp.length-1];//Romance
 
