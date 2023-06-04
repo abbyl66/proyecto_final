@@ -176,8 +176,9 @@
 
                 <ImageView
                     android:id="@+id/imagenAjust"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_below="@+id/contenedorInfo"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"

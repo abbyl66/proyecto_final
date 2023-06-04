@@ -326,7 +326,7 @@ public class ControlEpub {
                 Bitmap bitmap = Bitmap.createBitmap(relativeLayout.getDrawingCache());
                 relativeLayout.setDrawingCacheEnabled(false);
 
-                Libro libro = new Libro(titulo, autor, bitmap, ruta);
+                Libro libro = new Libro(titulo, autor, bitmap, ruta, 0, 0);
                 listaLibros.add(libro);
 
 
@@ -337,7 +337,7 @@ public class ControlEpub {
                         //Obtengo la portada
                         byte[] portadaByte = portada.getData();
                         Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                        Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+                        Libro libro = new Libro(titulo, autor, portadaBm, ruta, 0, 0);
                         listaLibros.add(libro);
 
                     //cover.jpg
@@ -345,14 +345,14 @@ public class ControlEpub {
                         //Obtengo la portada.
                         byte[] portadaByte = portada2.getData();
                         Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                        Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+                        Libro libro = new Libro(titulo, autor, portadaBm, ruta, 0, 0);
                         listaLibros.add(libro);
                     }
                 }else if(portada2!=null){
                     //Obtengo la portada.
                     byte[] portadaByte = portada2.getData();
                     Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-                    Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+                    Libro libro = new Libro(titulo, autor, portadaBm, ruta, 0, 0);
                     listaLibros.add(libro);
                 }
             }

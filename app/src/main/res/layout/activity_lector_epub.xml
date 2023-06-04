@@ -1,14 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".vista.LectorEpub">
 
         <WebView
-            android:id="@+id/txtContenidoEpub"
+            android:id="@+id/webViewEpub"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/marcador"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/contenedor_rosa"
+            android:padding="10dp"
+            android:visibility="gone"
+            android:layout_margin="10dp"
+            android:layout_gravity="end"
+            android:src="@drawable/baseline_bookmark_24"></ImageButton>
+
+        <LinearLayout
+            android:id="@+id/contAjustes"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="-15dp"
+            android:layout_marginEnd="0dp"
+            android:visibility="gone"
+            android:gravity="bottom"
+            android:layout_gravity="bottom"
+            android:background="@drawable/contenedor_rosa"
+            android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_keyboard_arrow_up_24"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="20dp"></ImageView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fondo"
+                    android:textSize="21sp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/alata"
+                    android:layout_marginBottom="11dp"
+                    android:layout_marginStart="20dp"></TextView>
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ajusteswv"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentStart="true"
+            android:visibility="gone"
+            android:layout_gravity="bottom"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/contenedor_rosa"
+            >
+
+                <TextView
+                    android:id="@+id/cerrarColores"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/contenedor_rosaba"
+                    android:drawableLeft="@drawable/baseline_keyboard_arrow_down_24"
+                    android:drawablePadding="10dp"
+                    android:fontFamily="@font/alata"
+                    android:text="Fondo"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:textSize="21sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+
+                <ImageView
+                    android:id="@+id/fondoBlanco"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/fondoblanco"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cerrarColores"></ImageView>
+
+                <ImageView
+                    android:id="@+id/fondoNegro"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/fondonegro"
+                    app:layout_constraintStart_toEndOf="@+id/fondoBlanco"
+                    app:layout_constraintTop_toBottomOf="@+id/cerrarColores"></ImageView>
+
+
+                <ImageView
+                    android:id="@+id/fondoCrema"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/fondocrema"
+                    app:layout_constraintStart_toEndOf="@+id/fondoNegro"
+                    app:layout_constraintTop_toBottomOf="@+id/cerrarColores"></ImageView>
+
+                <ImageView
+                    android:id="@+id/fondoGris"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:src="@drawable/baseline_circle_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/fondoCrema"
+                    app:layout_constraintTop_toBottomOf="@+id/cerrarColores"></ImageView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
