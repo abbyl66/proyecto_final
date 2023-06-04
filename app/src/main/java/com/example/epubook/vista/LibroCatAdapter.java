@@ -1,6 +1,8 @@
 package com.example.epubook.vista;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -10,6 +12,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -72,6 +75,29 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
                 holder.descargar.setVisibility(View.INVISIBLE);
 
                 controlExplorar.descargarLibroCat(libro.getRuta(), libro, LibroCatAdapter.this, view);
+            }
+        });
+
+        holder.resumen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.resumen.setVisibility(View.GONE);
+                holder.volver.setVisibility(View.VISIBLE);
+                holder.sinopsisCuadro.setVisibility(View.VISIBLE);
+                holder.txtSinopsis.setVisibility(View.VISIBLE);
+                holder.scrollSinop.setVisibility(View.VISIBLE);
+                controlExplorar.mostrarSinopsis(libro.getRuta(), holder.txtSinopsis);
+            }
+        });
+
+        holder.volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.resumen.setVisibility(View.VISIBLE);
+                holder.volver.setVisibility(View.GONE);
+                holder.sinopsisCuadro.setVisibility(View.GONE);
+                holder.scrollSinop.setVisibility(View.GONE);
+                holder.txtSinopsis.setVisibility(View.GONE);
             }
         });
 
@@ -165,10 +191,11 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView portada;
+        private ImageView portada, sinopsisCuadro;
         private Button descargar;
         private ProgressBar descargando;
-        private TextView titulo, autor, resumen, volver;
+        private TextView titulo, autor, resumen, volver, txtSinopsis;
+        private ScrollView scrollSinop;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -179,6 +206,20 @@ public class LibroCatAdapter extends RecyclerView.Adapter<LibroCatAdapter.ViewHo
             resumen = itemView.findViewById(R.id.resumenCat);
             volver = itemView.findViewById(R.id.volverItem);
             descargando = itemView.findViewById(R.id.libroCatCarg);
+            sinopsisCuadro = itemView.findViewById(R.id.sinopsis);
+            txtSinopsis = itemView.findViewById(R.id.textoSinopsis);
+            scrollSinop = itemView.findViewById(R.id.scrollSinop);
+
+            txtSinopsis.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
+                }
+            });
+
+            txtSinopsis.setMovementMethod(new ScrollingMovementMethod());
+
         }
     }
 

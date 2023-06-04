@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -449,6 +450,28 @@ public class ControlExplorar {
 
             }
         });
+
+    }
+
+    public void mostrarSinopsis(String ruta, TextView txtSinopsis) {
+
+        try {
+            Book libro =  (new EpubReader()).readEpub(new FileInputStream(ruta));
+            Metadata metadata = libro.getMetadata();
+
+            List<String> sinopsis = metadata.getDescriptions();
+
+            if(!sinopsis.isEmpty()){
+
+                String sinopsisLibro = sinopsis.get(0);
+                txtSinopsis.setText(sinopsisLibro);
+
+            }else{
+                txtSinopsis.setText("No se ha encontrado la sinopsis para este título.");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
