@@ -312,7 +312,7 @@ public class ControlEpub {
 
            if(portada == null){
                Bitmap p = obtenerPortada(titulo);
-               Libro libro = new Libro(titulo, autor, p, ruta, 0, 0);
+               Libro libro = new Libro(titulo, autor, p, ruta);
                listaLibros.add(libro);
            }else{
                String idPortada = portada.getId();
@@ -421,7 +421,7 @@ public class ControlEpub {
         try {
             byte[] portadaByte = portada.getData();
             Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-            Libro libro = new Libro(titulo, autor, portadaBm, ruta, 0, 0);
+            Libro libro = new Libro(titulo, autor, portadaBm, ruta);
             listaLibros.add(libro);
 
         } catch (IOException e) {

@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.fragments.ColeccionesFragment;
 import com.example.epubook.fragments.LibrosFragment;
@@ -52,8 +53,9 @@ public class PantallaAjustes extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private ImageView menu;
-    private LinearLayout inicio, perfil, ajustes, cerrarSesion, explorar, datospers, cambiarContr;
+    private LinearLayout inicio, perfil, ajustes, cerrarSesion, explorar, datospers, cambiarContr, informacion;
     ControlUsuario controlUsuario = new ControlUsuario(PantallaAjustes.this);
+    ControlDialogos controlDialogos = new ControlDialogos(PantallaAjustes.this);
 
     private SwitchCompat cambiarTema;
     boolean temaOscuro;
@@ -103,6 +105,7 @@ public class PantallaAjustes extends AppCompatActivity {
         explorar = findViewById(R.id.explorar);
         datospers = findViewById(R.id.datosPers);
         cambiarContr = findViewById(R.id.cambiarContr);
+        informacion = findViewById(R.id.infoAjustes);
 
 
         datospers.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +120,14 @@ public class PantallaAjustes extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PantallaAjustes.this, CambiarContrasenia.class);
+                startActivity(intent);
+            }
+        });
+
+        informacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PantallaAjustes.this, PantallaInformacion.class);
                 startActivity(intent);
             }
         });
@@ -173,7 +184,7 @@ public class PantallaAjustes extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Dialogo salir.", Toast.LENGTH_SHORT).show();
+        controlDialogos.dialogoSalir(PantallaAjustes.this);
     }
 
     public static void openDrawer(DrawerLayout drawerLayout){

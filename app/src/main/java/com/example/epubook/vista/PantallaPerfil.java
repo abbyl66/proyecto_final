@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -63,6 +64,7 @@ public class PantallaPerfil extends AppCompatActivity {
     public static final int imagenCod = 1;
 
     ControlUsuario controlUsuario = new ControlUsuario(PantallaPerfil.this);
+    ControlDialogos controlDialogos = new ControlDialogos(PantallaPerfil.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -286,7 +288,7 @@ public class PantallaPerfil extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Dialogo salir.", Toast.LENGTH_SHORT).show();
+        controlDialogos.dialogoSalir(PantallaPerfil.this);
 
     }
 

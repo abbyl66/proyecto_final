@@ -9,7 +9,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="260dp"
         android:id="@+id/img_intro"
         android:layout_marginTop="10dp"
         android:src="@drawable/booksintro"
@@ -19,24 +19,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/titulo_intro"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:text="Todos tus libros en una sola app"
         android:textSize="30sp"
         android:textAlignment="center"
         android:textColor="@color/celeste"
         android:textStyle="bold"
-        android:fontFamily="serif"/>
+        android:fontFamily="@font/alata"/>
 
     <TextView
+        android:id="@+id/desc_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/desc_intro"
-        android:layout_marginTop="20dp"
-        android:text="@string/desc1"
-        android:textSize="20sp"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/alata"
+        android:text="@string/desc1"
         android:textAlignment="center"
-        android:textColor="@color/celeste"
-        android:fontFamily="serif"/>
+        android:textColor="@color/greyD"
+        android:textSize="20sp" />
 
 </LinearLayout>

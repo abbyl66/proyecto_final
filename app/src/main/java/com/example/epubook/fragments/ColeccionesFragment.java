@@ -36,6 +36,7 @@ import com.example.epubook.modelo.Libro;
 import com.example.epubook.vista.ColeccAdapter;
 import com.example.epubook.vista.LectorEpub;
 import com.example.epubook.vista.LibroColeccAdapter;
+import com.example.epubook.vista.PantallaPerfil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -179,7 +180,7 @@ public class ColeccionesFragment extends Fragment {
             getActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
                 @Override
                 public void handleOnBackPressed() {
-                    Toast.makeText(getActivity(), "Dialogo salir", Toast.LENGTH_SHORT).show();
+                    controlDialogos.dialogoSalir(getActivity());
                 }
             });
         }

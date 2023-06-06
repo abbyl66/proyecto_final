@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">epubook</string>
+    <string name="app_name">Epubook</string>
 
-    <string name="slider1">Primera pantalla</string>
-    <string name="slider2">Segunda pantalla</string>
-    <string name="slider3">Tercera pantalla</string>
+    <string name="slider1">¡Bienvenido/a a Epubook!</string>
+    <string name="slider2">Todos tus libros seguros</string>
+    <string name="slider3">Descubre más libros</string>
 
-    <string name="desc1">Primera descripcion</string>
-    <string name="desc2">Segunda descripcion</string>
-    <string name="desc3">Tercera descripcion</string>
+    <string name="desc1">El mejor espacio donde leer tus libros favoritos.</string>
+    <string name="desc2">Tus libros en un solo lugar para disfrutar de ellos en cualquier momento.</string>
+    <string name="desc3">Una catálogo lleno de libros disponibles a tu alcance.</string>
 
-    <string name="descStart">Empezar</string>
+    <string name="descStart">¡Únete a nosotros y empieza a leer!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

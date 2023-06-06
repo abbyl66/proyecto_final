@@ -14,7 +14,7 @@
         android:layout_height="300dp"
         android:id="@+id/img_intro"
         android:layout_marginTop="70dp"
-        android:src="@drawable/savebooks"
+        android:src="@drawable/empezar"
         android:scaleType="centerCrop"/>
 
     <TextView
@@ -27,19 +27,19 @@
         android:textAlignment="center"
         android:textColor="@color/celeste"
         android:textStyle="bold"
-        android:fontFamily="serif"/>
+        android:fontFamily="@font/alata"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/desc_intro"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/descStart"
         android:textSize="20sp"
         android:layout_marginHorizontal="30dp"
         android:textAlignment="center"
         android:textColor="@color/celeste"
-        android:fontFamily="serif"/>
+        android:fontFamily="@font/alata"/>
 
     <Button
         android:layout_width="180dp"
@@ -47,7 +47,7 @@
         android:text="Inicia sesión"
         android:id="@+id/bt_iniciar"
         android:padding="8dp"
-        android:fontFamily="serif"
+        android:fontFamily="@font/alata"
         android:textSize="15sp"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"

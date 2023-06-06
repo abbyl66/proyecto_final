@@ -639,6 +639,67 @@ public class ControlDialogos {
         alertDialog.show();
     }
 
+    //Dialogo eliminar item libro de mis libros.
+    public void dialogoSalir(Activity activity){
+        //Variables del dialog personalizado.
+        ConstraintLayout confirmacion = activity.findViewById(R.id.dialogoConfirm);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialogo_confirmacion, confirmacion);
+
+        TextView tituloDialog, infoDialog;
+        Button cancelarDialog, aceptarDialog;
+
+        tituloDialog = view.findViewById(R.id.confirmTitulo);
+        infoDialog = view.findViewById(R.id.infoConfirm);
+        cancelarDialog = view.findViewById(R.id.btcancelar);
+        aceptarDialog = view.findViewById(R.id.btaceptar);
+
+        //Creo alertdialog y le doy el diseño con el layout.
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(view);
+        final AlertDialog alertDialog = builder.create();
+
+        //Muestro información en el dialog.
+        tituloDialog.setText("¿Desea salir?");
+        infoDialog.setText("La aplicación se cerrará.");
+        cancelarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón cancelar.
+                alertDialog.dismiss();
+            }
+        });
+
+        aceptarDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Si le da al botón aceptar.
+                alertDialog.dismiss();
+                activity.finish();
+
+            }
+        });
+
+        //Muestra diálogo.
+        if(alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+
+        //En caso de darle al botón atrás desde el dispositvo, no lo permitirá.
+        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
+                if(i == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP){
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+
+
 
 
 }

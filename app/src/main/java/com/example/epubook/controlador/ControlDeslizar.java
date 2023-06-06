@@ -18,7 +18,7 @@ public class ControlDeslizar extends PagerAdapter {
     Context context;
 
     //Imágenes, títulos y descripciones que usaré para cada pantalla de intro.
-    int imagenes[] = {R.drawable.booksintro, R.drawable.savebooks, R.drawable.booksintro};
+    int imagenes[] = {R.drawable.bienvenidos, R.drawable.basedatos, R.drawable.librosintro};
     int titulos[] = {R.string.slider1, R.string.slider2, R.string.slider3};
     int descripciones[] = {R.string.desc1, R.string.desc2, R.string.desc3};
 

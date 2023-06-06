@@ -8,34 +8,15 @@ public class Libro {
     private String autor;
     private Bitmap portada;
     private String ruta;
-    private int marcX, marcY;
 
     public Libro() {
     }
 
-    public Libro(String titulo, String autor, Bitmap portada, String ruta, int marcX, int marcY) {
+    public Libro(String titulo, String autor, Bitmap portada, String ruta) {
         this.titulo = titulo;
         this.autor = autor;
         this.portada = portada;
         this.ruta = ruta;
-        this.marcX = marcX;
-        this.marcY = marcY;
-    }
-
-    public int getMarcX() {
-        return marcX;
-    }
-
-    public void setMarcX(int marcX) {
-        this.marcX = marcX;
-    }
-
-    public int getMarcY() {
-        return marcY;
-    }
-
-    public void setMarcY(int marcY) {
-        this.marcY = marcY;
     }
 
     public String getRuta() {

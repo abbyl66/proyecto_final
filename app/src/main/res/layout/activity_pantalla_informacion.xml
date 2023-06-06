@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fondo_editar"
+    tools:context=".vista.PantallaInformacion">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:elevation="5dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/contenedorInfo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        style="@style/contenedorAjust"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" Información"
+            android:textSize="20sp"
+            android:drawableStart="@drawable/baseline_info_24"
+            android:fontFamily="@font/alata"
+            android:textStyle="bold"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textoInfo"
+                style="@style/txtAjustes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:textColor="@color/greyD"
+                android:textAlignment="textStart"
+                android:fontFamily="@font/alata"
+                android:text="Los usuarios pueden abrir y leer archivos EPUB rápida y fácilmente con la ayuda de esta aplicación. Los usuarios pueden administrar sus propias bibliotecas, buscar y descargar nuevos libros y personalizar sus experiencias de lectura con EPUBook. Para brindar una experiencia de lectura placentera y satisfactoria, la aplicación se enfoca en ofrecer una interfaz intuitiva y funcionalidades esenciales. Epubook también ofrece opciones de sincronización en la nube, lo que permite a los usuarios acceder a su biblioteca desde diferentes dispositivos simplemente iniciando sesión en su cuenta."
+                android:textSize="13sp"></TextView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:textColor="@color/rosa"
+                android:textStyle="bold"
+                android:text="Versión                                                            1.1.1"></TextView>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

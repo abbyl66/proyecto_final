@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.epubook.R;
+import com.example.epubook.controlador.ControlDialogos;
 import com.example.epubook.controlador.ControlExplorar;
 import com.example.epubook.controlador.ControlUsuario;
 import com.example.epubook.modelo.Libro;
@@ -66,6 +67,7 @@ public class PantallaExplorar extends AppCompatActivity {
 
     ControlExplorar controlExplorar = new ControlExplorar(PantallaExplorar.this);
     ControlUsuario controlUsuario = new ControlUsuario(PantallaExplorar.this);
+    ControlDialogos controlDialogos = new ControlDialogos(PantallaExplorar.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +202,7 @@ public class PantallaExplorar extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(this, "Dialogo salir.", Toast.LENGTH_SHORT).show();
+        controlDialogos.dialogoSalir(PantallaExplorar.this);
     }
 
     public static void openDrawer(DrawerLayout drawerLayout){

@@ -48,7 +48,6 @@ public class LectorEpub extends AppCompatActivity {
     private ConstraintLayout coloresFondo;
     private TextView cerrarFondo;
     private ImageView fondonegro, fondoblanco, fondocrema, fondogris;
-    private ImageButton marcador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +63,6 @@ public class LectorEpub extends AppCompatActivity {
         fondogris = findViewById(R.id.fondoGris);
         fondonegro = findViewById(R.id.fondoNegro);
 
-        marcador = findViewById(R.id.marcador);
 
         String ruta = getIntent().getStringExtra("ruta");
         abrirLecturaEpub(ruta);
@@ -91,24 +89,13 @@ public class LectorEpub extends AppCompatActivity {
                         if (dx < distancia && dy < distancia) {
                             if (contAjustes.getVisibility() == View.VISIBLE) {
                                 contAjustes.setVisibility(View.GONE);
-                                marcador.setVisibility(View.GONE);
                             } else if (contAjustes.getVisibility() == View.GONE) {
                                 contAjustes.setVisibility(View.VISIBLE);
-                                marcador.setVisibility(View.VISIBLE);
                             }
                             break;
                         }
                 }
                 return false;
-            }
-        });
-
-        marcador.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                marcador.setVisibility(View.GONE);
-                coloresFondo.setVisibility(View.GONE);
-                contAjustes.setVisibility(View.GONE);
             }
         });
 
@@ -125,7 +112,6 @@ public class LectorEpub extends AppCompatActivity {
             public void onClick(View view) {
                 coloresFondo.setVisibility(View.GONE);
                 contAjustes.setVisibility(View.GONE);
-                marcador.setVisibility(View.GONE);
             }
         });
 
