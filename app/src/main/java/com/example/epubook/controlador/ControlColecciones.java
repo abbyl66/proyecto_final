@@ -179,6 +179,8 @@ public class ControlColecciones {
                 StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
                 StorageReference referenceColeccUser = referenceColecc.child(coleccion.getNombre());
                 StorageReference referenceRuta = referenceColeccUser.child(archivo.getName());
+
+
                 referenceRuta.putBytes(ruta.getBytes()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

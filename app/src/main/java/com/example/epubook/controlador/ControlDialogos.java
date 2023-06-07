@@ -46,6 +46,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -503,6 +504,7 @@ public class ControlDialogos {
                 //Si le da al botón aceptar.
                 alertDialog.dismiss();
                 libro.setGuardado(true);
+
                 controlColecciones.aniadirLibro(colecciones, rutaLibro, guardarColecc, itemView);
             }
         });
