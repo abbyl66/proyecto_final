@@ -59,9 +59,10 @@ public class ControlExplorar {
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
         StorageReference reference = firebaseStorage.getReference();
 
-        //Nodo explorar
+        //Obtengo el nodo AAAExplorar que es donde se encuentran todos los ficheros EPUB.
         StorageReference referenceExpl = reference.child("AAAExplorar");
 
+        //Listo el resultado de la referencia.
         referenceExpl.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
             @Override
             public void onSuccess(ListResult listResult) {
@@ -167,7 +168,6 @@ public class ControlExplorar {
                     try {
 
                         File archivoTemp = File.createTempFile(epub.getName(), "epub");
-
                         referenceArchivo.getFile(archivoTemp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -400,7 +400,7 @@ public class ControlExplorar {
     }
 
 
-    //Este método guarda los libros que el usuario carga en la aplicación desde su dispositivol. Así la bd explorar tendrá más libros.
+    //Este método guarda los libros que el usuario carga en la aplicación desde su dispositivo. Así la bd explorar tendrá más libros.
     public void guardarLibroBd(String ruta) {
 
         //Creo fichero mediante la ruta pasada por parámetro

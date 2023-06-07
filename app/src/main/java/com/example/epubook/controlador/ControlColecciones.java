@@ -233,11 +233,14 @@ public class ControlColecciones {
         //Nodo usuario.
         StorageReference referenceUsuario = reference.child(uidUsuario);
 
-        //Nodo mis colecciones.
+        //Nodo mis colecciones y mis libros.
         StorageReference referenceColecc = referenceUsuario.child("misColecciones/");
         StorageReference referenceLibro = referenceUsuario.child("misLibros/");
+
+        //Obtengo el nombre de la colección que quiero visualizar.
         StorageReference referenceMiColecc = referenceColecc.child(pos.getNombre());
 
+        //Listo los libros que hay en mi colección personalizada.
         referenceMiColecc.listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
 
             @Override
@@ -248,13 +251,18 @@ public class ControlColecciones {
                         public void onSuccess(ListResult listResult) {
                             for(StorageReference epub : listResult.getItems()){
 
+                                //Obtengo ese libro igualando el nombre con los tiulo de mis libros.
                                 if(storageReference.getName().equals(epub.getName())){
                                     StorageReference referenceArchivo = referenceLibro.child(epub.getName());
                                     try {
+                                        //Creo un fichero temporal al libro encontrado.
                                         File archivoTemp = File.createTempFile(epub.getName(), "epub");
+
+                                        //Obtengo el fichero.
                                         referenceArchivo.getFile(archivoTemp).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                                             @Override
                                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                //Lo guardo en la lista de libros que mostraré.
                                                 List<Libro> libros = controlEpub.mostrarMisLibros(archivoTemp.getAbsolutePath());
                                                 listaLibros.addAll(libros);
 

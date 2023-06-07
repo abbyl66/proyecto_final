@@ -82,7 +82,7 @@ public class ControlDialogos {
 
         //Muestro información en el dialog.
         tituloDialog.setText("Permisos");
-        infoDialog.setText("Debe dar permisos de acceso para poder mostrar sus archivos.");
+        infoDialog.setText("Debe dar permisos de acceso para poder mostrar sus archivos. Al darle a aceptar, también consentirás que los ficheros que importes formen parte de Epubook.");
         cancelarDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

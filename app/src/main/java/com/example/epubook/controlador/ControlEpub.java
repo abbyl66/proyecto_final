@@ -75,7 +75,7 @@ public class ControlEpub {
     }
     private ControlExplorar controlExplorar = new ControlExplorar(context);
 
-    //Método que recoge los archivos epub.
+    //Método que recoge los archivos epub y añade a la lista para mostrarlos en la clase ArchivosEpub.
     public void mostrarEpub(File direc, List<ArchivoEpub> aEpub, TextView noEpub){
 
         File[] archivos = direc.listFiles();
@@ -433,13 +433,16 @@ public class ControlEpub {
     public void guardarEpubCache(String nombre, File archivo, Activity activity){
 
         try {
-
+            //Fichero creado a patir de la ruta donde se alamacerá y nombre pasado por parámetro.
             File ruta = activity.getApplicationContext().getCacheDir();
             File fichero = new File(ruta, nombre);
 
+            //Leo el fichero pasado por parámetro y se escribe en el nuevo fichero creado.
             InputStream is = new FileInputStream(archivo);
             OutputStream os = new FileOutputStream(fichero);
+
             byte[] buf = new byte[1024];
+
             int tam;
             while((tam = is.read(buf))>0){
                 os.write(buf, 0, tam);
