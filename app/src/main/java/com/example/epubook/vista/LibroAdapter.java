@@ -67,6 +67,8 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
         Animation animItems = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_items);
         holder.itemView.startAnimation(animItems);
 
+        comprobarLibrosGuardados(holder, libro);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,11 +82,9 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 ControlDialogos controlDialogos = new ControlDialogos(view.getContext());
-                controlDialogos.dialogoColeccion(view, position, libro.getRuta(), holder.guardarColecc, holder.itemView);
+                controlDialogos.dialogoColeccion(view, position, libro.getRuta(), holder.guardarColecc, holder.itemView, libro);
             }
         });
-
-        comprobarLibrosGuardados(holder, getLibrosFiltro().get(position));
 
     }
 
@@ -111,8 +111,22 @@ public class LibroAdapter extends RecyclerView.Adapter<LibroAdapter.ViewHolder> 
                             for(StorageReference libros : listResult.getItems()){
                                 if(!libros.getName().equals("ficheroVacio")){
                                     File libroEpub = new File(libro.getRuta());
+
+                                    //Extraigo el nombre de la ruta.
+                                    String archivo = libroEpub.getName();
+                                    int index = archivo.lastIndexOf('.');
+                                    String nombreArch = archivo.substring(0, index);
+
+                                    String archivo2 = libros.getName();
+                                    int index2 = archivo2.lastIndexOf('.');
+                                    String nombreArch2 = archivo2.substring(0, index2);
+
+                                    if(nombreArch.equals(nombreArch2)){
+                                        libro.setGuardado(true);
+                                    }
+
                                     //En caso de que encuentre un libro con el mismo nombre, lo señalará como guardado. Color.
-                                    if (libroEpub.getName().equals(libros.getName())){
+                                    if (libro.isGuardado()){
                                         holder.guardarColecc.setColorFilter(ContextCompat.getColor(holder.itemView.getContext(), R.color.celeste));
                                         break;
                                     }else{

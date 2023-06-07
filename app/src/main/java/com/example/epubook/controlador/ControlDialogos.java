@@ -453,7 +453,7 @@ public class ControlDialogos {
     }
 
     //Dialogo recycler elegir coleccion.
-    public void dialogoColeccion(View vista, int posicion, String rutaLibro, ImageView guardarColecc, View itemView){
+    public void dialogoColeccion(View vista, int posicion, String rutaLibro, ImageView guardarColecc, View itemView, Libro libro){
         //Variables del dialog personalizado.
         ConstraintLayout elegirColeccion = vista.findViewById(R.id.dialogoColecc);
         View view = LayoutInflater.from(context).inflate(R.layout.dialogo_colecciones, elegirColeccion);
@@ -492,6 +492,7 @@ public class ControlDialogos {
             public void onClick(View view) {
                 //Si le da al botón aceptar.
                 alertDialog.dismiss();
+                libro.setGuardado(true);
                 controlColecciones.aniadirLibro(colecciones, rutaLibro, guardarColecc, itemView);
             }
         });

@@ -223,29 +223,36 @@ public class PantallaPerfil extends AppCompatActivity {
     //Método para obtener información del usuario que mostraré en la pantalla perfil.
     public void infoUsuario(){
 
+        //Obtengo el usuario actual.
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
 
         if(user != null){
 
+            //Obtengo su id.
             String uid = user.getUid();
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("users");
             DatabaseReference databaseReference = reference.child(uid);
 
+            //Accedo a la base de datos de este usuario a través del id.
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot snapshot) {
                     Usuario usuario = snapshot.getValue(Usuario.class);
 
+                    //Extraigo los siguientes datos necesarios que mostraré.
                     String nombre = usuario.getNombre();
                     List<String> historialUser = usuario.getHistorial();
                     String foto = usuario.getFotoPerfil();
 
+                    //Hago la referencia hasta el nodo donde se encuentra la foto actual de perfil del usuario.
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("AAAUsuarios").child(uid).child(foto);
                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
+                            //Una vez obtengo la url de descarga de la imagen, lo muestro en el imageview de foto de perfil.
+                            //Me aseguro de que la pantalla no esté inactiva al momento de cargar la image, esto lleva a muchos errores.
                             if(PantallaPerfil.this.isDestroyed()){
                                 System.out.println("No carga imagen.");
                                 return;
@@ -260,10 +267,11 @@ public class PantallaPerfil extends AppCompatActivity {
                             Log.d("Error", e.getMessage());
                         }
                     });
-                    
+
+                    //Muestro el nombre del usuario.
                     nombreTitulo.setText(nombre);
 
-
+                    //Muestro el contenido del historial si lo hay.
                     if(historialUser != null){
                         Collections.reverse(historialUser);
 

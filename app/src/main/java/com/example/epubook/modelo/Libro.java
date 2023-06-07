@@ -8,15 +8,25 @@ public class Libro {
     private String autor;
     private Bitmap portada;
     private String ruta;
+    boolean guardado;
 
     public Libro() {
     }
 
-    public Libro(String titulo, String autor, Bitmap portada, String ruta) {
+    public Libro(String titulo, String autor, Bitmap portada, String ruta, boolean guardado) {
         this.titulo = titulo;
         this.autor = autor;
         this.portada = portada;
         this.ruta = ruta;
+        this.guardado = guardado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
     }
 
     public String getRuta() {

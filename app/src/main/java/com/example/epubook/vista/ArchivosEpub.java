@@ -157,8 +157,13 @@ public class ArchivosEpub extends AppCompatActivity {
 
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && Environment.isExternalStorageManager()){
+            cargarEpub();
+        }
+    }
 
     //Método para buscar archivos desde la barra de búsqueda.
     public void burcarArch(){

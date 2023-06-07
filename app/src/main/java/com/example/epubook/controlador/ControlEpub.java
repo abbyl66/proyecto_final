@@ -312,7 +312,7 @@ public class ControlEpub {
 
            if(portada == null){
                Bitmap p = obtenerPortada(titulo);
-               Libro libro = new Libro(titulo, autor, p, ruta);
+               Libro libro = new Libro(titulo, autor, p, ruta, false);
                listaLibros.add(libro);
            }else{
                String idPortada = portada.getId();
@@ -421,7 +421,7 @@ public class ControlEpub {
         try {
             byte[] portadaByte = portada.getData();
             Bitmap portadaBm = BitmapFactory.decodeByteArray(portadaByte, 0, portadaByte.length);
-            Libro libro = new Libro(titulo, autor, portadaBm, ruta);
+            Libro libro = new Libro(titulo, autor, portadaBm, ruta, false);
             listaLibros.add(libro);
 
         } catch (IOException e) {
@@ -467,6 +467,7 @@ public class ControlEpub {
     public File cargarCacheEpub(String nombre, Activity activity){
         File ruta = activity.getApplicationContext().getCacheDir();
         return new File(ruta, nombre);
+
     }
 
     //Método para eliminar libro de mis libros.

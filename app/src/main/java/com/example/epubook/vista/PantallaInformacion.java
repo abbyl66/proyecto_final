@@ -11,6 +11,7 @@ public class PantallaInformacion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.temaRosa);
         setContentView(R.layout.activity_pantalla_informacion);
     }
 }

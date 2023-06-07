@@ -49,7 +49,7 @@
         android:layout_gravity="center"
         android:id="@+id/noEpub"
         android:textSize="15sp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:fontFamily="@font/alata"></TextView>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -11,7 +11,6 @@ public class LibroExplorar {
     private String ruta;
     boolean guardado;
     boolean descargando;
-
     int numDescargas;
 
 
