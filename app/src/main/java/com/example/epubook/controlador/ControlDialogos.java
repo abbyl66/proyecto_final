@@ -1,5 +1,7 @@
 package com.example.epubook.controlador;
 
+import android.Manifest;
+import android.Manifest.permission;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -98,8 +101,14 @@ public class ControlDialogos {
             public void onClick(View view) {
                 //Si le da al botón aceptar.
                 Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
-                activity.startActivity(intent);
-                alertDialog.dismiss();
+                if(intent.resolveActivity(activity.getPackageManager()) != null) {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity(intent);
+                    alertDialog.dismiss();
+                }else{
+                    Toast.makeText(view.getContext(), "Error al redirigir a ajustes. Debes dar los permisos de forma manual.", Toast.LENGTH_SHORT).show();
+                    alertDialog.dismiss();
+                }
             }
         });
 
@@ -324,6 +333,7 @@ public class ControlDialogos {
                 dialog.dismiss();
                 Intent intent = new Intent(context, ArchivosEpub.class);
                 activity.startActivity(intent);
+                activity.finish();
 
             }
         });

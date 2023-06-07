@@ -173,6 +173,7 @@ public class Registrarse extends AppCompatActivity {
                                 regNombre.setEnabled(false);
                                 regEmail.setEnabled(false);
                                 regUser.setEnabled(false);
+                                regIniciar.setEnabled(false);
                                 regContr.setEnabled(false);
                             }
                         });

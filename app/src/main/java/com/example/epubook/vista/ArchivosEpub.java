@@ -1,12 +1,16 @@
 package com.example.epubook.vista;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -97,6 +101,7 @@ public class ArchivosEpub extends AppCompatActivity {
 
         }
 
+
     }
 
     @Override
@@ -115,6 +120,8 @@ public class ArchivosEpub extends AppCompatActivity {
         StorageManager storageManager = (StorageManager) this.getSystemService(Context.STORAGE_SERVICE);
         List<StorageVolume> storageVolumes = storageManager.getStorageVolumes();
         StorageVolume storageVolume = storageVolumes.get(0);
+
+        archivosEpub.clear();
 
         //Paso el directorio a través de su ruta.
         File directorio = new File(storageVolume.getDirectory().getAbsolutePath());
@@ -185,4 +192,5 @@ public class ArchivosEpub extends AppCompatActivity {
             }
         });
     }
+
 }

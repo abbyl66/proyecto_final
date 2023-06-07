@@ -77,7 +77,6 @@ public class ControlEpub {
 
     //Método que recoge los archivos epub y añade a la lista para mostrarlos en la clase ArchivosEpub.
     public void mostrarEpub(File direc, List<ArchivoEpub> aEpub, TextView noEpub){
-
         File[] archivos = direc.listFiles();
         if(archivos != null){
             for (File file : archivos){

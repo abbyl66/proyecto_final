@@ -265,7 +265,6 @@ public class ControlColecciones {
                                                 //Lo guardo en la lista de libros que mostraré.
                                                 List<Libro> libros = controlEpub.mostrarMisLibros(archivoTemp.getAbsolutePath());
                                                 listaLibros.addAll(libros);
-
                                                 libroAdapter.notifyDataSetChanged();
 
 

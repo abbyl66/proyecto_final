@@ -73,7 +73,6 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
         String fecha = s.format(archivoEpub.getFecha());
         holder.fecha.setText(fecha);
 
-        comprobarGuardado(holder, archivoEpub);
 
         Animation animacion = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.anim_itemsepub);
         holder.itemView.startAnimation(animacion);
@@ -88,6 +87,8 @@ public class EpubAdapter extends RecyclerView.Adapter<EpubAdapter.ViewHolder> im
                 }
             }
         });
+
+        comprobarGuardado(holder, archivoEpub);
 
     }
 
